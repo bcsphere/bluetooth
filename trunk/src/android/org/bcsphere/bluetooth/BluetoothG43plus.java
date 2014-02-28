@@ -432,10 +432,10 @@ public class BluetoothG43plus implements IBluetooth{
 		Log.i(TAG, "getBluetoothState");
 		JSONObject obj = new JSONObject();
 		if (mBluetoothAdapter.isEnabled()) {
-			Tools.addProperty(obj, Tools.BLUETOOTH_STATE, Tools.IS_TRUE);
+			Tools.addProperty(obj, Tools.BLUETOOTH_STATE, Tools.BLUETOOTH_OPEN);
 			callbackContext.success(obj);
 		}else {
-			Tools.addProperty(obj, Tools.BLUETOOTH_STATE, Tools.IS_FALSE);
+			Tools.addProperty(obj, Tools.BLUETOOTH_STATE, Tools.BLUETOOTH_CLOSE);
 			callbackContext.success(obj);
 		}
 	}
