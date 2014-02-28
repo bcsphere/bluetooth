@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<plugin xmlns="http://apache.org/cordova/ns/plugins/1.0"
+           id="org.bcsphere.bluetooth"
+      version="0.0.1">
+
+    <name>Bluetooth</name>
+    <description>Bluetooth LE Plugin</description>
+    <license>Apache 2.0</license>
+    <keywords>bcsphere,bluetooth</keywords>
+    <engines>
+        <engine name="cordova" version=">=3.0.0" />
+    </engines>
+	
+    <js-module src="www/bluetooth.js" name="bluetooth">
+        <merges target="navigator.bluetooth" />
+    </js-module>
+
+    <!-- android -->
+    <platform name="android">
+        <config-file target="res/xml/config.xml" parent="/*">
+            <feature name="BCBluetooth">
+                <param name="android-package" value="org.bcsphere.bluetooth.BCBluetooth"/>
+            </feature>
+        </config-file>
+		
+		<config-file target="AndroidManifest.xml" parent="/manifest">
+            <uses-permission android:name="android.permission.BLUETOOTH"/>
+            <uses-permission android:name="android.permission.BLUETOOTH_ADMIN"/>
+        </config-file>
+
+        <source-file src="src/android/org/bcsphere/bluetooth/BCBluetooth.java" target-dir="src/org/bcsphere/bluetooth" />
+		<source-file src="src/android/org/bcsphere/bluetooth/IBluetooth.java" target-dir="src/org/bcsphere/bluetooth" />
+		<source-file src="src/android/org/bcsphere/bluetooth/BluetoothG43plus.java" target-dir="src/org/bcsphere/bluetooth" />
+		<source-file src="src/android/org/bcsphere/bluetooth/BluetoothSam42.java" target-dir="src/org/bcsphere/bluetooth" />
+		<source-file src="src/android/org/bcsphere/bluetooth/tools/BluetoothDetection.java" target-dir="src/org/bcsphere/bluetooth/tools" />
+		<source-file src="src/android/org/bcsphere/bluetooth/tools/Tools.java" target-dir="src/org/bcsphere/bluetooth/tools" />
+		
+		<source-file src="src/bc.js" target-dir="assets/www" />
+		<source-file src="src/underscore.js" target-dir="assets/www" />
+		
+		<source-file src="libs/samsung_ble_sdk_200.jar" target-dir="libs" />
+
+    </platform>
+   
+
+	<!-- ios -->
+    <platform name="ios">
+        <config-file target="config.xml" parent="/*">
+            <feature name="BCBluetooth">
+                <param name="ios-package" value="BCBluetooth"/>
+            </feature>
+        </config-file>
+        <header-file src="src/ios/BCBluetooth.h" />
+	    <source-file src="src/ios/BCBluetooth.m" />
+        
+        <asset src="src/bc.js" target ="bc.js"/>
+        <asset src="src/underscore.js" target ="underscore.js"/>
+        
+		<framework src="CoreBluetooth.framework" weak="true" />
+    </platform>
+
+</plugin>
