@@ -4,8 +4,8 @@ The BC.js is implemented as an [Apache Cordova](http://cordova.apache.org) / [Ph
 </br>It only supports Bluetooth Low Energy(BLE) API currently.
   
   Use this command to install our plugin in your Cordova/Phonegap project: <br/>
-    <b>cordova plugin add https://github.com/bcsphere/bluetooth.git </b>
-  Online document this here: http://www.bcsphere.org/document/
+    <b>cordova plugin add https://github.com/bcsphere/bluetooth.git </b> <br/>
+  Online document is here: http://www.bcsphere.org/document/
   
 Features
 -----------------------------------
