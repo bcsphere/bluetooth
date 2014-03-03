@@ -5,6 +5,7 @@ The BC.js is implemented as an [Apache Cordova](http://cordova.apache.org) / [Ph
   
   Use this command to install our plugin in your Cordova/Phonegap project: <br/>
     <b>cordova plugin add https://github.com/bcsphere/bluetooth.git </b>
+  Online document this here: http://www.bcsphere.org/document/
   
 Features
 -----------------------------------
