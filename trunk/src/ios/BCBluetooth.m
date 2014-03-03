@@ -1536,9 +1536,9 @@
     NSMutableArray *serviceUUIDs = [[NSMutableArray alloc] init];
     NSMutableArray *overFlowServiceUUIDs = [[NSMutableArray alloc] init];
     NSMutableArray *solicitServiceUUIDs = [[NSMutableArray alloc] init];
-
+    
     if ([advertisementData valueForKey:KCBADVDATA_LOCALNAME]){
-        NSString *localName = [advertisementData valueForKey:KCBADVDATA_LOCALNAME];
+        NSString *localName = [NSString stringWithFormat:@"%@",[advertisementData valueForKey:KCBADVDATA_LOCALNAME]];
         [advertisementDataDic setValue:localName forKey:LOCAL_NAME];
     }
     if ([advertisementData valueForKey:KCBADVDATA_SERVICE_UUIDS]){
@@ -1552,15 +1552,15 @@
         [advertisementDataDic setValue:serviceUUIDs forKey:SERVICE_UUIDS];
     }
     if ([advertisementData valueForKey:KCBADVDATA_TXPOWER_LEVEL]){
-        NSString *txPowerLevel = [advertisementData valueForKey:KCBADVDATA_TXPOWER_LEVEL];
+        NSString *txPowerLevel = [NSString stringWithFormat:@"%@",[advertisementData valueForKey:KCBADVDATA_TXPOWER_LEVEL]];
         [advertisementDataDic setValue:txPowerLevel forKey:TXPOWER_LEVEL];
     }
     if ([advertisementData valueForKey:KCBADVDATA_SERVICE_DATA]){
-        NSString *serviceData = [advertisementData valueForKey:KCBADVDATA_SERVICE_DATA];
+        NSString *serviceData = [NSString stringWithFormat:@"%@",[advertisementData valueForKey:KCBADVDATA_SERVICE_DATA]];
         [advertisementDataDic setValue:serviceData forKey:SERVICE_DATA];
     }
     if ([advertisementData valueForKey:KCBADVDATALOCAL_NAME]){
-        NSString *manufacturerData = [advertisementData valueForKey:KCBADVDATALOCAL_NAME];
+        NSString *manufacturerData = [NSString stringWithFormat:@"%@",[advertisementData valueForKey:KCBADVDATALOCAL_NAME]];
         [advertisementDataDic setValue:manufacturerData forKey:MANUFACTURER_DATA];
     }
     if ([advertisementData valueForKey:KCBADVDATA_OVERFLOW_SERVICE_UUIDS]){
@@ -1574,7 +1574,7 @@
         [advertisementDataDic setValue:overFlowServiceUUIDs forKey:OVERFLOW_SERVICE_UUIDS];
     }
     if ([advertisementData valueForKey:KCBADVDATA_ISCONNECTABLE]){
-        NSString *isConnectable = [advertisementData valueForKey:KCBADVDATA_ISCONNECTABLE];
+        NSString *isConnectable = [NSString stringWithFormat:@"%@",[advertisementData valueForKey:KCBADVDATA_ISCONNECTABLE]];
         [advertisementDataDic setValue:isConnectable forKey:ISCONNECTABLE];
     }
     if ([advertisementData valueForKey:KCBADCDATA_SOLICITED_SERVICE_UUIDS]){
