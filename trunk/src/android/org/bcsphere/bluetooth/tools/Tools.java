@@ -873,6 +873,9 @@ public class Tools {
 	public static byte[] hexStringToByte(String hexString)
 	{  
 		hexString = hexString.toLowerCase();
+		if(hexString.length() % 2 != 0){
+			hexString = "0" + hexString;
+		}
 		int len = (hexString.length() / 2);  
 		byte[] result = new byte[len];  
 		char[] achar = hexString.toCharArray();  
