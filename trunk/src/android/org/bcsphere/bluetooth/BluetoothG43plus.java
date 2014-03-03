@@ -99,13 +99,14 @@ public class BluetoothG43plus implements IBluetooth{
 			deviceInfoList = null;
 			deviceInfoList = new JSONArray();
 		}
-		if (Tools.getData(json, Tools.SERVICE_UUIDS) == null) {
+		UUID[] uuids = Tools.getUUIDs(json);
+		if (uuids == null || uuids.length < 1) {
 			mBluetoothAdapter.startLeScan(mLeScanCallback);
 			Tools.sendSuccessMsg(callbackContext);
 			scanSum = scanSum + 1;
 			isScanning = true;
 		}else {
-			mBluetoothAdapter.startLeScan(Tools.getUUIDs(json), mLeScanCallback);
+			mBluetoothAdapter.startLeScan(uuids, mLeScanCallback);
 			Tools.sendSuccessMsg(callbackContext);
 			scanSum = scanSum + 1;	
 			isScanning = true;
