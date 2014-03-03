@@ -174,7 +174,7 @@
 				}
 				fireBLEEvent("bcready");
 			},testFunc);
-		},function(mes){alert("!!!!!"+JSON.stringify(mes));});
+		},function(mes){alert(JSON.stringify(mes));});
 	}
 	
 	function base64ToBuffer(rawData){
