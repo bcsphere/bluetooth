@@ -1096,6 +1096,7 @@
 		    var chars = arguments[1];
 		    var service = this;
 		    var device = this.device;
+		    service.characteristics = [];
 			_.each(chars.characteristics, function(characteristic){
                     var cindex = characteristic.characteristicIndex;
                     var cname = characteristic.characteristicName;
@@ -1288,6 +1289,7 @@
 			var dess = arguments[1];
 			var chara =  this;
 			var device = this.device;
+			chara.descriptors = [];
 			_.each(dess.descriptors,function(des){
                 var dindex = des.descriptorIndex;
                 var dname = des.descriptorName;
