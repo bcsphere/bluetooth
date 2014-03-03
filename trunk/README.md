@@ -5,7 +5,8 @@ The BC.js is implemented as an [Apache Cordova](http://cordova.apache.org) / [Ph
   
   Use this command to install our plugin in your Cordova/Phonegap project: <br/>
     <b>cordova plugin add https://github.com/bcsphere/bluetooth.git </b> <br/>
-  Online document is here: http://www.bcsphere.org/document/
+  Online document is here: http://www.bcsphere.org/document/ </br>
+  [BC Explorer](https://github.com/bcsphere/bcexplorer) is a useful tool to show the BLE services structure in device, we hope it will help you to start your development.
   
 Features
 -----------------------------------
