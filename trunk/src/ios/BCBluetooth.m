@@ -256,8 +256,7 @@
 }
 
 - (void)getScanData:(CDVInvokedUrlCommand*)command{
-    NSMutableArray* callbackInfo = [[NSMutableArray alloc] init];
-    callbackInfo = [self storePeripheralInfo:_peripherals];
+    NSMutableArray* callbackInfo = [self storePeripheralInfo:_peripherals];
     CDVPluginResult* result = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK messageAsArray:callbackInfo];
     [self.commandDelegate sendPluginResult:result callbackId:command.callbackId];
 }
@@ -354,8 +353,7 @@
             [[NSUserDefaults standardUserDefaults] setValue:command.callbackId forKey:deviceID];
             if (peripheral) {
                 if (peripheral.services.count > 0){
-                    NSMutableDictionary *callbackInfo = [[NSMutableDictionary alloc] init];
-                    callbackInfo = [self storeServiceInfo:peripheral];
+                    NSMutableDictionary *callbackInfo = [self storeServiceInfo:peripheral];
                     CDVPluginResult* result = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK messageAsDictionary:callbackInfo];
                     [self.commandDelegate sendPluginResult:result callbackId:command.callbackId];
                 }else{
@@ -385,8 +383,7 @@
                     if (peripheral.services.count > [serviceIndex intValue]) {
                         CBService *service = [peripheral.services objectAtIndex:[serviceIndex intValue]];
                         if (service.characteristics.count > 0) {
-                            NSMutableDictionary *callbackInfo = [[NSMutableDictionary alloc] init];
-                            callbackInfo = [self storeChatacteristicInfo:peripheral service:service];
+                            NSMutableDictionary *callbackInfo = [self storeChatacteristicInfo:peripheral service:service];
                             CDVPluginResult* result = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK messageAsDictionary:callbackInfo];
                             [self.commandDelegate sendPluginResult:result callbackId:command.callbackId];
                         }else{
@@ -425,8 +422,7 @@
                         if (service.characteristics.count > [charateristicIndex intValue]) {
                             CBCharacteristic *characteristic = [service.characteristics objectAtIndex:[charateristicIndex intValue]];
                             if (characteristic.descriptors.count > 0) {
-                                NSMutableDictionary *callbackInfo = [[NSMutableDictionary alloc] init];
-                                callbackInfo = [self storeDescriptorInfo:peripheral characteristic:characteristic];
+                                NSMutableDictionary *callbackInfo = [self storeDescriptorInfo:peripheral characteristic:characteristic];
                                 CDVPluginResult* result = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK messageAsDictionary:callbackInfo];
                                 [self.commandDelegate sendPluginResult:result callbackId:command.callbackId];
                             }else{
@@ -940,13 +936,11 @@
         _peripherals = [[NSMutableArray alloc] initWithObjects:peripheral,nil];
     }else{
         BOOL isAdd = TRUE;
-        NSString *peripheralUUID = [[NSString alloc] init];
-        NSString *oldPeripheralUUID = [[NSString alloc] init];
-        peripheralUUID = [self getPeripheralUUID:peripheral];
+        NSString *peripheralUUID = [self getPeripheralUUID:peripheral];
         for (int i = 0; i < [_peripherals count]; i++)
         {
             CBPeripheral *oldPeripheral = [_peripherals objectAtIndex:i];
-            oldPeripheralUUID = [self getPeripheralUUID:oldPeripheral];
+            NSString *oldPeripheralUUID = [self getPeripheralUUID:oldPeripheral];
             if ([peripheralUUID isEqualToString:oldPeripheralUUID] == YES){
                 isAdd = FALSE;
             }
@@ -971,9 +965,8 @@
 }
 
 - (void)centralManager:(CBCentralManager *)central didRetrieveConnectedPeripherals:(NSArray *)peripherals{
-    NSMutableArray *callbackInfo = [[NSMutableArray alloc] init];
     NSMutableArray *peripheralObjects = [NSMutableArray arrayWithArray:peripherals];
-    callbackInfo = [self storePeripheralInfo:peripheralObjects];
+    NSMutableArray *callbackInfo = [self storePeripheralInfo:peripheralObjects];
     NSMutableArray *myPeripherals = [NSMutableArray arrayWithArray:peripherals];
     [self addPeripheralToAllPeripherals:myPeripherals];
     CDVPluginResult* result = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK messageAsArray:callbackInfo];
@@ -1037,8 +1030,7 @@
         if (isAddAllData) {
             [self getServiceInfo:peripheral];
         }else{
-            NSMutableDictionary *callbackInfo = [[NSMutableDictionary alloc] init];
-            callbackInfo = [self storeServiceInfo:peripheral];
+            NSMutableDictionary *callbackInfo = [self storeServiceInfo:peripheral];
             CDVPluginResult* result = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK messageAsDictionary:callbackInfo];
             [self.commandDelegate sendPluginResult:result callbackId:[[NSUserDefaults standardUserDefaults] objectForKey:deviceID]];
         }
@@ -1054,8 +1046,7 @@
         if (isAddAllData) {
             [self getAllCharacteristicInfo:service peripheral:peripheral];
         }else{
-            NSMutableDictionary *callbackInfo = [[NSMutableDictionary alloc] init];
-            callbackInfo = [self storeChatacteristicInfo:peripheral service:service];
+            NSMutableDictionary *callbackInfo = [self storeChatacteristicInfo:peripheral service:service];
             CDVPluginResult* result = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK messageAsDictionary:callbackInfo];
             [self.commandDelegate sendPluginResult:result callbackId:[[NSUserDefaults standardUserDefaults] objectForKey:[NSString stringWithFormat:@"%d%@",[self getServiceIndex:peripheral service:service],deviceID]]];        }
     }else{
@@ -1069,8 +1060,7 @@
         if (isAddAllData) {
             [self addDescriptorArray:peripheral CBCharacteristic:characteristic];
         }else{
-            NSMutableDictionary *callbackInfo = [[NSMutableDictionary alloc] init];
-            callbackInfo = [self storeDescriptorInfo:peripheral characteristic:characteristic];
+            NSMutableDictionary *callbackInfo = [self storeDescriptorInfo:peripheral characteristic:characteristic];
             CDVPluginResult* result = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK messageAsDictionary:callbackInfo];
             [self.commandDelegate sendPluginResult:result callbackId:[[NSUserDefaults standardUserDefaults] objectForKey:[NSString stringWithFormat:@"%d%d%@",[self getCharacterIndex:characteristic.service character:characteristic],[self getServiceIndex:peripheral service:characteristic.service],deviceID]]];        }
     }else{
@@ -1215,8 +1205,7 @@
 
 - (NSString*)getBase64EncodedFromData:(NSData*)data{
     NSData *newData = [[NSData alloc] initWithData:data];
-    NSString *value = [[NSString alloc] init];
-    value = [newData base64EncodedString];
+    NSString *value = [newData base64EncodedString];
     return value;
 }
 
@@ -1451,10 +1440,12 @@
 }
 
 - (const char *) UUIDToString:(CFUUIDRef)UUID {
-    if (!UUID) return "NULL";
-    CFStringRef uuid = CFUUIDCreateString(NULL, UUID);
-    return CFStringGetCStringPtr(uuid, 0);
-    
+    if (!UUID){
+        return "NULL";
+    }
+    NSString *uuid = CFBridgingRelease(CFUUIDCreateString(nil,UUID));
+    const char *char_content = [uuid cStringUsingEncoding:NSASCIIStringEncoding];
+    return char_content;
 }
 
 -(NSData*)stringToByte:(NSString*)string{
@@ -1535,13 +1526,13 @@
 - (NSString *)getPeripheralUUID:(CBPeripheral *)peripheral{
     CBPeripheral *newPeripheral = peripheral;
     const char *newPeripheralUUIDChar = [self UUIDToString:newPeripheral.UUID];
-    NSString *newPeripheralUUIDStr = [[NSString alloc] init];
     if (!newPeripheralUUIDChar) {
-        newPeripheralUUIDStr = NOTAVAILABLE;
+        NSString *newPeripheralUUIDStr = NOTAVAILABLE;
+        return newPeripheralUUIDStr;
     }else{
-        newPeripheralUUIDStr = [NSString stringWithFormat:@"%s",newPeripheralUUIDChar];
+        NSString *newPeripheralUUIDStr = [NSString stringWithFormat:@"%s",newPeripheralUUIDChar];
+        return newPeripheralUUIDStr;
     }
-    return newPeripheralUUIDStr;
 }
 
 - (int)getServiceIndex:(CBPeripheral *)peripheral service:(CBService *)service{
@@ -1581,8 +1572,7 @@
         [advertisementDataDic setValue:localName forKey:LOCAL_NAME];
     }
     if ([advertisementData valueForKey:KCBADVDATA_SERVICE_UUIDS]){
-        NSMutableArray *advServiceUUIDs = [[NSMutableArray alloc] init];
-        advServiceUUIDs = [advertisementData valueForKey:KCBADVDATA_SERVICE_UUIDS];
+        NSMutableArray *advServiceUUIDs = [advertisementData valueForKey:KCBADVDATA_SERVICE_UUIDS];
         for (int i = 0; i < advServiceUUIDs.count; i++) {
             CBUUID *UUID = [[advertisementData valueForKey:KCBADVDATA_SERVICE_UUIDS] objectAtIndex:i];
             NSString *UUIDStr = [self CBUUIDFiltrToString:UUID];
@@ -1603,8 +1593,7 @@
         [advertisementDataDic setValue:manufacturerData forKey:MANUFACTURER_DATA];
     }
     if ([advertisementData valueForKey:KCBADVDATA_OVERFLOW_SERVICE_UUIDS]){
-        NSMutableArray *overFlowAdvServiceUUIDs = [[NSMutableArray alloc] init];
-        overFlowAdvServiceUUIDs = [advertisementData valueForKey:KCBADVDATA_OVERFLOW_SERVICE_UUIDS];
+        NSMutableArray *overFlowAdvServiceUUIDs = [advertisementData valueForKey:KCBADVDATA_OVERFLOW_SERVICE_UUIDS];
         for (int i = 0; i < overFlowAdvServiceUUIDs.count; i++) {
             CBUUID *UUID = [[advertisementData valueForKey:KCBADVDATA_OVERFLOW_SERVICE_UUIDS] objectAtIndex:i];
             NSString *UUIDStr = [self CBUUIDFiltrToString:UUID];
@@ -1617,8 +1606,7 @@
         [advertisementDataDic setValue:isConnectable forKey:ISCONNECTABLE];
     }
     if ([advertisementData valueForKey:KCBADCDATA_SOLICITED_SERVICE_UUIDS]){
-        NSMutableArray *solicitedAdvServiceUUIDs = [[NSMutableArray alloc] init];
-        solicitedAdvServiceUUIDs = [advertisementData valueForKey:KCBADCDATA_SOLICITED_SERVICE_UUIDS];
+        NSMutableArray *solicitedAdvServiceUUIDs = [advertisementData valueForKey:KCBADCDATA_SOLICITED_SERVICE_UUIDS];
         for (int i = 0; i < solicitedAdvServiceUUIDs.count; i++) {
             CBUUID *UUID = [[advertisementData valueForKey:KCBADCDATA_SOLICITED_SERVICE_UUIDS] objectAtIndex:i];
             NSString *UUIDStr = [self CBUUIDFiltrToString:UUID];
