@@ -26,22 +26,19 @@
     <section>
         <article>
             <pre class="prettyprint source linenums"><code>/*
-       Licensed to the Apache Software Foundation (ASF) under one
-       or more contributor license agreements.  See the NOTICE file
-       distributed with this work for additional information
-       regarding copyright ownership.  The ASF licenses this file
-       to you under the Apache License, Version 2.0 (the
-       "License"); you may not use this file except in compliance
-       with the License.  You may obtain a copy of the License at
+	Copyright 2013-2014, JUMA Technology
 
-         http://www.apache.org/licenses/LICENSE-2.0
+	Licensed under the Apache License, Version 2.0 (the "License");
+	you may not use this file except in compliance with the License.
+	You may obtain a copy of the License at
 
-       Unless required by applicable law or agreed to in writing,
-       software distributed under the License is distributed on an
-       "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
-       KIND, either express or implied.  See the License for the
-       specific language governing permissions and limitations
-       under the License.
+		http://www.apache.org/licenses/LICENSE-2.0
+
+	Unless required by applicable law or agreed to in writing, software
+	distributed under the License is distributed on an "AS IS" BASIS,
+	WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+	See the License for the specific language governing permissions and
+	limitations under the License.
 */
 (function(){
 
@@ -204,7 +201,7 @@
 				}
 				fireBLEEvent("bcready");
 			},testFunc);
-		},function(mes){alert("!!!!!"+JSON.stringify(mes));});
+		},function(mes){alert(JSON.stringify(mes));});
 	}
 	
 	function base64ToBuffer(rawData){
@@ -1002,8 +999,8 @@
 		 * Initializes a unpaired request to the device.
 		 * @memberof Device
 		 * @example device.removePair(function(mes){alert("remove pair with device success!")});
-		 * @param {function} successCallback - Called when removing pair successfully
-		 * @param {function} [errorCallback] - Called when removing pair unsuccessfully
+		 * @param {function} successCallback - Success callback
+		 * @param {function} [errorCallback] - Error callback
 		 * @instance
 		 */
 		removePair : function(success,error){
@@ -1020,6 +1017,33 @@
 		removePairError : function(){
 			alert("remove Pair Error!");
 			this.error();
+		},
+		
+		/**
+		 * Gets service by UUID.
+		 * @memberof Device
+		 * @example alert(app.device.getServiceByUUID("fff0")[0].uuid);
+		 * alert(app.device.getServiceByUUID("0000fff0-0000-1000-8000-00805f9b34fb")[0].uuid);
+		 * @param {string} uuid - The uuid(128bit/16bit) of service
+		 * @instance
+		 * @returns {Array&lt;Service>} An array of Service
+		 */
+		getServiceByUUID : function(uuid){
+			var uuid = uuid.toLowerCase();
+			var result = [];
+			var uuid_128 = "";
+			if(uuid.length == 4){
+				uuid_128 = "0000"+ uuid +"-0000-1000-8000-00805f9b34fb";
+			}else if(uuid.length == 36){
+				uuid_128 = uuid;
+			}
+			_.each(this.services, function(service){
+					if(service.uuid == uuid_128){
+						result.push(service);
+					}
+				}
+			);
+			return result;
 		},
 	});
 	
@@ -1126,6 +1150,7 @@
 		    var chars = arguments[1];
 		    var service = this;
 		    var device = this.device;
+		    service.characteristics = [];
 			_.each(chars.characteristics, function(characteristic){
                     var cindex = characteristic.characteristicIndex;
                     var cname = characteristic.characteristicName;
@@ -1140,6 +1165,32 @@
 		
 		discoverCharacteristicsError : function(){
 			this.error();
+		},
+		
+		/**
+		 * Gets characteristics by UUID.
+		 * @memberof Service
+		 * @example app.device.services[3].getCharacteristicByUUID("FFF1")[0].write("Hex","1",function(){alert("success!");});
+		 * @param {string} uuid - The uuid(128bit/16bit) of characteristic
+		 * @instance
+		 * @returns {Array&lt;Characteristic>} An array of Characteristic
+		 */
+		getCharacteristicByUUID : function(uuid){
+			var uuid = uuid.toLowerCase();
+			var result = [];
+			var uuid_128 = "";
+			if(uuid.length == 4){
+				uuid_128 = "0000"+ uuid +"-0000-1000-8000-00805f9b34fb";
+			}else if(uuid.length == 36){
+				uuid_128 = uuid;
+			}
+			_.each(this.characteristics, function(characteristic){
+					if(characteristic.uuid == uuid_128){
+						result.push(characteristic);
+					}
+				}
+			);
+			return result;
 		},
   });
   
@@ -1318,6 +1369,7 @@
 			var dess = arguments[1];
 			var chara =  this;
 			var device = this.device;
+			chara.descriptors = [];
 			_.each(dess.descriptors,function(des){
                 var dindex = des.descriptorIndex;
                 var dname = des.descriptorName;
@@ -1329,6 +1381,32 @@
 		
 		discoverDescriptorsError : function(){
 			this.error();
+		},
+		
+		/**
+		 * Gets descriptors by UUID.
+		 * @memberof Characteristic
+		 * @example app.device.services[3].characteristics[0].getDescriptorByUUID("2901")[0].read(function(data){alert(data.value.getASCIIString())});
+		 * @param {string} uuid - The uuid(128bit/16bit) of descriptor
+		 * @instance
+		 * @returns {Array&lt;Descriptor>} An array of Descriptor
+		 */
+		getDescriptorByUUID : function(uuid){
+			var uuid = uuid.toLowerCase();
+			var result = [];
+			var uuid_128 = "";
+			if(uuid.length == 4){
+				uuid_128 = "0000"+ uuid +"-0000-1000-8000-00805f9b34fb";
+			}else if(uuid.length == 36){
+				uuid_128 = uuid;
+			}
+			_.each(this.descriptors, function(descriptor){
+					if(descriptor.uuid == uuid_128){
+						result.push(descriptor);
+					}
+				}
+			);
+			return result;
 		},
 		
   });
@@ -1413,7 +1491,7 @@
 <br clear="both">
 
 <footer>
-    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.3.0-alpha4</a> on Fri Feb 28 2014 19:04:50 GMT+0800 (中国标准时间)
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.3.0-alpha4</a> on Tue Mar 04 2014 13:11:56 GMT+0800 (中国标准时间)
 </footer>
 
 <script> prettyPrint(); </script>

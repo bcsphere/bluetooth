@@ -13,7 +13,7 @@
 	See the License for the specific language governing permissions and
 	limitations under the License.
 */
-(function(){
+//(function(){
 
 	var root = this;
 	/**
@@ -972,8 +972,8 @@
 		 * Initializes a unpaired request to the device.
 		 * @memberof Device
 		 * @example device.removePair(function(mes){alert("remove pair with device success!")});
-		 * @param {function} successCallback - Called when removing pair successfully
-		 * @param {function} [errorCallback] - Called when removing pair unsuccessfully
+		 * @param {function} successCallback - Success callback
+		 * @param {function} [errorCallback] - Error callback
 		 * @instance
 		 */
 		removePair : function(success,error){
@@ -990,6 +990,33 @@
 		removePairError : function(){
 			alert("remove Pair Error!");
 			this.error();
+		},
+		
+		/**
+		 * Gets service by UUID.
+		 * @memberof Device
+		 * @example alert(app.device.getServiceByUUID("fff0")[0].uuid);
+		 * alert(app.device.getServiceByUUID("0000fff0-0000-1000-8000-00805f9b34fb")[0].uuid);
+		 * @param {string} uuid - The uuid(128bit/16bit) of service
+		 * @instance
+		 * @returns {Array<Service>} An array of Service
+		 */
+		getServiceByUUID : function(uuid){
+			var uuid = uuid.toLowerCase();
+			var result = [];
+			var uuid_128 = "";
+			if(uuid.length == 4){
+				uuid_128 = "0000"+ uuid +"-0000-1000-8000-00805f9b34fb";
+			}else if(uuid.length == 36){
+				uuid_128 = uuid;
+			}
+			_.each(this.services, function(service){
+					if(service.uuid == uuid_128){
+						result.push(service);
+					}
+				}
+			);
+			return result;
 		},
 	});
 	
@@ -1111,6 +1138,32 @@
 		
 		discoverCharacteristicsError : function(){
 			this.error();
+		},
+		
+		/**
+		 * Gets characteristics by UUID.
+		 * @memberof Service
+		 * @example app.device.services[3].getCharacteristicByUUID("FFF1")[0].write("Hex","1",function(){alert("success!");});
+		 * @param {string} uuid - The uuid(128bit/16bit) of characteristic
+		 * @instance
+		 * @returns {Array<Characteristic>} An array of Characteristic
+		 */
+		getCharacteristicByUUID : function(uuid){
+			var uuid = uuid.toLowerCase();
+			var result = [];
+			var uuid_128 = "";
+			if(uuid.length == 4){
+				uuid_128 = "0000"+ uuid +"-0000-1000-8000-00805f9b34fb";
+			}else if(uuid.length == 36){
+				uuid_128 = uuid;
+			}
+			_.each(this.characteristics, function(characteristic){
+					if(characteristic.uuid == uuid_128){
+						result.push(characteristic);
+					}
+				}
+			);
+			return result;
 		},
   });
   
@@ -1303,6 +1356,32 @@
 			this.error();
 		},
 		
+		/**
+		 * Gets descriptors by UUID.
+		 * @memberof Characteristic
+		 * @example app.device.services[3].characteristics[0].getDescriptorByUUID("2901")[0].read(function(data){alert(data.value.getASCIIString())});
+		 * @param {string} uuid - The uuid(128bit/16bit) of descriptor
+		 * @instance
+		 * @returns {Array<Descriptor>} An array of Descriptor
+		 */
+		getDescriptorByUUID : function(uuid){
+			var uuid = uuid.toLowerCase();
+			var result = [];
+			var uuid_128 = "";
+			if(uuid.length == 4){
+				uuid_128 = "0000"+ uuid +"-0000-1000-8000-00805f9b34fb";
+			}else if(uuid.length == 36){
+				uuid_128 = uuid;
+			}
+			_.each(this.descriptors, function(descriptor){
+					if(descriptor.uuid == uuid_128){
+						result.push(descriptor);
+					}
+				}
+			);
+			return result;
+		},
+		
   });
 
    /**
@@ -1356,7 +1435,7 @@
 		},
   });
   
-})();
+//})();
 
 
 

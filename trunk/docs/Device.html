@@ -501,7 +501,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="bc.js.html">bc.js</a>, <a href="bc.js.html#line733">line 733</a>
+        <a href="bc.js.html">bc.js</a>, <a href="bc.js.html#line730">line 730</a>
     </li></ul></dd>
     
     
@@ -679,7 +679,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="bc.js.html">bc.js</a>, <a href="bc.js.html#line760">line 760</a>
+        <a href="bc.js.html">bc.js</a>, <a href="bc.js.html#line757">line 757</a>
     </li></ul></dd>
     
     
@@ -844,7 +844,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="bc.js.html">bc.js</a>, <a href="bc.js.html#line958">line 958</a>
+        <a href="bc.js.html">bc.js</a>, <a href="bc.js.html#line955">line 955</a>
     </li></ul></dd>
     
     
@@ -1011,7 +1011,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="bc.js.html">bc.js</a>, <a href="bc.js.html#line860">line 860</a>
+        <a href="bc.js.html">bc.js</a>, <a href="bc.js.html#line857">line 857</a>
     </li></ul></dd>
     
     
@@ -1178,7 +1178,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="bc.js.html">bc.js</a>, <a href="bc.js.html#line806">line 806</a>
+        <a href="bc.js.html">bc.js</a>, <a href="bc.js.html#line803">line 803</a>
     </li></ul></dd>
     
     
@@ -1343,7 +1343,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="bc.js.html">bc.js</a>, <a href="bc.js.html#line913">line 913</a>
+        <a href="bc.js.html">bc.js</a>, <a href="bc.js.html#line910">line 910</a>
     </li></ul></dd>
     
     
@@ -1508,7 +1508,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="bc.js.html">bc.js</a>, <a href="bc.js.html#line883">line 883</a>
+        <a href="bc.js.html">bc.js</a>, <a href="bc.js.html#line880">line 880</a>
     </li></ul></dd>
     
     
@@ -1534,6 +1534,150 @@
         <h5>Example</h5>
         
     <pre class="prettyprint"><code>device.getRSSI(function(RSSI_value){alert("the RSSI value is:"+RSSI_value);});</code></pre>
+
+    
+</dd>
+
+        
+            
+<dt>
+    <h4 class="name" id="getServiceByUUID"><span class="type-signature"></span>getServiceByUUID<span class="signature">(uuid)</span><span class="type-signature"> &rarr; {Array.&lt;<a href="Service.html">Service</a>>}</span></h4>
+    
+    
+</dt>
+<dd>
+    
+    
+    <div class="description">
+        Gets service by UUID.
+    </div>
+    
+
+    
+    
+    
+    
+    
+        <h5>Parameters:</h5>
+        
+
+<table class="params">
+    <thead>
+	<tr>
+		
+		<th>Name</th>
+		
+		
+		<th>Type</th>
+		
+		
+		
+		
+		
+		<th class="last">Description</th>
+	</tr>
+	</thead>
+	
+	<tbody>
+	
+	
+        <tr>
+            
+                <td class="name"><code>uuid</code></td>
+            
+            
+            <td class="type">
+            
+                
+<span class="param-type">string</span>
+
+
+            
+            </td>
+            
+            
+            
+            
+            
+            <td class="description last">The uuid(128bit/16bit) of service</td>
+        </tr>
+	
+	
+	</tbody>
+</table>
+    
+    
+    
+<dl class="details">
+    
+        
+    
+    
+    
+
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="bc.js.html">bc.js</a>, <a href="bc.js.html#line1004">line 1004</a>
+    </li></ul></dd>
+    
+    
+    
+    
+    
+    
+    
+</dl>
+
+    
+    
+
+    
+
+    
+    
+    
+    
+    
+    <h5>Returns:</h5>
+    
+            
+<div class="param-desc">
+    An array of Service
+</div>
+
+
+
+<dl>
+	<dt>
+		Type
+	</dt>
+	<dd>
+		
+<span class="param-type">Array.&lt;<a href="Service.html">Service</a>></span>
+
+
+	</dd>
+</dl>
+
+        
+    
+    
+        <h5>Example</h5>
+        
+    <pre class="prettyprint"><code>alert(app.device.getServiceByUUID("fff0")[0].uuid);alert(app.device.getServiceByUUID("0000fff0-0000-1000-8000-00805f9b34fb")[0].uuid);</code></pre>
 
     
 </dd>
@@ -1673,7 +1817,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="bc.js.html">bc.js</a>, <a href="bc.js.html#line788">line 788</a>
+        <a href="bc.js.html">bc.js</a>, <a href="bc.js.html#line785">line 785</a>
     </li></ul></dd>
     
     
@@ -1774,7 +1918,7 @@
             
             
             
-            <td class="description last">Called when removing pair successfully</td>
+            <td class="description last">Success callback</td>
         </tr>
 	
 	
@@ -1807,7 +1951,7 @@
             
             
             
-            <td class="description last">Called when removing pair unsuccessfully</td>
+            <td class="description last">Error callback</td>
         </tr>
 	
 	
@@ -1838,7 +1982,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="bc.js.html">bc.js</a>, <a href="bc.js.html#line982">line 982</a>
+        <a href="bc.js.html">bc.js</a>, <a href="bc.js.html#line979">line 979</a>
     </li></ul></dd>
     
     
@@ -1890,7 +2034,7 @@
 <br clear="both">
 
 <footer>
-    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.3.0-alpha4</a> on Fri Feb 28 2014 19:04:50 GMT+0800 (中国标准时间)
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.3.0-alpha4</a> on Tue Mar 04 2014 13:11:56 GMT+0800 (中国标准时间)
 </footer>
 
 <script> prettyPrint(); </script>
