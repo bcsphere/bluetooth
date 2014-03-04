@@ -485,8 +485,7 @@
                 NSString *descriptorIndex = [self parseStringFromJS:command.arguments keyFromJS:DESCRIPTOR_INDEX];
                 NSString *characteristicIndex = [self parseStringFromJS:command.arguments keyFromJS:CHARACTERISTIC_INDEX];
                 NSString *serviceIndex = [self parseStringFromJS:command.arguments keyFromJS:SERVICE_INDEX];
-                Byte byte = (Byte)[valueWrite intValue];
-                NSData *data = [[NSData alloc] initWithBytes:&byte length:1];
+                NSData *data = [self stringToByte:valueWrite];
                 if (data) {
                     if ([self isNormalString:serviceIndex]){
                         if (peripheral.services.count > [serviceIndex intValue]) {
@@ -1221,8 +1220,7 @@
     return value;
 }
 
-- (void)error:(NSString *)string
-{
+- (void)error:(NSString *)string{
     NSMutableDictionary *callbackInfo = [[NSMutableDictionary alloc] init];
     [callbackInfo setValue:ERROR forKey:MES];
     CDVPluginResult* result = [CDVPluginResult resultWithStatus:CDVCommandStatus_ERROR messageAsDictionary:callbackInfo];
@@ -1457,6 +1455,47 @@
     CFStringRef uuid = CFUUIDCreateString(NULL, UUID);
     return CFStringGetCStringPtr(uuid, 0);
     
+}
+
+-(NSData*)stringToByte:(NSString*)string{
+    NSString *hexString = [[string uppercaseString] stringByReplacingOccurrencesOfString:@" " withString:@""];
+    if ([hexString length]%2 != 0) {
+        return nil;
+    }
+    Byte tempbyt[1] = {0};
+    NSMutableArray *arryByte = [[NSMutableArray alloc] init];
+    NSMutableData *bytes = [NSMutableData data];
+    for(int i = 0;i < [hexString length];i++){
+        unichar hex_char1 = [hexString characterAtIndex:i];
+        int int_ch1;
+        if(hex_char1 >= '0' && hex_char1 <='9'){
+            int_ch1 = (hex_char1-48)*16;
+        }else if(hex_char1 >= 'A' && hex_char1 <='F'){
+            int_ch1 = (hex_char1-55)*16;
+        }else{
+            return nil;
+        }
+        i++;
+        
+        unichar hex_char2 = [hexString characterAtIndex:i];
+        int int_ch2;
+        if(hex_char2 >= '0' && hex_char2 <='9'){
+            int_ch2 = (hex_char2-48);
+        }else if(hex_char2 >= 'A' && hex_char2 <='F'){
+            int_ch2 = hex_char2-55;
+        }else{
+            return nil;
+        }
+        
+        [arryByte addObject:[NSString stringWithFormat:@"%i",int_ch1+int_ch2]];
+    }
+    if (arryByte.count > 0) {
+        for (int i = arryByte.count-1; i >= 0; i--) {
+            tempbyt[0] = [[NSString stringWithFormat:@"%@",[arryByte objectAtIndex:i]] intValue];
+            [bytes appendBytes:tempbyt length:1];
+        }
+    }
+    return bytes;
 }
 
 - (NSMutableArray *)getUUIDArr:(NSMutableArray *)array{
