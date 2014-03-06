@@ -538,6 +538,9 @@
 			var advertisementData,deviceID,deviceName,isCon;
 			if(data[i]['advertisementData']){
 				advertisementData = data[i]['advertisementData'];
+				if(advertisementData.manufacturerData){
+					advertisementData.manufacturerData = new BC.DataValue(base64ToBuffer(advertisementData.manufacturerData));
+				}
 			}
 			if(data[i]['deviceID']){
 				deviceID = data[i]['deviceID'];

@@ -18,10 +18,8 @@ package org.bcsphere.bluetooth.tools;
 
 import java.lang.reflect.Method;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
-import java.util.List;
 import java.util.UUID;
 
 import org.apache.cordova.CallbackContext;
@@ -717,11 +715,11 @@ public class Tools {
 		return null;
 	}
 
-	public static HashMap<String, Object> decodeAdvData(byte[] advData) {
-		HashMap<String, Object> mapAdvData = new HashMap<String, Object>();
-		List<String> serviceUUIDs = new ArrayList<String>();
-		List<String> solicitedServiceUUIDs = new ArrayList<String>();
-		List<String> overflowServiceUUIDs = new ArrayList<String>();
+	public static JSONObject decodeAdvData(byte[] advData) {
+		JSONObject jsonAdvData = new JSONObject();
+		JSONArray serviceUUIDs = new JSONArray();
+		JSONArray solicitedServiceUUIDs = new JSONArray();
+		JSONArray overflowServiceUUIDs = new JSONArray();
 		boolean isOver = true;
 		while (isOver) {
 			int dataLen = advData[0];
@@ -738,38 +736,38 @@ public class Tools {
 			for (int i = 0; i < data.length; i++) {
 				data[i] = allData[i + 1];
 			}
-			if (type[0] == 0x02) {
+			if ((0xff & type[0]) == 0x02) {
 				byte[] mByte = new byte[data.length];
 				for (int i = 0; i < mByte.length; i++) {
 					mByte[i] = data[data.length - i - 1];
 				}
-				serviceUUIDs.add(bytesToHexString(mByte));
-			} else if (type[0] == 0x03) {
+				serviceUUIDs.put(bytesToHexString(mByte));
+			} else if ((0xff & type[0]) == 0x03) {
 				int number = data.length / 2;
 				for (int i = 0; i < number; i++) {
 					byte[] mByte = { data[i * 2], data[i * 2 + 1] };
-					serviceUUIDs.add(bytesToHexString(mByte));
+					serviceUUIDs.put(bytesToHexString(mByte));
 				}
-			} else if (type[0] == 0x04) {
+			} else if ((0xff & type[0]) == 0x04) {
 				byte[] mByte = new byte[data.length];
 				for (int i = 0; i < mByte.length; i++) {
 					mByte[i] = data[data.length - i - 1];
 				}
-				serviceUUIDs.add(bytesToHexString(mByte));
-			} else if (type[0] == 0x05) {
+				serviceUUIDs.put(bytesToHexString(mByte));
+			} else if ((0xff & type[0]) == 0x05) {
 				int number = data.length / 4;
 				for (int i = 0; i < number; i++) {
 					byte[] mByte = { data[i * 4], data[i * 4 + 1],
 							data[i * 4 + 2], data[i * 4 + 3] };
-					serviceUUIDs.add(bytesToHexString(mByte));
+					serviceUUIDs.put(bytesToHexString(mByte));
 				}
-			} else if (type[0] == 0x06) {
+			} else if ((0xff & type[0]) == 0x06) {
 				byte[] mByte = new byte[data.length];
 				for (int i = 0; i < mByte.length; i++) {
 					mByte[i] = data[data.length - i - 1];
 				}
-				serviceUUIDs.add(bytesToHexString(mByte));
-			} else if (type[0] == 0x07) {
+				serviceUUIDs.put(bytesToHexString(mByte));
+			} else if ((0xff & type[0]) == 0x07) {
 				int number = data.length / 16;
 				for (int i = 0; i < number; i++) {
 					byte[] mByte = { data[i * 16], data[i * 16 + 1],
@@ -780,24 +778,23 @@ public class Tools {
 							data[i * 16 + 10], data[i * 16 + 11],
 							data[i * 16 + 12], data[i * 16 + 13],
 							data[i * 16 + 14], data[i * 16 + 15] };
-					serviceUUIDs.add(bytesToHexString(mByte));
+					serviceUUIDs.put(bytesToHexString(mByte));
 				}
-			} else if (type[0] == 0x08) {
-				mapAdvData.put(LOCAL_NAME,hexStrToStr(bytesToHexString(data)));
-			} else if (type[0] == 0x09) {
-				mapAdvData.put(LOCAL_NAME, hexStrToStr(bytesToHexString(data)));
-			} else if (type[0] == 0x0a) {
-				mapAdvData.put(TXPOWER_LEVEL,bytesToHexString(data));
-			} else if (type[0] == 0x12) {
-				mapAdvData
-						.put(IS_CONNECTED, bytesToHexString(data));
-			} else if (type[0] == 0x14) {
+			} else if ((0xff & type[0]) == 0x08) {
+				addProperty(jsonAdvData, LOCAL_NAME, hexStrToStr(bytesToHexString(data)));
+			} else if ((0xff & type[0]) == 0x09) {
+				addProperty(jsonAdvData, LOCAL_NAME, hexStrToStr(bytesToHexString(data)));
+			} else if ((0xff & type[0]) == 0x0a) {
+				addProperty(jsonAdvData, TXPOWER_LEVEL,bytesToHexString(data));
+			} else if ((0xff & type[0]) == 0x12) {
+				addProperty(jsonAdvData,IS_CONNECTED, bytesToHexString(data));
+			} else if ((0xff & type[0]) == 0x14) {
 				int number = data.length / 2;
 				for (int i = 0; i < number; i++) {
 					byte[] mByte = { data[i * 2], data[i * 2 + 1] };
-					solicitedServiceUUIDs.add(bytesToHexString(mByte));
+					solicitedServiceUUIDs.put(bytesToHexString(mByte));
 				}
-			} else if (type[0] == 0x15) {
+			} else if ((0xff & type[0]) == 0x15) {
 				int number = data.length / 16;
 				for (int i = 0; i < number; i++) {
 					byte[] mByte = { data[i * 16], data[i * 16 + 1],
@@ -808,13 +805,12 @@ public class Tools {
 							data[i * 16 + 10], data[i * 16 + 11],
 							data[i * 16 + 12], data[i * 16 + 13],
 							data[i * 16 + 14], data[i * 16 + 15] };
-					solicitedServiceUUIDs.add(bytesToHexString(mByte));
+					solicitedServiceUUIDs.put(bytesToHexString(mByte));
 				}
-			} else if (type[0] == 0x16) {
-				mapAdvData
-						.put(SERVICE_DATA, bytesToHexString(data));
-			} else if (type[0] == 0xff) {
-				mapAdvData.put(MANUFACTURER_DATA,bytesToHexString(data));
+			} else if ((0xff & type[0]) == 0x16) {
+				addProperty(jsonAdvData, SERVICE_DATA, bytesToHexString(data));
+			} else if ((0xff & type[0]) == 0xff) {
+				addProperty(jsonAdvData, MANUFACTURER_DATA,encodeBase64(data));
 			}
 			byte[] newData = new byte[advData.length - dataLen - 1];
 			for (int i = 0; i < newData.length; i++) {
@@ -822,10 +818,10 @@ public class Tools {
 			}
 			advData = newData;
 		}
-		mapAdvData.put(SERVICE_UUIDS, serviceUUIDs);
-		mapAdvData.put(SOLICITED_SERVICE_UUIDS, solicitedServiceUUIDs);
-		mapAdvData.put(OVERFLOW_SERVICE_UUIDS, overflowServiceUUIDs);
-		return mapAdvData;
+		addProperty(jsonAdvData, SERVICE_UUIDS, serviceUUIDs);
+		addProperty(jsonAdvData, SOLICITED_SERVICE_UUIDS, solicitedServiceUUIDs);
+		addProperty(jsonAdvData, OVERFLOW_SERVICE_UUIDS, overflowServiceUUIDs);
+		return jsonAdvData;
 	}
 
 	public static void sendErrorMsg(CallbackContext callbackContext) {
