@@ -702,7 +702,11 @@
 			var dv = new DataView(this.value);
 			var result= "";
 			for (var i=0; i<length;i++) {
-				result+= dv.getUint8(i).toString(16);
+				if(dv.getUint8(i) < 16){
+					result+= '0' + dv.getUint8(i).toString(16);
+				}else{
+					result+= dv.getUint8(i).toString(16);
+				}
 			}
 			return result;
 		},
