@@ -932,11 +932,11 @@
 }
 
 - (void)centralManager:(CBCentralManager *)central didDiscoverPeripheral:(CBPeripheral *)peripheral advertisementData:(NSDictionary *)advertisementData RSSI:(NSNumber *)RSSI{
+    NSString *peripheralUUID = [self getPeripheralUUID:peripheral];
     if (_peripherals.count == 0){
         _peripherals = [[NSMutableArray alloc] initWithObjects:peripheral,nil];
     }else{
         BOOL isAdd = TRUE;
-        NSString *peripheralUUID = [self getPeripheralUUID:peripheral];
         for (int i = 0; i < [_peripherals count]; i++)
         {
             CBPeripheral *oldPeripheral = [_peripherals objectAtIndex:i];
@@ -950,7 +950,7 @@
         }
     }
     [self addPeripheralToAllPeripherals:_peripherals];
-    advDataDic = [self getAdvertisementData:advertisementData];
+    [advDataDic setValue:[self getAdvertisementData:advertisementData] forKey:peripheralUUID];
     [RSSIDic setValue:[NSString stringWithFormat:@"%@",RSSI] forKey:[self getPeripheralUUID:peripheral]];
 }
 
