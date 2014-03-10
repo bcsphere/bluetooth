@@ -830,7 +830,7 @@ public class BluetoothSam42 implements IBluetooth {
                 } else {
                     Tools.sendErrorMsg(callbackContext);
                 }
-                mapReadValueCallBack.remove(deviceID);
+                mapReadValueCallBack.remove(characteristic);
             }
         }
 
@@ -846,7 +846,7 @@ public class BluetoothSam42 implements IBluetooth {
                 } else {
                     Tools.sendErrorMsg(callbackContext);
                 }
-                mapWriteValueCallBack.remove(deviceID);
+                mapWriteValueCallBack.remove(characteristic);
             }
         }
 
