@@ -62,10 +62,14 @@ public class BCBluetooth extends CordovaPlugin {
 			} else if ((versionOfAPI = sp.getString("API", "no_samsung")).equals("samsung")) {
 				bluetoothAPI = (IBluetooth) Class.forName("org.bcsphere.bluetooth.BluetoothSam42")
 						.newInstance();
+			}else if ((versionOfAPI = sp.getString("API", "no_htc")).equals("htc")) {
+				bluetoothAPI = (IBluetooth) Class.forName("org.bcsphere.bluetooth.BluetoothHTC41")
+						.newInstance();
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
+		System.out.println("ddd");
 	}
 
 	@Override

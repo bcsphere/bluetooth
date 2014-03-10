@@ -28,6 +28,14 @@
             <uses-permission android:name="android.permission.BLUETOOTH"/>
             <uses-permission android:name="android.permission.BLUETOOTH_ADMIN"/>
         </config-file>
+		
+		<config-file target="AndroidManifest.xml" parent="/manifest/application">
+            <uses-library android:name="com.htc.android.bluetooth.le" android:required="false" />
+        </config-file>
+		
+		<config-file target=".classpath" parent="/classpath">
+            <classpathentry kind="con" path="org.eclipse.jdt.USER_LIBRARY/com.htc.android.bluetooth.le"/>
+        </config-file>
 
         <source-file src="src/android/org/bcsphere/bluetooth/BCBluetooth.java" target-dir="src/org/bcsphere/bluetooth" />
 		<source-file src="src/android/org/bcsphere/bluetooth/IBluetooth.java" target-dir="src/org/bcsphere/bluetooth" />
