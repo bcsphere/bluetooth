@@ -667,21 +667,24 @@ public class Tools {
 		return result;
 	}
 	
-	public static String[] getDataFromArray(JSONArray jsonArray,String key){
-		if(jsonArray==null || jsonArray.length()==0){
-			return null;
-		}
-		int length = jsonArray.length();
-		String[] strArray = new String[length];
-		try {
-			for(int i=0;i<length;i++){
-				strArray[i] = jsonArray.getString(i);
-			}
-		} catch (JSONException e) {
+    public static String getDataFromArray(JSONArray jsonArray, String key) {
+        if (jsonArray == null || jsonArray.length() == 0) {
+            return null;
+        }
+        int length = jsonArray.length();
+        String result = null;
+        try {
+            for (int i = 0; i < length; i++) {
+                if (key.equals(jsonArray.getString(i))) {
+                    result = jsonArray.getString(i);
+                    break;
+                }
+            }
+        } catch (JSONException e) {
 
-		}
-		return strArray;
-	}
+        }
+        return result;
+    }
 	
 
 	public static String getData(JSONArray jsonArray, int objectIndex,
