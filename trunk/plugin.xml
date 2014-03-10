@@ -32,10 +32,6 @@
 		<config-file target="AndroidManifest.xml" parent="/manifest/application">
             <uses-library android:name="com.htc.android.bluetooth.le" android:required="false" />
         </config-file>
-		
-		<config-file target=".classpath" parent="/classpath">
-            <classpathentry kind="con" path="org.eclipse.jdt.USER_LIBRARY/com.htc.android.bluetooth.le"/>
-        </config-file>
 
         <source-file src="src/android/org/bcsphere/bluetooth/BCBluetooth.java" target-dir="src/org/bcsphere/bluetooth" />
 		<source-file src="src/android/org/bcsphere/bluetooth/IBluetooth.java" target-dir="src/org/bcsphere/bluetooth" />
@@ -48,7 +44,6 @@
 		<source-file src="src/underscore.js" target-dir="assets/www" />
 		
 		<source-file src="libs/samsung_ble_sdk_200.jar" target-dir="libs" />
-		<source-file src="com.htc.android.bluetooth.le/com.htc.android.bluetooth.le.jar" target-dir="com.htc.android.bluetooth.le" />
     </platform>
    
 
