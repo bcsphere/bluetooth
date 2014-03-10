@@ -920,7 +920,7 @@ public class BluetoothSam42 implements IBluetooth {
             super.onDescriptorRead(descriptor, status);
             Log.i(TAG, "onDescriptorRead");
             String deviceID = getDeviceID(descriptor.getCharacteristic().getService());
-            CallbackContext callbackContext = mapReadValueCallBack.get(deviceID);
+            CallbackContext callbackContext = mapReadValueCallBack.get(descriptor);
             if (callbackContext != null) {
                 if (status == BluetoothGatt.GATT_SUCCESS) {
                     JSONObject jsonObject = new JSONObject();
@@ -931,7 +931,7 @@ public class BluetoothSam42 implements IBluetooth {
                 } else {
                     Tools.sendErrorMsg(callbackContext);
                 }
-                mapReadValueCallBack.remove(deviceID);
+                mapReadValueCallBack.remove(descriptor);
             }
         }
 
@@ -950,7 +950,7 @@ public class BluetoothSam42 implements IBluetooth {
                 } else {
                     Tools.sendErrorMsg(writeValueCallbackContext);
                 }
-                mapWriteValueCallBack.remove(deviceID);
+                mapWriteValueCallBack.remove(descriptor);
             }
             
         }
