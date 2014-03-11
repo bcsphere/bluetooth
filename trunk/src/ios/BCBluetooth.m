@@ -216,6 +216,8 @@
     if ([self existCommandArguments:command.arguments]) {
         NSString *eventName = [self parseStringFromJS:command.arguments keyFromJS:EVENT_NAME];
         [[NSUserDefaults standardUserDefaults] setValue:command.callbackId forKey:eventName];
+    }else{
+        [self error:command.callbackId];
     }
 }
 
