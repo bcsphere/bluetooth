@@ -1434,8 +1434,13 @@
 
 - (NSString *)CBUUIDFiltrToString:(CBUUID *)UUID{
     NSString *results = [UUID.data description];
-    results = [results stringByReplacingOccurrencesOfString:@"<" withString:@"0000"];
-    results = [results stringByReplacingOccurrencesOfString:@">" withString:@"-0000-1000-8000-00805f9b34fb"];
+    if (results.length<16) {
+        results = [results stringByReplacingOccurrencesOfString:@"<" withString:@"0000"];
+        results = [results stringByReplacingOccurrencesOfString:@">" withString:@"-0000-1000-8000-00805f9b34fb"];
+    }else{
+        results = [results stringByReplacingOccurrencesOfString:@"<" withString:@""];
+        results = [results stringByReplacingOccurrencesOfString:@">" withString:@""];
+    }
     return results;
 }
 
