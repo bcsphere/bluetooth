@@ -69,7 +69,6 @@ public class BCBluetooth extends CordovaPlugin {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		System.out.println("ddd");
 	}
 
 	@Override
