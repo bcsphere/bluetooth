@@ -28,6 +28,7 @@
 {
     NSInteger serviceNum;
     NSInteger characteristicNum;
+    NSInteger stateChangeCount;
     BOOL isAddAllData;
     BOOL isEndOfAddService;
     BOOL isConnectedByManager;
