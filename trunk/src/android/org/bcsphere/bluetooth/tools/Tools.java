@@ -34,7 +34,7 @@ import android.content.Context;
 import android.content.pm.PackageManager;
 import android.util.Base64;
 
-import com.samsung.android.sdk.bt.gatt.BluetoothGattCharacteristic;
+import android.bluetooth.BluetoothGattCharacteristic;
 
 
 @SuppressLint({ "UseSparseArrays", "SimpleDateFormat", "DefaultLocale" })
