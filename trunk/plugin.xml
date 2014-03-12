@@ -45,6 +45,7 @@
 		<source-file src="src/underscore.js" target-dir="assets/www" />
 		
 		<source-file src="libs/samsung_ble_sdk_200.jar" target-dir="libs" />
+		<source-file src="com.htc.android.bluetooth.le/com.htc.android.bluetooth.le.jar" target-dir="com.htc.android.bluetooth.le" />
     </platform>
    
 
