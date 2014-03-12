@@ -12,7 +12,7 @@
 	WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 	See the License for the specific language governing permissions and
 	limitations under the License.
-*/
+ */
 package org.bcsphere.bluetooth;
 
 import org.apache.cordova.CallbackContext;
@@ -33,7 +33,6 @@ import android.content.SharedPreferences;
 import org.bcsphere.bluetooth.tools.BluetoothDetection;
 import org.bcsphere.bluetooth.tools.Tools;
 
-
 public class BCBluetooth extends CordovaPlugin {
 
 	public static Context myContext = null;
@@ -47,7 +46,7 @@ public class BCBluetooth extends CordovaPlugin {
 
 	@Override
 	public void initialize(CordovaInterface cordova, CordovaWebView webView) {
-		
+
 		super.initialize(cordova, webView);
 		myContext = this.webView.getContext();
 		IntentFilter intentFilter = new IntentFilter();
@@ -56,15 +55,19 @@ public class BCBluetooth extends CordovaPlugin {
 		sp = myContext.getSharedPreferences("VERSION_OF_API", 1);
 		BluetoothDetection.detectionBluetoothAPI(myContext);
 		try {
-			if ((versionOfAPI = sp.getString("API", "no_google")).equals("google")) {
-				bluetoothAPI = (IBluetooth) Class.forName("org.bcsphere.bluetooth.BluetoothG43plus")
+			if ((versionOfAPI = sp.getString("API", "no_google"))
+					.equals("google")) {
+				bluetoothAPI = (IBluetooth) Class.forName(
+						"org.bcsphere.bluetooth.BluetoothG43plus")
 						.newInstance();
-			} else if ((versionOfAPI = sp.getString("API", "no_samsung")).equals("samsung")) {
-				bluetoothAPI = (IBluetooth) Class.forName("org.bcsphere.bluetooth.BluetoothSam42")
-						.newInstance();
-			}else if ((versionOfAPI = sp.getString("API", "no_htc")).equals("htc")) {
-				bluetoothAPI = (IBluetooth) Class.forName("org.bcsphere.bluetooth.BluetoothHTC41")
-						.newInstance();
+			} else if ((versionOfAPI = sp.getString("API", "no_samsung"))
+					.equals("samsung")) {
+				bluetoothAPI = (IBluetooth) Class.forName(
+						"org.bcsphere.bluetooth.BluetoothSam42").newInstance();
+			} else if ((versionOfAPI = sp.getString("API", "no_htc"))
+					.equals("htc")) {
+				bluetoothAPI = (IBluetooth) Class.forName(
+						"org.bcsphere.bluetooth.BluetoothHTC41").newInstance();
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -72,10 +75,11 @@ public class BCBluetooth extends CordovaPlugin {
 	}
 
 	@Override
-	public boolean execute(String action, JSONArray json, CallbackContext callbackContext) throws JSONException {
+	public boolean execute(final String action, final JSONArray json,
+			final CallbackContext callbackContext) throws JSONException {
+
 		if (action.equals("addEventListener")) {
 			bluetoothAPI.addEventListener(json, callbackContext);
-			return true;
 		}
 		if (isSetContext) {
 			try {
@@ -89,11 +93,10 @@ public class BCBluetooth extends CordovaPlugin {
 		}
 		if (action.equals("getEnvironment")) {
 			JSONObject jo = new JSONObject();
-			jo.put("appID", "com.test.yourappid");
-			jo.put("deviceID", "N/A");
-			jo.put("api", versionOfAPI);
+			Tools.addProperty(jo, "appID", "com.test.yourappid");
+			Tools.addProperty(jo, "deviceID", "N/A");
+			Tools.addProperty(jo, "api", versionOfAPI);
 			callbackContext.success(jo);
-			return true;
 		}
 		if (action.equals("openBluetooth")) {
 			try {
@@ -103,7 +106,6 @@ public class BCBluetooth extends CordovaPlugin {
 			} catch (java.lang.Error e) {
 				Tools.sendErrorMsg(callbackContext);
 			}
-			return true;
 		}
 		if (action.equals("getBluetoothState")) {
 			try {
@@ -113,47 +115,13 @@ public class BCBluetooth extends CordovaPlugin {
 			} catch (java.lang.Error e) {
 				Tools.sendErrorMsg(callbackContext);
 			}
-			return true;
 		}
 		if (!Tools.isOpenBluetooth()) {
 			Tools.sendErrorMsg(callbackContext);
-			return true;
 		}
-		if (action.equals("startScan")) {
-			try {
-				bluetoothAPI.startScan(json, callbackContext);
-			} catch (Exception e) {
-				Tools.sendErrorMsg(callbackContext);
-			} catch (java.lang.Error e) {
-				Tools.sendErrorMsg(callbackContext);
-			}
-		} else if (action.equals("getScanData")) {
-			try {
-				bluetoothAPI.getScanData(json, callbackContext);
-			} catch (Exception e) {
-				Tools.sendErrorMsg(callbackContext);
-			} catch (java.lang.Error e) {
-				Tools.sendErrorMsg(callbackContext);
-			}
-		} else if (action.equals("stopScan")) {
+		if (action.equals("stopScan")) {
 			try {
 				bluetoothAPI.stopScan(json, callbackContext);
-			} catch (Exception e) {
-				Tools.sendErrorMsg(callbackContext);
-			} catch (java.lang.Error e) {
-				Tools.sendErrorMsg(callbackContext);
-			}
-		} else if (action.equals("connect")) {
-			try {
-				bluetoothAPI.connect(json, callbackContext);
-			} catch (Exception e) {
-				Tools.sendErrorMsg(callbackContext);
-			} catch (java.lang.Error e) {
-				Tools.sendErrorMsg(callbackContext);
-			}
-		} else if (action.equals("disconnect")) {
-			try {
-				bluetoothAPI.disconnect(json, callbackContext);
 			} catch (Exception e) {
 				Tools.sendErrorMsg(callbackContext);
 			} catch (java.lang.Error e) {
@@ -181,19 +149,11 @@ public class BCBluetooth extends CordovaPlugin {
 			} catch (Exception e) {
 				Tools.sendErrorMsg(callbackContext);
 			} catch (java.lang.Error e) {
-				Tools.sendErrorMsg(callbackContext); 
+				Tools.sendErrorMsg(callbackContext);
 			}
 		} else if (action.equals("removePair")) {
 			try {
 				bluetoothAPI.removePair(json, callbackContext);
-			} catch (Exception e) {
-				Tools.sendErrorMsg(callbackContext);
-			} catch (java.lang.Error e) {
-				Tools.sendErrorMsg(callbackContext);
-			}
-		} else if (action.equals("getServices")) {
-			try {
-				bluetoothAPI.getServices(json, callbackContext);
 			} catch (Exception e) {
 				Tools.sendErrorMsg(callbackContext);
 			} catch (java.lang.Error e) {
@@ -215,46 +175,6 @@ public class BCBluetooth extends CordovaPlugin {
 			} catch (java.lang.Error e) {
 				Tools.sendErrorMsg(callbackContext);
 			}
-		} else if (action.equals("writeValue")) {
-			try {
-				bluetoothAPI.writeValue(json, callbackContext);
-			} catch (Exception e) {
-				Tools.sendErrorMsg(callbackContext);
-			} catch (java.lang.Error e) {
-				Tools.sendErrorMsg(callbackContext);
-			}
-		} else if (action.equals("readValue")) {
-			try {
-				bluetoothAPI.readValue(json, callbackContext);
-			} catch (Exception e) {
-				Tools.sendErrorMsg(callbackContext);
-			} catch (java.lang.Error e) {
-				Tools.sendErrorMsg(callbackContext);
-			}
-		} else if (action.equals("setNotification")) {
-			try {
-				bluetoothAPI.setNotification(json, callbackContext);
-			} catch (Exception e) {
-				Tools.sendErrorMsg(callbackContext);
-			} catch (java.lang.Error e) {
-				Tools.sendErrorMsg(callbackContext);
-			}
-		} else if (action.equals("getDeviceAllData")) {
-			try {
-				bluetoothAPI.getDeviceAllData(json, callbackContext);
-			} catch (Exception e) {
-				Tools.sendErrorMsg(callbackContext);
-			} catch (java.lang.Error e) {
-				Tools.sendErrorMsg(callbackContext);
-			}
-		} else if (action.equals("addServices")) {
-			try {
-				bluetoothAPI.addServices(json, callbackContext);
-			} catch (Exception e) {
-				Tools.sendErrorMsg(callbackContext);
-			} catch (java.lang.Error e) {
-				Tools.sendErrorMsg(callbackContext);
-			}
 		} else if (action.equals("removeServices")) {
 			try {
 				bluetoothAPI.removeServices(json, callbackContext);
@@ -263,17 +183,114 @@ public class BCBluetooth extends CordovaPlugin {
 			} catch (java.lang.Error e) {
 				Tools.sendErrorMsg(callbackContext);
 			}
-		} else if (action.equals("getRSSI")) {
-			try {
-				bluetoothAPI.getRSSI(json, callbackContext);
-			} catch (Exception e) {
-				Tools.sendErrorMsg(callbackContext);
-			} catch (java.lang.Error e) {
-				Tools.sendErrorMsg(callbackContext);
-			}
-		} else {
-			Tools.sendErrorMsg(callbackContext);
 		}
+		
+		cordova.getThreadPool().execute(new Runnable() {
+			@Override
+			public void run() {
+				if (action.equals("startScan")) {
+					try {
+						bluetoothAPI.startScan(json, callbackContext);
+					} catch (Exception e) {
+						Tools.sendErrorMsg(callbackContext);
+					} catch (java.lang.Error e) {
+						Tools.sendErrorMsg(callbackContext);
+					}
+				} else if (action.equals("getScanData")) {
+
+					try {
+						bluetoothAPI.getScanData(json, callbackContext);
+					} catch (Exception e) {
+						Tools.sendErrorMsg(callbackContext);
+					} catch (java.lang.Error e) {
+						Tools.sendErrorMsg(callbackContext);
+					}
+
+				} else if (action.equals("connect")) {
+
+					try {
+						bluetoothAPI.connect(json, callbackContext);
+					} catch (Exception e) {
+						Tools.sendErrorMsg(callbackContext);
+					} catch (java.lang.Error e) {
+						Tools.sendErrorMsg(callbackContext);
+					}
+
+				} else if (action.equals("disconnect")) {
+
+					try {
+						bluetoothAPI.disconnect(json, callbackContext);
+					} catch (Exception e) {
+						Tools.sendErrorMsg(callbackContext);
+					} catch (java.lang.Error e) {
+						Tools.sendErrorMsg(callbackContext);
+					}
+
+				} else if (action.equals("getServices")) {
+
+					try {
+						bluetoothAPI.getServices(json, callbackContext);
+					} catch (Exception e) {
+						Tools.sendErrorMsg(callbackContext);
+					} catch (java.lang.Error e) {
+						Tools.sendErrorMsg(callbackContext);
+					}
+
+				} else if (action.equals("writeValue")) {
+
+					try {
+						bluetoothAPI.writeValue(json, callbackContext);
+					} catch (Exception e) {
+						Tools.sendErrorMsg(callbackContext);
+					} catch (java.lang.Error e) {
+						Tools.sendErrorMsg(callbackContext);
+					}
+
+				} else if (action.equals("readValue")) {
+
+					try {
+						bluetoothAPI.readValue(json, callbackContext);
+					} catch (Exception e) {
+						Tools.sendErrorMsg(callbackContext);
+					} catch (java.lang.Error e) {
+						Tools.sendErrorMsg(callbackContext);
+					}
+
+				} else if (action.equals("setNotification")) {
+					try {
+						bluetoothAPI.setNotification(json, callbackContext);
+					} catch (Exception e) {
+						Tools.sendErrorMsg(callbackContext);
+					} catch (java.lang.Error e) {
+						Tools.sendErrorMsg(callbackContext);
+					}
+				} else if (action.equals("getDeviceAllData")) {
+					try {
+						bluetoothAPI.getDeviceAllData(json, callbackContext);
+					} catch (Exception e) {
+						Tools.sendErrorMsg(callbackContext);
+					} catch (java.lang.Error e) {
+						Tools.sendErrorMsg(callbackContext);
+					}
+				} else if (action.equals("addServices")) {
+					try {
+						bluetoothAPI.addServices(json, callbackContext);
+					} catch (Exception e) {
+						Tools.sendErrorMsg(callbackContext);
+					} catch (java.lang.Error e) {
+						Tools.sendErrorMsg(callbackContext);
+					}
+				} else if (action.equals("getRSSI")) {
+					try {
+						bluetoothAPI.getRSSI(json, callbackContext);
+					} catch (Exception e) {
+						Tools.sendErrorMsg(callbackContext);
+					} catch (java.lang.Error e) {
+						Tools.sendErrorMsg(callbackContext);
+					}
+				}
+			}
+		});
 		return true;
 	}
 
@@ -281,7 +298,7 @@ public class BCBluetooth extends CordovaPlugin {
 
 		@Override
 		public void onReceive(Context context, Intent intent) {
-			
+
 			if (intent.getIntExtra(BluetoothAdapter.EXTRA_PREVIOUS_STATE, -1) == 11) {
 				JSONObject joOpen = new JSONObject();
 				try {
@@ -291,7 +308,8 @@ public class BCBluetooth extends CordovaPlugin {
 					e.printStackTrace();
 				}
 				webView.sendJavascript("cordova.fireDocumentEvent('bluetoothopen')");
-			} else if (intent.getIntExtra(BluetoothAdapter.EXTRA_PREVIOUS_STATE, -1) == 13) {
+			} else if (intent.getIntExtra(
+					BluetoothAdapter.EXTRA_PREVIOUS_STATE, -1) == 13) {
 				JSONObject joClose = new JSONObject();
 				try {
 					joClose.put("state", "close");
@@ -303,6 +321,5 @@ public class BCBluetooth extends CordovaPlugin {
 			}
 		}
 	};
-
 
 }
