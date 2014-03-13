@@ -105,6 +105,8 @@
 #define EVENT_DISCONNECT @"disconnect"
 #define EVENT_ONSUBSCRIBE @"onsubscribe"
 #define EVENT_ONUNSUBSCRIBE @"onunsubscribe"
+#define EVENT_ONCHARACTERISTICREAD @"oncharacteristicread"
+#define EVENT_ONCHARACTERISTICWRITE @"oncharacteristicwrite"
 #define GETBLUETOOTHSTATE @"getBluetoothState"
 #define EVENT_BLUETOOTHOPEN @"bluetoothopen"
 #define EVENT_BLUETOOTHCLOSE @"bluetoothclose"
@@ -931,25 +933,36 @@
 }
 
 - (void)peripheralManager:(CBPeripheralManager *)peripheral didReceiveReadRequest:(CBATTRequest *)request{
-    CBATTRequest *newRequest = request;
-    CBMutableCharacteristic *characteristic = (CBMutableCharacteristic *)request.characteristic;
+    CBATTRequest *readRequest = request;
+    CBMutableCharacteristic *characteristicRead = (CBMutableCharacteristic *)request.characteristic;
     if (request.characteristic.value == nil) {
-        if ([valueAndCharacteristicDic allKeysForObject:characteristic].count > 0) {
-            NSString *characteristicValue = [[NSString alloc] initWithFormat:@"%@",[[valueAndCharacteristicDic allKeysForObject:characteristic] objectAtIndex:0]];
+        if ([valueAndCharacteristicDic allKeysForObject:characteristicRead].count > 0) {
+            NSString *characteristicValue = [[NSString alloc] initWithFormat:@"%@",[[valueAndCharacteristicDic allKeysForObject:characteristicRead] objectAtIndex:0]];
             Byte byte = (Byte)[characteristicValue intValue];
             NSData *data = [NSData dataWithBytes:&byte length:1];
-            characteristic.value = data;
-            newRequest.value = data;
+            characteristicRead.value = data;
+            readRequest.value = data;
         }
     }else{
-        newRequest.value = request.characteristic.value;
+        readRequest.value = request.characteristic.value;
     }
-    [peripheral respondToRequest:newRequest withResult:CBATTErrorSuccess];
+    [peripheral respondToRequest:readRequest withResult:CBATTErrorSuccess];
+    CBService *service = characteristicRead.service;
+    NSMutableDictionary *callbackInfo = [self getUniqueIDWithService:service andCharacteristicIndex:characteristicRead];
+    CDVPluginResult* result = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK messageAsDictionary:callbackInfo];
+    [result setKeepCallbackAsBool:TRUE];
+    [self.commandDelegate sendPluginResult:result callbackId:[[NSUserDefaults standardUserDefaults] objectForKey:EVENT_ONCHARACTERISTICREAD]];
 }
 
 - (void)peripheralManager:(CBPeripheralManager *)peripheral didReceiveWriteRequests:(NSArray *)requests{
-    CBATTRequest *requestLS = [requests objectAtIndex:0];
-    [peripheral respondToRequest:requestLS withResult:CBATTErrorSuccess];
+    CBATTRequest *writeRequest = [requests objectAtIndex:0];
+    [peripheral respondToRequest:writeRequest withResult:CBATTErrorSuccess];
+    CBCharacteristic *characteristicWrite = writeRequest.characteristic;
+    CBService *service = characteristicWrite.service;
+    NSMutableDictionary *callbackInfo = [self getUniqueIDWithService:service andCharacteristicIndex:characteristicWrite];
+    CDVPluginResult* result = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK messageAsDictionary:callbackInfo];
+    [result setKeepCallbackAsBool:TRUE];
+    [self.commandDelegate sendPluginResult:result callbackId:[[NSUserDefaults standardUserDefaults] objectForKey:EVENT_ONCHARACTERISTICWRITE]];
 }
 
 #pragma mark -
