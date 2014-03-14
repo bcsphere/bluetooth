@@ -246,17 +246,16 @@ public class BluetoothG43plus implements IBluetooth{
 		int characteristicIndex = Integer.parseInt(Tools.getData(json, Tools.CHARACTERISTIC_INDEX));
 		String  descriptorIndex =Tools.getData(json, Tools.DESCRIPTOR_INDEX);
 		String writeValue = Tools.getData(json, Tools.WRITE_VALUE);
-		String writeType = Tools.getData(json, Tools.WRITE_TYPE);
 		writeValueCC.put(deviceID, callbackContext);
 		if (descriptorIndex.equals("")) {
 			BluetoothGattCharacteristic characteristic = deviceServices.get(deviceID).get(serviceIndex)
 					.getCharacteristics().get(characteristicIndex);
-			characteristic.setValue(Tools.parsingCodingFormat(writeValue, writeType));
+			characteristic.setValue(Tools.decodeBase64(writeValue));
 			mBluetoothGatts.get(deviceID).writeCharacteristic(characteristic);
 		}else {
 			BluetoothGattDescriptor descriptor = deviceServices.get(deviceID).get(serviceIndex).getCharacteristics()
 					.get(characteristicIndex).getDescriptors().get(Integer.parseInt(descriptorIndex));
-			descriptor.setValue(Tools.parsingCodingFormat(writeValue, writeType));
+			descriptor.setValue(Tools.decodeBase64(writeValue));
 			mBluetoothGatts.get(deviceID).writeDescriptor(descriptor);
 		}
 	} 
@@ -474,8 +473,7 @@ public class BluetoothG43plus implements IBluetooth{
 			BluetoothGattService service =  new BluetoothGattService(serviceUUID, serviceType);
 			JSONArray characteristics = Tools.getArray(services, i, Tools.CHARACTERISTICS);
 			for (int j = 0; j <characteristics.length(); j++) {
-				String characteristicValueType = Tools.getData(characteristics, Tools.CHARACTERISTIC_VALUE_TYPE);
-				byte[] characteristicValue = Tools.parsingCodingFormat(Tools.getData(characteristics, Tools.CHARACTERISTIC_VALUE), characteristicValueType);
+				byte[] characteristicValue = Tools.decodeBase64(Tools.getData(characteristics, Tools.CHARACTERISTIC_VALUE));
 				UUID characteristicUUID = UUID.fromString(Tools.getData(characteristics, Tools.CHARACTERISTIC_UUID));
 				int characteristicProperty = Tools.encodeProperty(Tools.getArray(characteristics, Tools.CHARACTERISTIC_PROPERTY));
 				int characteristicPermission = Tools.encodePermission(Tools.getArray(characteristics, Tools.CHARACTERISTIC_PERMISSION));
@@ -483,8 +481,7 @@ public class BluetoothG43plus implements IBluetooth{
 				characteristic.setValue(characteristicValue);
 				JSONArray descriptors = Tools.getArray(characteristics, j, Tools.DESCRIPTORS);
 				for (int k = 0; k < descriptors.length(); k++) {
-					String descriptorValueType = Tools.getData(descriptors, Tools.DESCRIPTOR_VALUE_TYPE);
-					byte[] descriptorValue = Tools.parsingCodingFormat(Tools.getData(descriptors, Tools.DESCRIPTOR_VALUE), descriptorValueType);
+					byte[] descriptorValue =Tools.decodeBase64(Tools.getData(descriptors, Tools.DESCRIPTOR_VALUE));
 					UUID descriptorUUID = UUID.fromString(Tools.getData(descriptors, Tools.DESCRIPTOR_UUID));
 					int descriptorPermission = Tools.encodePermission(Tools.getArray(descriptors, Tools.DESCRIPTOR_PERMISSION));
 					BluetoothGattDescriptor descriptor = new BluetoothGattDescriptor(descriptorUUID, descriptorPermission);

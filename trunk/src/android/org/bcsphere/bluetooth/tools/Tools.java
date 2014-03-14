@@ -601,6 +601,11 @@ public class Tools {
 	public static String encodeBase64(byte[] value) {
 		return Base64.encodeToString(value, Base64.NO_WRAP | Base64.NO_PADDING);
 	}
+	
+	public static byte[] decodeBase64(String value){
+		byte[] result = Base64.decode(value, Base64.DEFAULT);
+		return result;
+	}
 
 	public static void addProperty(JSONObject obj, String key, Object value) {
 		try {
@@ -843,18 +848,6 @@ public class Tools {
 		return new SimpleDateFormat(DATE_FORMATE).format(new Date());
 	}
 
-	public static byte[] parsingCodingFormat(String writeValue, String writeType) {
-		if (writeType.toLowerCase().equals("hex")) {
-			return hexStringToByte(writeValue);
-		}
-		if (writeType.toLowerCase().equals("ascii")) {
-			return ascIIStringToByte(writeValue);
-		}
-		if (writeType.toLowerCase().equals("unicode")) {
-			return writeValue.getBytes();
-		}
-		return null;
-	}
 	
 	public static final String bytesToHexString(byte[] bArray)
 	{
