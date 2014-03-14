@@ -282,12 +282,12 @@
 	}
   
 	function hexToBase64(value){
-		if (value.length % 2) return '';
+		if (value.length % 2) value = "0" + value;
 		value = value.toLowerCase();
 		var data = new Uint8Array(value.length/2);
 		var pos = "0123456789abcdef";
 		for(var i = 0,j = 0; i < value.length; i += 2,j++){
-			data[j] = (pos.indexOf(value.charAt(i)) << 4) | (pos.indexOf(value.charAt(i+1)));
+			data[j] = (pos.indexOf(value.charAt(i)) << 4) | (pos.indexOf(value.charAt(i + 1)));
 		}
 		return convertToBase64(data);
 	}
@@ -305,8 +305,8 @@
 		var data = new Uint8Array(value.length*2);
 		var str = "";
 		for(var i = 0,j = 0; i < value.length; i++, j += 2){
-			data[j] = value.charCodeAt(i)/256;
-			data[j+1] = value.charCodeAt(i)%256;
+			data[j] = value.charCodeAt(i) / 256;
+			data[j+1] = value.charCodeAt(i) % 256;
 		}
 		return convertToBase64(data);
 	}
