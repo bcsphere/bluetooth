@@ -96,6 +96,72 @@
 	 * @event deviceconnected
 	 * @type {object}
 	 */
+	 
+	/**
+	 * Triggered when server's characteristic has been subscribe/unsubscribe.
+	 * @example document.addEventListener('onsubscribestatechange', onSubscribeStateChange, false);
+	 * function onSubscribeStateChange(arg){
+	 * 	var service = BC.bluetooth.services[arg.uniqueID];
+	 *	var character = service.characteristics[arg.characteristicIndex];
+	 *	if(character.isSubscribed){
+	 *		var data = new Uint8Array(128);
+	 *		for (var i = 0; i < 128; i++) {
+	 *			data[i] = '2';
+	 *		}
+	 *		window.setTimeout(function(){
+	 *			interval_notify_index = window.setInterval(function() {
+	 *				character.notify('raw',data,function(){alert("notify success!")},function(){alert("notify error!")});
+	 *			}, 5000); 
+	 *		},2000);
+	 *	}else{
+	 *		window.clearInterval(interval_notify_index);
+	 *		alert("stop notify success!");
+	 *	}
+	 * }
+	 * @event onSubscribeStateChange
+	 * @type {object}
+	 */
+	
+	/**
+	 * Triggered when service characteristic has been read.
+	 * @example document.addEventListener('oncharacteristicread', onCharacteristicRead, false);
+	 * function onCharacteristicRead(arg){
+	 *   alert(JSON.stringify(arg));
+	 * }
+	 * @event oncharacteristicread
+	 * @type {object}
+	 */
+	
+	/**
+	 * Triggered when service characteristic has been written.
+	 * @example document.addEventListener('oncharacteristicwrite', onCharacteristicWrite, false);
+	 * function onCharacteristicWrite(arg){
+	 *   alert(JSON.stringify(arg));
+	 * }
+	 * @event oncharacteristicwrite
+	 * @type {object}
+	 */
+	 
+	/**
+	 * Triggered when service descriptor has been read.
+	 * @example document.addEventListener('ondescriptorread', onDescriptorRead, false);
+	 * function onDescriptorRead(arg){
+	 *   alert(JSON.stringify(arg));
+	 * }
+	 * @event ondescriptorread
+	 * @type {object}
+	 */
+	 
+	/**
+	 * Triggered when service descriptor has been written.
+	 * @example document.addEventListener('ondescriptorwrite', onDescriptorWrite, false);
+	 * function onDescriptorWrite(arg){
+	 *   alert(JSON.stringify(arg));
+	 * }
+	 * @event ondescriptorwrite
+	 * @type {object}
+	 */
+	
 	
 	var _ = root._;
 	if (!_ && (typeof require !== 'undefined')) _ = require('underscore');
@@ -1428,16 +1494,31 @@
 		/**
          * Sends notify data to the subscriber.
          * @memberof Characteristic
-         * @example device.services[3].characteristics[3].notify(data,successCallback,errorCallback);
-		 * @param {Uint8Array} data - The data to notify
+         * @example device.services[3].characteristics[3].notify('raw',value,successCallback,errorCallback);
+		 * @param {string} type - The type of the value to write ('hex'/'ascii'/'unicode'/'raw')
+		 * @param {string/Uint8Array} value - The value write to this characteristic, if the 'type' is 'raw', the value type should be Uint8Array
          * @param {function} [successCallback] - Success callback
          * @param {function} [errorCallback] - Error callback
          * @instance
          */
-        notify : function(data,success,error){
-            this.success = success;
-            this.error = error;
-			BC.bluetooth.notify(this,convertToBase64(data));
+        notify : function(type,value,success,error){
+			if(type.toLowerCase() == "hex"){
+				value = hexToBase64(value);
+			}else if(type.toLowerCase() == "ascii"){
+				value = asciiToBase64(value);
+			}else if(type.toLowerCase() == "unicode"){
+				value = unicodeToBase64(value);
+			}else if(type.toLowerCase() == "raw"){
+				value = convertToBase64(value);
+			}else{
+				error("Please input 'hex'/'ascii'/'unicode' type.");
+				return;
+			}
+			if(this.property.contains("notify")){
+				BC.bluetooth.notify(this,value);
+			}else{
+				error("This characteristic notify data, please add 'notify' in the property.");
+			}
         },
         notifySuccess : function(){
             this.success();
