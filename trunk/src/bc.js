@@ -223,7 +223,6 @@
 		for(var i = 0,j = 0; i < value.length; i += 2,j++){
 			data[j] = (pos.indexOf(value.charAt(i)) << 4) | (pos.indexOf(value.charAt(i+1)));
 		}
-		alert("hex:" + convertToBase64(data));
 		return convertToBase64(data);
 	}
 	
@@ -232,9 +231,7 @@
 		alert(value);
 		for(var i = 0; i < value.length; i++){
 			data[i] = value.charCodeAt(i);
-			alert(data[i]);
 		}
-		alert("ascii:" +convertToBase64(data));
 		return convertToBase64(data);
 	}
 	
@@ -245,7 +242,6 @@
 			data[j] = value.charCodeAt(i)/256;
 			data[j+1] = value.charCodeAt(i)%256;
 		}
-		alert("unicode:" +convertToBase64(data));
 		return convertToBase64(data);
 	}
   
