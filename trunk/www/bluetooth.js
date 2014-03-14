@@ -1,4 +1,4 @@
-/*
+cordova.define("org.bcsphere.bluetooth.bluetooth", function(require, exports, module) {/*
 	Copyright 2013-2014, JUMA Technology
 
 	Licensed under the Apache License, Version 2.0 (the "License");
@@ -78,8 +78,8 @@ var bluetooth = {
     	cordova.exec(successFunc,errorFunc, "BCBluetooth", "readValue", [{"deviceID":deviceID,"serviceIndex":serviceIndex,"characteristicIndex":characteristicIndex,"descriptorIndex":""}]);
     },
     
-    writeCharacteristic: function(successFunc,errorFunc,deviceID,serviceIndex,characteristicIndex,writeValue,writeType){
-    	cordova.exec(successFunc,errorFunc, "BCBluetooth", "writeValue", [{"deviceID":deviceID,"serviceIndex":serviceIndex,"characteristicIndex":characteristicIndex,"descriptorIndex":"","writeValue":writeValue,"writeType":writeType}]);
+    writeCharacteristic: function(successFunc,errorFunc,deviceID,serviceIndex,characteristicIndex,writeValue){
+    	cordova.exec(successFunc,errorFunc, "BCBluetooth", "writeValue", [{"deviceID":deviceID,"serviceIndex":serviceIndex,"characteristicIndex":characteristicIndex,"descriptorIndex":"","writeValue":writeValue}]);
     },
     
     subscribe: function(successFunc,errorFunc,deviceID,serviceIndex,characteristicIndex,notifyEventName){
@@ -149,3 +149,4 @@ var bluetooth = {
 };
 module.exports = bluetooth;
 
+});

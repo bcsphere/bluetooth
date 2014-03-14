@@ -166,7 +166,8 @@
 			fireBLEEvent("oncharacteristicread",null,null,arg.characteristicIndex,null,arg.uniqueID);
 		});
 		BC.bluetooth.addListener('oncharacteristicwrite', function(arg){
-			fireBLEEvent("oncharacteristicwrite",null,null,arg.characteristicIndex,null,arg.uniqueID);
+			var dataValue = new BC.DataValue(base64ToBuffer(arg.writeRequestValue));
+			fireBLEEvent("oncharacteristicwrite",null,null,arg.characteristicIndex,null,arg.uniqueID,dataValue);
 		});
 		BC.bluetooth.addListener('ondescriptorread', function(arg){
 			fireBLEEvent("ondescriptorread",null,null,arg.characteristicIndex,arg.descriptorIndex,arg.uniqueID);
@@ -211,12 +212,41 @@
 	}
   
 	function convertToBase64(data){
-		var result = "";
-		var length = data.byteLength;
-		for (var i = 0; i < length; i++){
-			var result = result + data[i];
+		return window.btoa(String.fromCharCode.apply(null, data));
+	}
+  
+	function hexToBase64(value){
+		if (value.length % 2) return '';
+		value = value.toLowerCase();
+		var data = new Uint8Array(value.length/2);
+		var pos = "0123456789abcdef";
+		for(var i = 0,j = 0; i < value.length; i += 2,j++){
+			data[j] = (pos.indexOf(value.charAt(i)) << 4) | (pos.indexOf(value.charAt(i+1)));
 		}
-		return window.btoa(result);
+		alert("hex:" + convertToBase64(data));
+		return convertToBase64(data);
+	}
+	
+	function asciiToBase64(value){
+		var data = new Uint8Array(value.length);
+		alert(value);
+		for(var i = 0; i < value.length; i++){
+			data[i] = value.charCodeAt(i);
+			alert(data[i]);
+		}
+		alert("ascii:" +convertToBase64(data));
+		return convertToBase64(data);
+	}
+	
+	function unicodeToBase64(value){
+		var data = new Uint8Array(value.length*2);
+		var str = "";
+		for(var i = 0,j = 0; i < value.length; i++, j += 2){
+			data[j] = value.charCodeAt(i)/256;
+			data[j+1] = value.charCodeAt(i)%256;
+		}
+		alert("unicode:" +convertToBase64(data));
+		return convertToBase64(data);
 	}
   
 	function isEmpty(s){
@@ -268,10 +298,10 @@
 				navigator.bluetooth.disconnectDevice(disconnectSuccess,disconnectError,device.deviceID,APPID);
 			};
 			
-			this.writeCharacteristic = function(character,type,value){
+			this.writeCharacteristic = function(character,value){
 				var writeSuccess = character.writeSuccess.bind(character,character.writeSuccess);
 				var writeError = character.writeError.bind(character,character.writeError);
-				navigator.bluetooth.writeCharacteristic(writeSuccess,writeError,character.device.deviceID,character.upper.index,character.index,value,type);
+				navigator.bluetooth.writeCharacteristic(writeSuccess,writeError,character.device.deviceID,character.upper.index,character.index,value);
 			};
 			this.readCharacteristic = function(character){
 				var readSuccess = character.readSuccess.bind(character,character.readSuccess);
@@ -1311,8 +1341,8 @@
 		 * function writeSuccess(data){
 		 *	alert("write success!");
 		 * }
-		 * @param {string} type - The type of the value to write ('Hex'/'ASCII'/'unicode')
-		 * @param {string} value - The value write to this characteristic
+		 * @param {string} type - The type of the value to write ('hex'/'ascii'/'unicode'/'raw')
+		 * @param {string/Uint8Array} value - The value write to this characteristic, if the 'type' is 'raw', the value type should be Uint8Array
 		 * @param {function} successCallback - Success callback
 		 * @param {function} [errorCallback] - Error callback
 		 * @instance
@@ -1320,8 +1350,22 @@
 		write : function(type,value,success,error){
 			this.success = success;
 			this.error = error;
+			if(type.toLowerCase() == "hex"){
+				value = hexToBase64(value);
+			}else if(type.toLowerCase() == "ascii"){
+				value = asciiToBase64(value);
+			}else if(type.toLowerCase() == "unicode"){
+				value = unicodeToBase64(value);
+			}else if(type.toLowerCase() == "raw"){
+				value = convertToBase64(value);
+			}else{
+				error("Please input 'hex'/'ascii'/'unicode' type.");
+				return;
+			}
 			if(this.property.contains("write") || this.property.contains("writeWithoutResponse")){
-				BC.bluetooth.writeCharacteristic(this,type,value);
+				BC.bluetooth.writeCharacteristic(this,value);
+			}else{
+				error("This characteristic can't be written, please add 'write'/'writeWithoutResponse' in the property.");
 			}
 		},
 		writeSuccess : function(){
