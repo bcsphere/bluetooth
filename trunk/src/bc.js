@@ -118,7 +118,7 @@
 	 *		alert("stop notify success!");
 	 *	}
 	 * }
-	 * @event onsubscribestatechange
+	 * @event onSubscribeStateChange
 	 * @type {object}
 	 */
 	
