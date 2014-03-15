@@ -34,6 +34,7 @@ Support platforms
 * IOS 6.0.1+  (iPhone4S+/iTouch5/iPad3+/iPad-mini/iPadAir)
 [See Details](http://www.bcsphere.org/document/supportplatforms.html)
 </br></br>
+
 Backward
 -----------------------------------
 If your background is Java/C#/C/C++ or HW programming, you may feel confused when use functional programming language(such as javascript) for the first time.
