@@ -822,7 +822,7 @@
 			var length = this.value.byteLength;
 			var dv = new DataView(this.value);
 			var result= "";
-			if(length >= 2){
+			if(length >= 2 && length % 2 == 0){
 				for (var i=0; i<length;) {
 					result+=String.fromCharCode(dv.getUint8(i++)*256+dv.getUint8(i++));
 				}
