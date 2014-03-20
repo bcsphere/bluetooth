@@ -951,7 +951,18 @@ public class BluetoothSam42 implements IBluetooth {
                 }
                 mapWriteValueCallBack.remove(descriptor);
             }
+            CallbackContext setNotificationCallbackContext = null;
+            if (mapSetNotificationCallBack != null) {
+                setNotificationCallbackContext = mapSetNotificationCallBack.get(descriptor.getCharacteristic());
+            }
             
+            if(setNotificationCallbackContext!=null && (descriptor.getValue() == BluetoothGattDescriptor.DISABLE_NOTIFICATION_VALUE)){
+                JSONObject jsonObject = new JSONObject();
+                Tools.addProperty(jsonObject, Tools.MES, Tools.SUCCESS);
+                PluginResult pluginResult = new PluginResult(PluginResult.Status.OK, jsonObject);
+                pluginResult.setKeepCallback(true);
+                setNotificationCallbackContext.sendPluginResult(pluginResult);
+            }
         }
 
         @Override
