@@ -306,7 +306,7 @@ public class BluetoothG43plus implements IBluetooth{
 			descriptor.setValue(BluetoothGattDescriptor.DISABLE_NOTIFICATION_VALUE);
 			mBluetoothGatts.get(deviceID).writeDescriptor(descriptor);
 			mBluetoothGatts.get(deviceID).setCharacteristicNotification(characteristic, false);
-			Tools.sendSuccessMsg(setNotificationCC.get(characteristic));
+			Tools.sendSuccessMsg(callbackContext);
 			setNotificationCC.remove(characteristic);
 			recordServiceIndex.remove(deviceID);
 			recordCharacteristicIndex.remove(deviceID);
