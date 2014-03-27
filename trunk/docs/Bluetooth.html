@@ -177,7 +177,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="bc.js.html">bc.js</a>, <a href="bc.js.html#line462">line 462</a>
+        <a href="bc.js.html">bc.js</a>, <a href="bc.js.html#line549">line 549</a>
     </li></ul></dd>
     
     
@@ -388,7 +388,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="bc.js.html">bc.js</a>, <a href="bc.js.html#line635">line 635</a>
+        <a href="bc.js.html">bc.js</a>, <a href="bc.js.html#line726">line 726</a>
     </li></ul></dd>
     
     
@@ -706,7 +706,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="bc.js.html">bc.js</a>, <a href="bc.js.html#line607">line 607</a>
+        <a href="bc.js.html">bc.js</a>, <a href="bc.js.html#line698">line 698</a>
     </li></ul></dd>
     
     
@@ -915,7 +915,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="bc.js.html">bc.js</a>, <a href="bc.js.html#line579">line 579</a>
+        <a href="bc.js.html">bc.js</a>, <a href="bc.js.html#line670">line 670</a>
     </li></ul></dd>
     
     
@@ -1110,7 +1110,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="bc.js.html">bc.js</a>, <a href="bc.js.html#line540">line 540</a>
+        <a href="bc.js.html">bc.js</a>, <a href="bc.js.html#line631">line 631</a>
     </li></ul></dd>
     
     
@@ -1297,7 +1297,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="bc.js.html">bc.js</a>, <a href="bc.js.html#line745">line 745</a>
+        <a href="bc.js.html">bc.js</a>, <a href="bc.js.html#line946">line 946</a>
     </li></ul></dd>
     
     
@@ -1462,7 +1462,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="bc.js.html">bc.js</a>, <a href="bc.js.html#line734">line 734</a>
+        <a href="bc.js.html">bc.js</a>, <a href="bc.js.html#line935">line 935</a>
     </li></ul></dd>
     
     
@@ -1625,7 +1625,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="bc.js.html">bc.js</a>, <a href="bc.js.html#line525">line 525</a>
+        <a href="bc.js.html">bc.js</a>, <a href="bc.js.html#line616">line 616</a>
     </li></ul></dd>
     
     
@@ -1823,7 +1823,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="bc.js.html">bc.js</a>, <a href="bc.js.html#line660">line 660</a>
+        <a href="bc.js.html">bc.js</a>, <a href="bc.js.html#line751">line 751</a>
     </li></ul></dd>
     
     
@@ -1849,6 +1849,435 @@
         <h5>Example</h5>
         
     <pre class="prettyprint"><code>//Generates a service instance.var service = BC.Bluetooth.CreateService("0000ffe0-0000-1000-8000-00805f9b34fb");//Adds a service to smart phone.BC.Bluetooth.AddService(service,function(){alert("add service success!");},function(){alert("add service error!");});//Removes a service. BC.Bluetooth.RemoveService(service,function(){alert("remove service success!");},function(){alert("remove service error!");});</code></pre>
+
+    
+</dd>
+
+        
+            
+<dt>
+    <h4 class="name" id="StartIBeaconAdvertising"><span class="type-signature">&lt;static> </span>StartIBeaconAdvertising<span class="signature">({proximityUUID}, <span class="optional">major</span>, <span class="optional">minor</span>, <span class="optional">identifier</span>)</span><span class="type-signature"></span></h4>
+    
+    
+</dt>
+<dd>
+    
+    
+    <div class="description">
+        Starts IBeacon Advertising (It's only support IOS >= 7.0 now).
+    </div>
+    
+
+    
+    
+    
+    
+    
+        <h5>Parameters:</h5>
+        
+
+<table class="params">
+    <thead>
+	<tr>
+		
+		<th>Name</th>
+		
+		
+		<th>Type</th>
+		
+		
+		<th>Argument</th>
+		
+		
+		
+		
+		<th class="last">Description</th>
+	</tr>
+	</thead>
+	
+	<tbody>
+	
+	
+        <tr>
+            
+                <td class="name"><code>{proximityUUID}</code></td>
+            
+            
+            <td class="type">
+            
+                
+<span class="param-type">string</span>
+
+
+            
+            </td>
+            
+            
+                <td class="attributes">
+                
+                    
+                
+                    
+                
+                </td>
+            
+            
+            
+            
+            <td class="description last">The proximity UUID to looking for</td>
+        </tr>
+	
+	
+	
+        <tr>
+            
+                <td class="name"><code>major</code></td>
+            
+            
+            <td class="type">
+            
+                
+<span class="param-type">int</span>
+
+
+            
+            </td>
+            
+            
+                <td class="attributes">
+                
+                    &lt;optional><br>
+                
+                    
+                
+                    
+                
+                </td>
+            
+            
+            
+            
+            <td class="description last">The major of the ibeacon</td>
+        </tr>
+	
+	
+	
+        <tr>
+            
+                <td class="name"><code>minor</code></td>
+            
+            
+            <td class="type">
+            
+                
+<span class="param-type">int</span>
+
+
+            
+            </td>
+            
+            
+                <td class="attributes">
+                
+                    &lt;optional><br>
+                
+                    
+                
+                    
+                
+                </td>
+            
+            
+            
+            
+            <td class="description last">The minor of the ibeacon</td>
+        </tr>
+	
+	
+	
+        <tr>
+            
+                <td class="name"><code>identifier</code></td>
+            
+            
+            <td class="type">
+            
+                
+<span class="param-type">string</span>
+
+
+            
+            </td>
+            
+            
+                <td class="attributes">
+                
+                    &lt;optional><br>
+                
+                    
+                
+                    
+                
+                </td>
+            
+            
+            
+            
+            <td class="description last">The identifier of the ibeacon</td>
+        </tr>
+	
+	
+	</tbody>
+</table>
+    
+    
+    
+<dl class="details">
+    
+        
+    
+    
+    
+
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="bc.js.html">bc.js</a>, <a href="bc.js.html#line780">line 780</a>
+    </li></ul></dd>
+    
+    
+    
+    
+    
+    
+    
+</dl>
+
+    
+    
+
+    
+
+    
+    
+    
+    
+    
+    
+    
+        <h5>Example</h5>
+        
+    <pre class="prettyprint"><code>BC.Bluetooth.StartIBeaconAdvertising(successFunc,errorFunc,"00000000-0000-0000-0000-000000000000",200,300,"iBeacon Name");</code></pre>
+
+    
+</dd>
+
+        
+            
+<dt>
+    <h4 class="name" id="StartIBeaconScan"><span class="type-signature">&lt;static> </span>StartIBeaconScan<span class="signature">({proximityUUID}, <span class="optional">major</span>, <span class="optional">minor</span>)</span><span class="type-signature"></span></h4>
+    
+    
+</dt>
+<dd>
+    
+    
+    <div class="description">
+        Starts a scan for iBeacons.
+    </div>
+    
+
+    
+    
+    
+    
+    
+        <h5>Parameters:</h5>
+        
+
+<table class="params">
+    <thead>
+	<tr>
+		
+		<th>Name</th>
+		
+		
+		<th>Type</th>
+		
+		
+		<th>Argument</th>
+		
+		
+		
+		
+		<th class="last">Description</th>
+	</tr>
+	</thead>
+	
+	<tbody>
+	
+	
+        <tr>
+            
+                <td class="name"><code>{proximityUUID}</code></td>
+            
+            
+            <td class="type">
+            
+                
+<span class="param-type">string</span>
+
+
+            
+            </td>
+            
+            
+                <td class="attributes">
+                
+                    
+                
+                    
+                
+                </td>
+            
+            
+            
+            
+            <td class="description last">The proximity UUID to looking for</td>
+        </tr>
+	
+	
+	
+        <tr>
+            
+                <td class="name"><code>major</code></td>
+            
+            
+            <td class="type">
+            
+                
+<span class="param-type">int</span>
+
+
+            
+            </td>
+            
+            
+                <td class="attributes">
+                
+                    &lt;optional><br>
+                
+                    
+                
+                    
+                
+                </td>
+            
+            
+            
+            
+            <td class="description last">The major of the ibeacon</td>
+        </tr>
+	
+	
+	
+        <tr>
+            
+                <td class="name"><code>minor</code></td>
+            
+            
+            <td class="type">
+            
+                
+<span class="param-type">int</span>
+
+
+            
+            </td>
+            
+            
+                <td class="attributes">
+                
+                    &lt;optional><br>
+                
+                    
+                
+                    
+                
+                </td>
+            
+            
+            
+            
+            <td class="description last">The minor of the ibeacon</td>
+        </tr>
+	
+	
+	</tbody>
+</table>
+    
+    
+    
+<dl class="details">
+    
+        
+    
+    
+    
+
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="bc.js.html">bc.js</a>, <a href="bc.js.html#line793">line 793</a>
+    </li></ul></dd>
+    
+    
+    
+    
+    
+    
+    
+</dl>
+
+    
+    
+
+    
+
+    
+    
+    
+    
+    
+    
+    
+        <h5>Example</h5>
+        
+    <pre class="prettyprint"><code>BC.Bluetooth.StartIBeaconScan("00000000-0000-0000-0000-000000000000",65535,256);</code></pre>
 
     
 </dd>
@@ -1957,7 +2386,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="bc.js.html">bc.js</a>, <a href="bc.js.html#line675">line 675</a>
+        <a href="bc.js.html">bc.js</a>, <a href="bc.js.html#line766">line 766</a>
     </li></ul></dd>
     
     
@@ -1983,6 +2412,204 @@
         <h5>Example</h5>
         
     <pre class="prettyprint"><code>BC.Bluetooth.StartScan();</code></pre>
+
+    
+</dd>
+
+        
+            
+<dt>
+    <h4 class="name" id="StopIBeaconScan"><span class="type-signature">&lt;static> </span>StopIBeaconScan<span class="signature">({proximityUUID}, <span class="optional">major</span>, <span class="optional">minor</span>)</span><span class="type-signature"></span></h4>
+    
+    
+</dt>
+<dd>
+    
+    
+    <div class="description">
+        Stops a scanning for iBeacon.
+    </div>
+    
+
+    
+    
+    
+    
+    
+        <h5>Parameters:</h5>
+        
+
+<table class="params">
+    <thead>
+	<tr>
+		
+		<th>Name</th>
+		
+		
+		<th>Type</th>
+		
+		
+		<th>Argument</th>
+		
+		
+		
+		
+		<th class="last">Description</th>
+	</tr>
+	</thead>
+	
+	<tbody>
+	
+	
+        <tr>
+            
+                <td class="name"><code>{proximityUUID}</code></td>
+            
+            
+            <td class="type">
+            
+                
+<span class="param-type">string</span>
+
+
+            
+            </td>
+            
+            
+                <td class="attributes">
+                
+                    
+                
+                    
+                
+                </td>
+            
+            
+            
+            
+            <td class="description last">The proximity UUID to stop</td>
+        </tr>
+	
+	
+	
+        <tr>
+            
+                <td class="name"><code>major</code></td>
+            
+            
+            <td class="type">
+            
+                
+<span class="param-type">int</span>
+
+
+            
+            </td>
+            
+            
+                <td class="attributes">
+                
+                    &lt;optional><br>
+                
+                    
+                
+                    
+                
+                </td>
+            
+            
+            
+            
+            <td class="description last">The major of the region</td>
+        </tr>
+	
+	
+	
+        <tr>
+            
+                <td class="name"><code>minor</code></td>
+            
+            
+            <td class="type">
+            
+                
+<span class="param-type">int</span>
+
+
+            
+            </td>
+            
+            
+                <td class="attributes">
+                
+                    &lt;optional><br>
+                
+                    
+                
+                    
+                
+                </td>
+            
+            
+            
+            
+            <td class="description last">The minor of the region</td>
+        </tr>
+	
+	
+	</tbody>
+</table>
+    
+    
+    
+<dl class="details">
+    
+        
+    
+    
+    
+
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="bc.js.html">bc.js</a>, <a href="bc.js.html#line918">line 918</a>
+    </li></ul></dd>
+    
+    
+    
+    
+    
+    
+    
+</dl>
+
+    
+    
+
+    
+
+    
+    
+    
+    
+    
+    
+    
+        <h5>Example</h5>
+        
+    <pre class="prettyprint"><code>BC.Bluetooth.StopIBeaconScan(proximityUUID,major,minor);</code></pre>
 
     
 </dd>
@@ -2031,7 +2658,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="bc.js.html">bc.js</a>, <a href="bc.js.html#line723">line 723</a>
+        <a href="bc.js.html">bc.js</a>, <a href="bc.js.html#line904">line 904</a>
     </li></ul></dd>
     
     
@@ -2077,13 +2704,13 @@
 </div>
 
 <nav>
-    <h2><a href="index.html">Index</a></h2><h3>Classes</h3><ul><li><a href="Bluetooth.html">Bluetooth</a></li><li><a href="Characteristic.html">Characteristic</a></li><li><a href="DataValue.html">DataValue</a></li><li><a href="Descriptor.html">Descriptor</a></li><li><a href="Device.html">Device</a></li><li><a href="Service.html">Service</a></li></ul><h3>Events</h3><ul><li><a href="global.html#event:bcready">bcready</a></li><li><a href="global.html#event:bluetoothstatechange">bluetoothstatechange</a></li><li><a href="global.html#event:deviceconnected">deviceconnected</a></li><li><a href="global.html#event:devicedisconnect">devicedisconnect</a></li><li><a href="global.html#event:newdevice">newdevice</a></li><li><a href="global.html#event:oncharacteristicread">oncharacteristicread</a></li><li><a href="global.html#event:oncharacteristicwrite">oncharacteristicwrite</a></li><li><a href="global.html#event:ondescriptorread">ondescriptorread</a></li><li><a href="global.html#event:ondescriptorwrite">ondescriptorwrite</a></li><li><a href="global.html#event:onsubscribestatechange">onsubscribestatechange</a></li></ul><h3>Namespaces</h3><ul><li><a href="BC.html">BC</a></li></ul><h3>Global</h3><ul><li><a href="global.html#DEBUG">DEBUG</a></li></ul>
+    <h2><a href="index.html">Index</a></h2><h3>Classes</h3><ul><li><a href="Bluetooth.html">Bluetooth</a></li><li><a href="Characteristic.html">Characteristic</a></li><li><a href="DataValue.html">DataValue</a></li><li><a href="Descriptor.html">Descriptor</a></li><li><a href="Device.html">Device</a></li><li><a href="IBeacon.html">IBeacon</a></li><li><a href="Service.html">Service</a></li></ul><h3>Events</h3><ul><li><a href="global.html#event:bcready">bcready</a></li><li><a href="global.html#event:bluetoothstatechange">bluetoothstatechange</a></li><li><a href="global.html#event:deviceconnected">deviceconnected</a></li><li><a href="global.html#event:devicedisconnect">devicedisconnect</a></li><li><a href="global.html#event:ibeaconaccuracyupdate">ibeaconaccuracyupdate</a></li><li><a href="global.html#event:ibeaconproximityupdate">ibeaconproximityupdate</a></li><li><a href="global.html#event:newdevice">newdevice</a></li><li><a href="global.html#event:newibeacon">newibeacon</a></li><li><a href="global.html#event:oncharacteristicread">oncharacteristicread</a></li><li><a href="global.html#event:oncharacteristicwrite">oncharacteristicwrite</a></li><li><a href="global.html#event:ondescriptorread">ondescriptorread</a></li><li><a href="global.html#event:ondescriptorwrite">ondescriptorwrite</a></li><li><a href="global.html#event:onsubscribestatechange">onsubscribestatechange</a></li></ul><h3>Namespaces</h3><ul><li><a href="BC.html">BC</a></li></ul><h3>Global</h3><ul><li><a href="global.html#DEBUG">DEBUG</a></li></ul>
 </nav>
 
 <br clear="both">
 
 <footer>
-    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.3.0-alpha4</a> on Sat Mar 15 2014 16:44:31 GMT+0800 (中国标准时间)
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.3.0-alpha4</a> on Thu Mar 27 2014 11:08:01 GMT+0800 (中国标准时间)
 </footer>
 
 <script> prettyPrint(); </script>

@@ -1057,12 +1057,12 @@ public class BluetoothSam42 implements IBluetooth {
         public void onScanResult(BluetoothDevice device, int rssi, byte[] scanRecord) {
             super.onScanResult(device, rssi, scanRecord);
             Log.i(TAG, "onScanResult");
+            String deviceID = device.getAddress();
             if (!bluetoothDevices.contains(device)) {
-                String deviceID = device.getAddress();
                 bluetoothDevices.add(device);
-                mapRssiData.put(deviceID, rssi);
                 mapDeviceAdvData.put(deviceID, scanRecord);
             }
+            mapRssiData.put(deviceID, rssi);
         }
     };
 

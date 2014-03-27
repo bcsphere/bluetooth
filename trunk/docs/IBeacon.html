@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>JSDoc: Class: Descriptor</title>
+    <title>JSDoc: Class: IBeacon</title>
     
     <script src="scripts/prettify/prettify.js"> </script>
     <script src="scripts/prettify/lang-css.js"> </script>
@@ -17,7 +17,7 @@
 
 <div id="main">
     
-    <h1 class="page-title">Class: Descriptor</h1>
+    <h1 class="page-title">Class: IBeacon</h1>
     
     
 
@@ -27,7 +27,7 @@
     
 <header>
     <h2>
-    Descriptor
+    IBeacon
     </h2>
     
 </header>  
@@ -39,7 +39,7 @@
     
         
 <dt>
-    <h4 class="name" id="Descriptor"><span class="type-signature"></span>new Descriptor<span class="signature">()</span><span class="type-signature"></span></h4>
+    <h4 class="name" id="IBeacon"><span class="type-signature"></span>new IBeacon<span class="signature">(iBeaconID, txPower, RSSI, accuracy, proximity)</span><span class="type-signature"></span></h4>
     
     
 </dt>
@@ -47,7 +47,7 @@
     
     
     <div class="description">
-        BLE Descriptor class.
+        IBeacon is the BLE device which matches the Apple iBeacon format.
     </div>
     
 
@@ -55,6 +55,146 @@
     
     
     
+    
+        <h5>Parameters:</h5>
+        
+
+<table class="params">
+    <thead>
+	<tr>
+		
+		<th>Name</th>
+		
+		
+		<th>Type</th>
+		
+		
+		
+		
+		
+		<th class="last">Description</th>
+	</tr>
+	</thead>
+	
+	<tbody>
+	
+	
+        <tr>
+            
+                <td class="name"><code>iBeaconID</code></td>
+            
+            
+            <td class="type">
+            
+                
+<span class="param-type">string</span>
+
+
+            
+            </td>
+            
+            
+            
+            
+            
+            <td class="description last">The iBeaconID include all info about this iBeacon(proximityUUID/major/minor)</td>
+        </tr>
+	
+	
+	
+        <tr>
+            
+                <td class="name"><code>txPower</code></td>
+            
+            
+            <td class="type">
+            
+                
+<span class="param-type">int</span>
+
+
+            
+            </td>
+            
+            
+            
+            
+            
+            <td class="description last">The iBeacon txPower</td>
+        </tr>
+	
+	
+	
+        <tr>
+            
+                <td class="name"><code>RSSI</code></td>
+            
+            
+            <td class="type">
+            
+                
+<span class="param-type">int</span>
+
+
+            
+            </td>
+            
+            
+            
+            
+            
+            <td class="description last">The RSSI</td>
+        </tr>
+	
+	
+	
+        <tr>
+            
+                <td class="name"><code>accuracy</code></td>
+            
+            
+            <td class="type">
+            
+                
+<span class="param-type">float</span>
+
+
+            
+            </td>
+            
+            
+            
+            
+            
+            <td class="description last">The accuracy of this iBeacon</td>
+        </tr>
+	
+	
+	
+        <tr>
+            
+                <td class="name"><code>proximity</code></td>
+            
+            
+            <td class="type">
+            
+                
+<span class="param-type">float</span>
+
+
+            
+            </td>
+            
+            
+            
+            
+            
+            <td class="description last">The proximity of this iBeacon</td>
+        </tr>
+	
+	
+	</tbody>
+</table>
     
     
     
@@ -87,30 +227,7 @@
 	
         <tr>
             
-                <td class="name"><code>device</code></td>
-            
-            
-            <td class="type">
-            
-                
-<span class="param-type"><a href="Device.html">Device</a></span>
-
-
-            
-            </td>
-            
-            
-            
-            
-            
-            <td class="description last">The device to which this descriptor belongs</td>
-        </tr>
-	
-	
-	
-        <tr>
-            
-                <td class="name"><code>uuid</code></td>
+                <td class="name"><code>proximityUUID</code></td>
             
             
             <td class="type">
@@ -126,14 +243,14 @@
             
             
             
-            <td class="description last">The uuid of this descriptor</td>
+            <td class="description last">The proximityUUID of this iBeacon</td>
         </tr>
 	
 	
 	
         <tr>
             
-                <td class="name"><code>name</code></td>
+                <td class="name"><code>major</code></td>
             
             
             <td class="type">
@@ -149,7 +266,76 @@
             
             
             
-            <td class="description last">The name of this descriptor</td>
+            <td class="description last">The major number of this iBeacon</td>
+        </tr>
+	
+	
+	
+        <tr>
+            
+                <td class="name"><code>minor</code></td>
+            
+            
+            <td class="type">
+            
+                
+<span class="param-type">string</span>
+
+
+            
+            </td>
+            
+            
+            
+            
+            
+            <td class="description last">The minor number of this iBeacon</td>
+        </tr>
+	
+	
+	
+        <tr>
+            
+                <td class="name"><code>accuracy</code></td>
+            
+            
+            <td class="type">
+            
+                
+<span class="param-type">float</span>
+
+
+            
+            </td>
+            
+            
+            
+            
+            
+            <td class="description last">The accuracy of this iBeacon</td>
+        </tr>
+	
+	
+	
+        <tr>
+            
+                <td class="name"><code>proximity</code></td>
+            
+            
+            <td class="type">
+            
+                
+<span class="param-type">int</span>
+
+
+            
+            </td>
+            
+            
+            
+            
+            
+            <td class="description last">The proximity of this iBeacon(0:Unknown | 1:Less than half a meter away | 2:More than half a meter away, but less than four meters away | 3:More than four meters away)</td>
         </tr>
 	
 	
@@ -177,7 +363,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="bc.js.html">bc.js</a>, <a href="bc.js.html#line1888">line 1888</a>
+        <a href="bc.js.html">bc.js</a>, <a href="bc.js.html#line996">line 996</a>
     </li></ul></dd>
     
     
@@ -217,175 +403,6 @@
     
     
     
-    
-        <h3 class="subsection-title">Methods</h3>
-        
-        <dl>
-            
-<dt>
-    <h4 class="name" id="read"><span class="type-signature"></span>read<span class="signature">(successCallback, <span class="optional">errorCallback</span>)</span><span class="type-signature"></span></h4>
-    
-    
-</dt>
-<dd>
-    
-    
-    <div class="description">
-        Reads the descriptor value.
-    </div>
-    
-
-    
-    
-    
-    
-    
-        <h5>Parameters:</h5>
-        
-
-<table class="params">
-    <thead>
-	<tr>
-		
-		<th>Name</th>
-		
-		
-		<th>Type</th>
-		
-		
-		<th>Argument</th>
-		
-		
-		
-		
-		<th class="last">Description</th>
-	</tr>
-	</thead>
-	
-	<tbody>
-	
-	
-        <tr>
-            
-                <td class="name"><code>successCallback</code></td>
-            
-            
-            <td class="type">
-            
-                
-<span class="param-type">function</span>
-
-
-            
-            </td>
-            
-            
-                <td class="attributes">
-                
-                    
-                
-                    
-                
-                </td>
-            
-            
-            
-            
-            <td class="description last">Success callback</td>
-        </tr>
-	
-	
-	
-        <tr>
-            
-                <td class="name"><code>errorCallback</code></td>
-            
-            
-            <td class="type">
-            
-                
-<span class="param-type">function</span>
-
-
-            
-            </td>
-            
-            
-                <td class="attributes">
-                
-                    &lt;optional><br>
-                
-                    
-                
-                    
-                
-                </td>
-            
-            
-            
-            
-            <td class="description last">Error callback</td>
-        </tr>
-	
-	
-	</tbody>
-</table>
-    
-    
-    
-<dl class="details">
-    
-        
-    
-    
-    
-
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    <dt class="tag-source">Source:</dt>
-    <dd class="tag-source"><ul class="dummy"><li>
-        <a href="bc.js.html">bc.js</a>, <a href="bc.js.html#line1912">line 1912</a>
-    </li></ul></dd>
-    
-    
-    
-    
-    
-    
-    
-</dl>
-
-    
-    
-
-    
-
-    
-    
-    
-    
-    
-    
-    
-        <h5>Example</h5>
-        
-    <pre class="prettyprint"><code>//Reads after device is well prepared or after 'Characteristic.discoverDescriptors' interface is called successfullydevice.prepare(function(){	device.services[3].characteristics[0].descriptor[0].read(readSuccess);});function readSuccess(data){	alert("Data : "+JSON.stringify(data.value)+" \n Time :"+data.date);}</code></pre>
-
-    
-</dd>
-
-        </dl>
     
     
     

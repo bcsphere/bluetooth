@@ -591,6 +591,174 @@
         
             
 <dt>
+    <h4 class="name" id="event:ibeaconaccuracyupdate">ibeaconaccuracyupdate</h4>
+    
+    
+</dt>
+<dd>
+    
+    
+    <div class="description">
+        Triggered when iBeacon accuracy has been updated.
+    </div>
+    
+
+    
+        <h5>Type:</h5>
+        <ul>
+            <li>
+                
+<span class="param-type">object</span>
+
+
+            </li>
+        </ul>
+    
+    
+    
+    
+    
+    
+    
+<dl class="details">
+    
+        
+    
+    
+    
+
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="bc.js.html">bc.js</a>, <a href="bc.js.html#line187">line 187</a>
+    </li></ul></dd>
+    
+    
+    
+    
+    
+    
+    
+</dl>
+
+    
+    
+
+    
+
+    
+    
+    
+    
+    
+    
+    
+        <h5>Example</h5>
+        
+    <pre class="prettyprint"><code>document.addEventListener('ibeaconaccuracyupdate', onIBeaconAccuracyUpdate, false);function onIBeaconAccuracyUpdate(arg){	 var ibeacon = BC.bluetooth.ibeacons[arg.iBeaconID];	 alert("iBeacon accuracy: " + ibeacon.accuracy);}</code></pre>
+
+    
+</dd>
+
+        
+            
+<dt>
+    <h4 class="name" id="event:ibeaconproximityupdate">ibeaconproximityupdate</h4>
+    
+    
+</dt>
+<dd>
+    
+    
+    <div class="description">
+        Triggered when iBeacon proximity has been updated.
+    </div>
+    
+
+    
+        <h5>Type:</h5>
+        <ul>
+            <li>
+                
+<span class="param-type">object</span>
+
+
+            </li>
+        </ul>
+    
+    
+    
+    
+    
+    
+    
+<dl class="details">
+    
+        
+    
+    
+    
+
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="bc.js.html">bc.js</a>, <a href="bc.js.html#line176">line 176</a>
+    </li></ul></dd>
+    
+    
+    
+    
+    
+    
+    
+</dl>
+
+    
+    
+
+    
+
+    
+    
+    
+    
+    
+    
+    
+        <h5>Example</h5>
+        
+    <pre class="prettyprint"><code>document.addEventListener('ibeaconproximityupdate', onIBeaconProximityUpdate, false);function onIBeaconProximityUpdate(arg){	 var ibeacon = BC.bluetooth.ibeacons[arg.iBeaconID];	 alert("iBeacon proximity: " + ibeacon.proximity);}</code></pre>
+
+    
+</dd>
+
+        
+            
+<dt>
     <h4 class="name" id="event:newdevice">newdevice</h4>
     
     
@@ -668,6 +836,90 @@
         <h5>Example</h5>
         
     <pre class="prettyprint"><code>document.addEventListener('newdevice', addNewDevice, false);function addNewDevice(){var deviceID = arg.param;	alert("new device added! it's device ID is: "+deviceID);var newDevice = BC.bluetooth.devices[deviceID];}</code></pre>
+
+    
+</dd>
+
+        
+            
+<dt>
+    <h4 class="name" id="event:newibeacon">newibeacon</h4>
+    
+    
+</dt>
+<dd>
+    
+    
+    <div class="description">
+        Triggered when new iBeacon has been found.
+    </div>
+    
+
+    
+        <h5>Type:</h5>
+        <ul>
+            <li>
+                
+<span class="param-type">object</span>
+
+
+            </li>
+        </ul>
+    
+    
+    
+    
+    
+    
+    
+<dl class="details">
+    
+        
+    
+    
+    
+
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="bc.js.html">bc.js</a>, <a href="bc.js.html#line165">line 165</a>
+    </li></ul></dd>
+    
+    
+    
+    
+    
+    
+    
+</dl>
+
+    
+    
+
+    
+
+    
+    
+    
+    
+    
+    
+    
+        <h5>Example</h5>
+        
+    <pre class="prettyprint"><code>document.addEventListener('newibeacon', onNewIBeacon, false);function onNewIBeacon(arg){	 var ibeacon = BC.bluetooth.ibeacons[arg.iBeaconID];	 alert("New beacon found : " + JSON.stringify(ibeacon));}</code></pre>
 
     
 </dd>
@@ -1104,13 +1356,13 @@
 </div>
 
 <nav>
-    <h2><a href="index.html">Index</a></h2><h3>Classes</h3><ul><li><a href="Bluetooth.html">Bluetooth</a></li><li><a href="Characteristic.html">Characteristic</a></li><li><a href="DataValue.html">DataValue</a></li><li><a href="Descriptor.html">Descriptor</a></li><li><a href="Device.html">Device</a></li><li><a href="Service.html">Service</a></li></ul><h3>Events</h3><ul><li><a href="global.html#event:bcready">bcready</a></li><li><a href="global.html#event:bluetoothstatechange">bluetoothstatechange</a></li><li><a href="global.html#event:deviceconnected">deviceconnected</a></li><li><a href="global.html#event:devicedisconnect">devicedisconnect</a></li><li><a href="global.html#event:newdevice">newdevice</a></li><li><a href="global.html#event:oncharacteristicread">oncharacteristicread</a></li><li><a href="global.html#event:oncharacteristicwrite">oncharacteristicwrite</a></li><li><a href="global.html#event:ondescriptorread">ondescriptorread</a></li><li><a href="global.html#event:ondescriptorwrite">ondescriptorwrite</a></li><li><a href="global.html#event:onsubscribestatechange">onsubscribestatechange</a></li></ul><h3>Namespaces</h3><ul><li><a href="BC.html">BC</a></li></ul><h3>Global</h3><ul><li><a href="global.html#DEBUG">DEBUG</a></li></ul>
+    <h2><a href="index.html">Index</a></h2><h3>Classes</h3><ul><li><a href="Bluetooth.html">Bluetooth</a></li><li><a href="Characteristic.html">Characteristic</a></li><li><a href="DataValue.html">DataValue</a></li><li><a href="Descriptor.html">Descriptor</a></li><li><a href="Device.html">Device</a></li><li><a href="IBeacon.html">IBeacon</a></li><li><a href="Service.html">Service</a></li></ul><h3>Events</h3><ul><li><a href="global.html#event:bcready">bcready</a></li><li><a href="global.html#event:bluetoothstatechange">bluetoothstatechange</a></li><li><a href="global.html#event:deviceconnected">deviceconnected</a></li><li><a href="global.html#event:devicedisconnect">devicedisconnect</a></li><li><a href="global.html#event:ibeaconaccuracyupdate">ibeaconaccuracyupdate</a></li><li><a href="global.html#event:ibeaconproximityupdate">ibeaconproximityupdate</a></li><li><a href="global.html#event:newdevice">newdevice</a></li><li><a href="global.html#event:newibeacon">newibeacon</a></li><li><a href="global.html#event:oncharacteristicread">oncharacteristicread</a></li><li><a href="global.html#event:oncharacteristicwrite">oncharacteristicwrite</a></li><li><a href="global.html#event:ondescriptorread">ondescriptorread</a></li><li><a href="global.html#event:ondescriptorwrite">ondescriptorwrite</a></li><li><a href="global.html#event:onsubscribestatechange">onsubscribestatechange</a></li></ul><h3>Namespaces</h3><ul><li><a href="BC.html">BC</a></li></ul><h3>Global</h3><ul><li><a href="global.html#DEBUG">DEBUG</a></li></ul>
 </nav>
 
 <br clear="both">
 
 <footer>
-    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.3.0-alpha4</a> on Sat Mar 15 2014 16:44:31 GMT+0800 (中国标准时间)
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.3.0-alpha4</a> on Thu Mar 27 2014 11:08:01 GMT+0800 (中国标准时间)
 </footer>
 
 <script> prettyPrint(); </script>

@@ -595,7 +595,19 @@ public class BluetoothG43plus implements IBluetooth{
 			Tools.addProperty(obj, Tools.RSSI, rssi);
 			Tools.addProperty(obj, Tools.ADVERTISEMENT_DATA, Tools.decodeAdvData(scanRecord));
 			deviceInfoList.put(obj);
+		}else {
+			deviceInfoList.remove(deviceList.indexOf(device));
+			deviceList.remove(device);
+			deviceList.add(device);
+			JSONObject obj = new JSONObject();
+			Tools.addProperty(obj, Tools.DEVICE_ID, device.getAddress());
+			Tools.addProperty(obj, Tools.DEVICE_NAME, device.getName());
+			Tools.addProperty(obj, Tools.IS_CONNECTED, Tools.IS_FALSE);
+			Tools.addProperty(obj, Tools.RSSI, rssi);
+			Tools.addProperty(obj, Tools.ADVERTISEMENT_DATA, Tools.decodeAdvData(scanRecord));
+			deviceInfoList.put(obj);
 		}
+		
 	}
 
 	private void conncetManage(BluetoothGatt gatt , int newState){

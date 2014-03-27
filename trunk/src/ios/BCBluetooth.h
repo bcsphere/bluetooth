@@ -23,8 +23,8 @@
 #import <Cordova/CDVPlugin.h>
 #import <Cordova/NSData+Base64.h>
 #import <Cordova/CDVJSON.h>
-
-@interface BCBluetooth : CDVPlugin <CBCentralManagerDelegate, CBPeripheralDelegate,CBPeripheralManagerDelegate>
+#import <CoreLocation/CoreLocation.h>
+@interface BCBluetooth : CDVPlugin <CBCentralManagerDelegate, CBPeripheralDelegate,CBPeripheralManagerDelegate,CLLocationManagerDelegate>
 {
     NSInteger serviceNum;
     NSInteger characteristicNum;
@@ -59,6 +59,8 @@
 
 @property (strong, nonatomic) NSString *bluetoothState;
 
+@property (nonatomic, strong) CLLocationManager *locationManager;
+@property (nonatomic, strong) CLBeaconRegion *beaconRegion;
 
 - (void)getEnvironment:(CDVInvokedUrlCommand *)command;
 - (void)getBluetoothState:(CDVInvokedUrlCommand*)command;
@@ -84,4 +86,6 @@
 - (void)addServices:(CDVInvokedUrlCommand*)command;
 - (void)removeServices:(CDVInvokedUrlCommand*)command;
 
+- (void)startIBeaconScan:(CDVInvokedUrlCommand *)command;
+- (void)stopIBeaconScan:(CDVInvokedUrlCommand *)command;
 @end
