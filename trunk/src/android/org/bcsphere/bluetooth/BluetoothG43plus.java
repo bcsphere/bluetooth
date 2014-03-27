@@ -26,6 +26,7 @@ import java.util.UUID;
 import org.apache.cordova.CallbackContext;
 import org.apache.cordova.PluginResult;
 import org.json.JSONArray;
+import org.json.JSONException;
 import org.json.JSONObject;
 
 import org.bcsphere.bluetooth.tools.Tools;
@@ -501,7 +502,7 @@ public class BluetoothG43plus implements IBluetooth{
 		
 		@Override
 		public void onLeScan(BluetoothDevice device, int rssi, byte[] scanRecord) {
-			Log.i(TAG, "onLeScan");
+			//Log.i(TAG, "onLeScan");
 			startScanManage(device, rssi, scanRecord);
 		}
 	};
@@ -596,7 +597,6 @@ public class BluetoothG43plus implements IBluetooth{
 			Tools.addProperty(obj, Tools.ADVERTISEMENT_DATA, Tools.decodeAdvData(scanRecord));
 			deviceInfoList.put(obj);
 		}else {
-			deviceInfoList.remove(deviceList.indexOf(device));
 			deviceList.remove(device);
 			deviceList.add(device);
 			JSONObject obj = new JSONObject();
@@ -605,7 +605,12 @@ public class BluetoothG43plus implements IBluetooth{
 			Tools.addProperty(obj, Tools.IS_CONNECTED, Tools.IS_FALSE);
 			Tools.addProperty(obj, Tools.RSSI, rssi);
 			Tools.addProperty(obj, Tools.ADVERTISEMENT_DATA, Tools.decodeAdvData(scanRecord));
-			deviceInfoList.put(obj);
+			try {
+				deviceInfoList.put(deviceList.indexOf(device),obj);
+			} catch (JSONException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 		}
 		
 	}
