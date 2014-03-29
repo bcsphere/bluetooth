@@ -1520,6 +1520,13 @@
     return results;
 }
 
+- (NSString *)UUIDFiltrToString:(CBUUID *)UUID{
+    NSString *results = [UUID.data description];
+    results = [results stringByReplacingOccurrencesOfString:@"<" withString:@""];
+    results = [results stringByReplacingOccurrencesOfString:@">" withString:@""];
+    return results;
+}
+
 - (const char *) UUIDToString:(CFUUIDRef)UUID {
     if (!UUID){
         return "NULL";
@@ -1656,7 +1663,7 @@
         NSMutableArray *advServiceUUIDs = [advertisementData valueForKey:KCBADVDATA_SERVICE_UUIDS];
         for (int i = 0; i < advServiceUUIDs.count; i++) {
             CBUUID *UUID = [[advertisementData valueForKey:KCBADVDATA_SERVICE_UUIDS] objectAtIndex:i];
-            NSString *UUIDStr = [self CBUUIDFiltrToString:UUID];
+            NSString *UUIDStr = [self UUIDFiltrToString:UUID];
             [serviceUUIDs addObject:UUIDStr];
         }
         [advertisementDataDic setValue:serviceUUIDs forKey:SERVICE_UUIDS];
@@ -1678,7 +1685,7 @@
         NSMutableArray *overFlowAdvServiceUUIDs = [advertisementData valueForKey:KCBADVDATA_OVERFLOW_SERVICE_UUIDS];
         for (int i = 0; i < overFlowAdvServiceUUIDs.count; i++) {
             CBUUID *UUID = [[advertisementData valueForKey:KCBADVDATA_OVERFLOW_SERVICE_UUIDS] objectAtIndex:i];
-            NSString *UUIDStr = [self CBUUIDFiltrToString:UUID];
+            NSString *UUIDStr = [self UUIDFiltrToString:UUID];
             [overFlowServiceUUIDs addObject:UUIDStr];
         }
         [advertisementDataDic setValue:overFlowServiceUUIDs forKey:OVERFLOW_SERVICE_UUIDS];
@@ -1691,7 +1698,7 @@
         NSMutableArray *solicitedAdvServiceUUIDs = [advertisementData valueForKey:KCBADCDATA_SOLICITED_SERVICE_UUIDS];
         for (int i = 0; i < solicitedAdvServiceUUIDs.count; i++) {
             CBUUID *UUID = [[advertisementData valueForKey:KCBADCDATA_SOLICITED_SERVICE_UUIDS] objectAtIndex:i];
-            NSString *UUIDStr = [self CBUUIDFiltrToString:UUID];
+            NSString *UUIDStr = [self UUIDFiltrToString:UUID];
             [solicitServiceUUIDs addObject:UUIDStr];
         }
         [advertisementDataDic setValue:solicitServiceUUIDs forKey:SOLICITED_SERVICE_UUIDS];
