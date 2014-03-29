@@ -40,3 +40,7 @@ Backward
 -----------------------------------
 If your background is Java/C#/C/C++ or HW programming, you may feel confused when use functional programming language(such as javascript) for the first time.
 </br>But once you get with it, you will love it, enjoy :)
+
+[Version-History-&-Roadmap](https://github.com/bcsphere/bluetooth/wiki/Version-History-&-Roadmap)
+-----------------------------------
+
