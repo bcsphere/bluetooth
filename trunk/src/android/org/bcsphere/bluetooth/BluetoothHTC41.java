@@ -101,12 +101,12 @@ public class BluetoothHTC41 implements IBluetooth {
         Log.i(TAG, "getScanData");
         JSONArray jsonDevices = new JSONArray();
         for (BluetoothDevice device : bluetoothDevices) {
-            String deviceID = device.getAddress();
+            String deviceAddress = device.getAddress();
             JSONObject jsonDevice = new JSONObject();
-            Tools.addProperty(jsonDevice, Tools.DEVICE_ID, deviceID);
+            Tools.addProperty(jsonDevice, Tools.DEVICE_ADDRESS, deviceAddress);
             Tools.addProperty(jsonDevice, Tools.DEVICE_NAME, device.getName());
             Tools.addProperty(jsonDevice, Tools.IS_CONNECTED, "NO");
-            Tools.addProperty(jsonDevice, Tools.RSSI, mapRssiData.get(deviceID));
+            Tools.addProperty(jsonDevice, Tools.RSSI, mapRssiData.get(deviceAddress));
             jsonDevices.put(jsonDevice);
         }
         callbackContext.success(jsonDevices);
@@ -137,12 +137,12 @@ public class BluetoothHTC41 implements IBluetooth {
         if (!isInitialized(callbackContext)) {
             return;
         }
-        String deviceID = Tools.getData(json, Tools.DEVICE_ID);
-        if (deviceID == null) {
+        String deviceAddress = Tools.getData(json, Tools.DEVICE_ADDRESS);
+        if (deviceAddress == null) {
             Tools.sendErrorMsg(callbackContext);
             return;
         }
-        BluetoothDevice device = bluetoothAdapter.getRemoteDevice(deviceID);
+        BluetoothDevice device = bluetoothAdapter.getRemoteDevice(deviceAddress);
         if (device == null) {
             Tools.sendErrorMsg(callbackContext);
             return;
@@ -159,7 +159,7 @@ public class BluetoothHTC41 implements IBluetooth {
             if (mapConnectCallBack == null) {
                 mapConnectCallBack = new HashMap<String, CallbackContext>();
             }
-            mapConnectCallBack.put(deviceID, callbackContext);
+            mapConnectCallBack.put(deviceAddress, callbackContext);
         } else {
             Tools.sendErrorMsg(callbackContext);
         }
@@ -168,16 +168,16 @@ public class BluetoothHTC41 implements IBluetooth {
     @Override
     public void disconnect(JSONArray json, CallbackContext callbackContext) {
         Log.i(TAG, "disconnect");
-        String deviceID = Tools.getData(json, Tools.DEVICE_ID);
-        if (deviceID == null) {
+        String deviceAddress = Tools.getData(json, Tools.DEVICE_ADDRESS);
+        if (deviceAddress == null) {
             Tools.sendErrorMsg(callbackContext);
             return;
         }
-        BluetoothDevice device = bluetoothAdapter.getRemoteDevice(deviceID);
+        BluetoothDevice device = bluetoothAdapter.getRemoteDevice(deviceAddress);
         if (mapDisconnectCallBack == null) {
             mapDisconnectCallBack = new HashMap<String, CallbackContext>();
         }
-        mapDisconnectCallBack.put(deviceID, callbackContext);
+        mapDisconnectCallBack.put(deviceAddress, callbackContext);
         bleClientProfile.disconnect(device);
     }
 
@@ -196,7 +196,7 @@ public class BluetoothHTC41 implements IBluetooth {
         JSONArray jsonDevices = new JSONArray();
         for (BluetoothDevice device : bluetoothDevices) {
             JSONObject jsonDevice = new JSONObject();
-            Tools.addProperty(jsonDevice, Tools.DEVICE_ID, device.getAddress());
+            Tools.addProperty(jsonDevice, Tools.DEVICE_ADDRESS, device.getAddress());
             Tools.addProperty(jsonDevice, Tools.DEVICE_NAME, device.getName());
             jsonDevices.put(jsonDevice);
         }
@@ -213,7 +213,7 @@ public class BluetoothHTC41 implements IBluetooth {
         JSONArray jsonDevices = new JSONArray();
         for (BluetoothDevice device : bondedDevices) {
             JSONObject jsonDevice = new JSONObject();
-            Tools.addProperty(jsonDevice, Tools.DEVICE_ID, device.getAddress());
+            Tools.addProperty(jsonDevice, Tools.DEVICE_ADDRESS, device.getAddress());
             Tools.addProperty(jsonDevice, Tools.DEVICE_NAME, device.getName());
             jsonDevices.put(jsonDevice);
         }
@@ -226,12 +226,12 @@ public class BluetoothHTC41 implements IBluetooth {
         if (!isInitialized(callbackContext)) {
             return;
         }
-        String deviceID = Tools.getData(json, Tools.DEVICE_ID);
-        if (deviceID == null) {
+        String deviceAddress = Tools.getData(json, Tools.DEVICE_ADDRESS);
+        if (deviceAddress == null) {
             Tools.sendErrorMsg(callbackContext);
             return;
         }
-        BluetoothDevice device = bluetoothAdapter.getRemoteDevice(deviceID);
+        BluetoothDevice device = bluetoothAdapter.getRemoteDevice(deviceAddress);
         if (device == null) {
             Tools.sendErrorMsg(callbackContext);
             return;
@@ -241,7 +241,7 @@ public class BluetoothHTC41 implements IBluetooth {
             return;
         }
         JSONObject jsonObject = new JSONObject();
-        Tools.addProperty(jsonObject, Tools.DEVICE_ID, deviceID);
+        Tools.addProperty(jsonObject, Tools.DEVICE_ADDRESS, deviceAddress);
         try {
             if (Tools.creatBond(device.getClass(), device)) {
                 Tools.addProperty(jsonObject, Tools.MES, Tools.SUCCESS);
@@ -261,18 +261,18 @@ public class BluetoothHTC41 implements IBluetooth {
         if (!isInitialized(callbackContext)) {
             return;
         }
-        String deviceID = Tools.getData(json, Tools.DEVICE_ID);
-        if (deviceID == null) {
+        String deviceAddress = Tools.getData(json, Tools.DEVICE_ADDRESS);
+        if (deviceAddress == null) {
             Tools.sendErrorMsg(callbackContext);
             return;
         }
-        BluetoothDevice device = bluetoothAdapter.getRemoteDevice(deviceID);
+        BluetoothDevice device = bluetoothAdapter.getRemoteDevice(deviceAddress);
         if (device == null) {
             Tools.sendErrorMsg(callbackContext);
             return;
         }
         JSONObject jsonObject = new JSONObject();
-        Tools.addProperty(jsonObject, Tools.DEVICE_ID, deviceID);
+        Tools.addProperty(jsonObject, Tools.DEVICE_ADDRESS, deviceAddress);
         try {
             if (Tools.removeBond(device.getClass(), device)) {
                 Tools.addProperty(jsonObject, Tools.MES, Tools.SUCCESS);
@@ -292,12 +292,12 @@ public class BluetoothHTC41 implements IBluetooth {
         if (!isInitialized(callbackContext)) {
             return;
         }
-        String deviceID = Tools.getData(json, Tools.DEVICE_ID);
+        String deviceAddress = Tools.getData(json, Tools.DEVICE_ADDRESS);
         String serviceIndex = Tools.getData(json, Tools.SERVICE_INDEX);
         String characteristicIndex = Tools.getData(json, Tools.CHARACTERISTIC_INDEX);
         String descriptorIndex = Tools.getData(json, Tools.DESCRIPTOR_INDEX);
         String writeValue = Tools.getData(json, Tools.WRITE_VALUE);
-        String[] args = new String[] { deviceID, serviceIndex, characteristicIndex, writeValue };
+        String[] args = new String[] { deviceAddress, serviceIndex, characteristicIndex, writeValue };
         if (!isNullOrEmpty(args, callbackContext)) {
             return;
         }
@@ -305,7 +305,7 @@ public class BluetoothHTC41 implements IBluetooth {
             Tools.sendErrorMsg(callbackContext);
             return;
         }
-        BluetoothDevice device = bluetoothAdapter.getRemoteDevice(deviceID);
+        BluetoothDevice device = bluetoothAdapter.getRemoteDevice(deviceAddress);
         // if (!isConnected(device)) {
         // Tools.sendErrorMsg(callbackContext);
         // return;
@@ -332,11 +332,11 @@ public class BluetoothHTC41 implements IBluetooth {
         if (!isInitialized(callbackContext)) {
             return;
         }
-        String deviceID = Tools.getData(json, Tools.DEVICE_ID);
+        String deviceAddress = Tools.getData(json, Tools.DEVICE_ADDRESS);
         String serviceIndex = Tools.getData(json, Tools.SERVICE_INDEX);
         String characteristicIndex = Tools.getData(json, Tools.CHARACTERISTIC_INDEX);
         String descriptorIndex = Tools.getData(json, Tools.DESCRIPTOR_INDEX);
-        String[] args = new String[] { deviceID, serviceIndex, characteristicIndex };
+        String[] args = new String[] { deviceAddress, serviceIndex, characteristicIndex };
         if (!isNullOrEmpty(args, callbackContext)) {
             return;
         }
@@ -344,7 +344,7 @@ public class BluetoothHTC41 implements IBluetooth {
             Tools.sendErrorMsg(callbackContext);
             return;
         }
-        BluetoothDevice device = bluetoothAdapter.getRemoteDevice(deviceID);
+        BluetoothDevice device = bluetoothAdapter.getRemoteDevice(deviceAddress);
         if (device == null) {
             Tools.sendErrorMsg(callbackContext);
             return;
@@ -359,7 +359,7 @@ public class BluetoothHTC41 implements IBluetooth {
             value = readDescriptor(device, serviceIndex, characteristicIndex, descriptorIndex, callbackContext);
         }
         JSONObject jsonObject = new JSONObject();
-        Tools.addProperty(jsonObject, Tools.DEVICE_ID, deviceID);
+        Tools.addProperty(jsonObject, Tools.DEVICE_ADDRESS, deviceAddress);
         Tools.addProperty(jsonObject, Tools.VALUE, Tools.encodeBase64(value));
         Tools.addProperty(jsonObject, Tools.DATE, Tools.getDateString());
         callbackContext.success(jsonObject);
@@ -371,21 +371,21 @@ public class BluetoothHTC41 implements IBluetooth {
         if (!isInitialized(callbackContext)) {
             return;
         }
-        String deviceID = Tools.getData(json, Tools.DEVICE_ID);
+        String deviceAddress = Tools.getData(json, Tools.DEVICE_ADDRESS);
         String serviceIndex = Tools.getData(json, Tools.SERVICE_INDEX);
         String characteristicIndex = Tools.getData(json, Tools.CHARACTERISTIC_INDEX);
         String enable = Tools.getData(json, Tools.ENABLE);
-        String[] args = new String[] { deviceID, serviceIndex, characteristicIndex, enable };
+        String[] args = new String[] { deviceAddress, serviceIndex, characteristicIndex, enable };
         if (!isNullOrEmpty(args, callbackContext)) {
             return;
         }
-        BluetoothDevice device = bluetoothAdapter.getRemoteDevice(deviceID);
+        BluetoothDevice device = bluetoothAdapter.getRemoteDevice(deviceAddress);
         if (device == null) {
             Tools.sendErrorMsg(callbackContext);
             return;
         }
-        BleClientService bleClientService = getService(deviceID, serviceIndex);
-        BleCharacteristic bleCharacteristic = getCharacteristic(deviceID, serviceIndex, characteristicIndex);
+        BleClientService bleClientService = getService(deviceAddress, serviceIndex);
+        BleCharacteristic bleCharacteristic = getCharacteristic(deviceAddress, serviceIndex, characteristicIndex);
         BleDescriptor bleDescriptor = bleCharacteristic.getDescriptor(new BleGattID(Tools.NOTIFICATION_UUID));
         if ("true".equalsIgnoreCase(enable)) {
             bleClientService.registerForNotification(device, 0, bleCharacteristic.getID());
@@ -409,12 +409,12 @@ public class BluetoothHTC41 implements IBluetooth {
         if (!isInitialized(callbackContext)) {
             return;
         }
-        String deviceID = Tools.getData(json, Tools.DEVICE_ID);
-        if (deviceID == null) {
+        String deviceAddress = Tools.getData(json, Tools.DEVICE_ADDRESS);
+        if (deviceAddress == null) {
             Tools.sendErrorMsg(callbackContext);
             return;
         }
-        BluetoothDevice device = bluetoothAdapter.getRemoteDevice(deviceID);
+        BluetoothDevice device = bluetoothAdapter.getRemoteDevice(deviceAddress);
         if (mapDeviceServices == null) {
             mapDeviceServices = new HashMap<String, List<BleClientService>>();
         }
@@ -422,9 +422,9 @@ public class BluetoothHTC41 implements IBluetooth {
             mapGetDeviceAllDataCallBack = new HashMap<String, CallbackContext>();
         }
         List<BleClientService> listServices = bleClientProfile.getAllServices();
-        mapDeviceServices.put(deviceID, listServices);
+        mapDeviceServices.put(deviceAddress, listServices);
         JSONObject jsonObject = new JSONObject();
-        Tools.addProperty(jsonObject, Tools.DEVICE_ID, deviceID);
+        Tools.addProperty(jsonObject, Tools.DEVICE_ADDRESS, deviceAddress);
         JSONArray services = new JSONArray();
         int index = 0;
         for (Iterator<BleClientService> it = listServices.iterator(); it.hasNext();) {
@@ -452,7 +452,7 @@ public class BluetoothHTC41 implements IBluetooth {
                 e.printStackTrace();
             }
             JSONArray characteristics = new JSONArray();
-            List<BleCharacteristic> bleCharacteristics = getService(deviceID, Integer.toString(i))
+            List<BleCharacteristic> bleCharacteristics = getService(deviceAddress, Integer.toString(i))
                     .getAllCharacteristics(device);
             int charaLength = bleCharacteristics.size();
             for (int j = 0; j < charaLength; j++) {
@@ -585,14 +585,14 @@ public class BluetoothHTC41 implements IBluetooth {
     @Override
     public void getRSSI(JSONArray json, CallbackContext callbackContext) {
         Log.i(TAG, "onReadRemoteRssi");
-        String deviceID = Tools.getData(json, Tools.DEVICE_ID);
+        String deviceAddress = Tools.getData(json, Tools.DEVICE_ADDRESS);
         Short RSSI = null;
         if (mapRssiData != null) {
-            RSSI = mapRssiData.get(deviceID);
+            RSSI = mapRssiData.get(deviceAddress);
         }
         if (RSSI != null) {
             JSONObject jsonObject = new JSONObject();
-            Tools.addProperty(jsonObject, Tools.DEVICE_ID, deviceID);
+            Tools.addProperty(jsonObject, Tools.DEVICE_ADDRESS, deviceAddress);
             Tools.addProperty(jsonObject, Tools.RSSI, Integer.toString(RSSI));
             callbackContext.success(jsonObject);
         } else {
@@ -606,14 +606,14 @@ public class BluetoothHTC41 implements IBluetooth {
         if (!isInitialized(callbackContext)) {
             return;
         }
-        String deviceID = Tools.getData(json, Tools.DEVICE_ID);
-        if (deviceID == null) {
+        String deviceAddress = Tools.getData(json, Tools.DEVICE_ADDRESS);
+        if (deviceAddress == null) {
             Tools.sendErrorMsg(callbackContext);
             return;
         }
         List<BleClientService> listServices = bleClientProfile.getAllServices();
         JSONObject jsonObject = new JSONObject();
-        Tools.addProperty(jsonObject, Tools.DEVICE_ID, deviceID);
+        Tools.addProperty(jsonObject, Tools.DEVICE_ADDRESS, deviceAddress);
         JSONArray services = new JSONArray();
         int index = 0;
         for (Iterator<BleClientService> it = listServices.iterator(); it.hasNext();) {
@@ -635,24 +635,24 @@ public class BluetoothHTC41 implements IBluetooth {
         if (!isInitialized(callbackContext)) {
             return;
         }
-        String deviceID = Tools.getData(json, Tools.DEVICE_ID);
+        String deviceAddress = Tools.getData(json, Tools.DEVICE_ADDRESS);
         String serviceIndex = Tools.getData(json, Tools.SERVICE_INDEX);
-        String[] args = new String[] { deviceID, serviceIndex };
+        String[] args = new String[] { deviceAddress, serviceIndex };
         if (!isNullOrEmpty(args, callbackContext)) {
             return;
         }
-        BluetoothDevice device = bluetoothAdapter.getRemoteDevice(deviceID);
+        BluetoothDevice device = bluetoothAdapter.getRemoteDevice(deviceAddress);
         if (serviceIndex == null) {
             Tools.sendErrorMsg(callbackContext);
             return;
         }
         JSONObject jsonObject = new JSONObject();
-        Tools.addProperty(jsonObject, Tools.DEVICE_ID, deviceID);
+        Tools.addProperty(jsonObject, Tools.DEVICE_ADDRESS, deviceAddress);
         JSONArray characteristics = new JSONArray();
-        int size = mapDeviceServices.get(deviceID).get(Integer.parseInt(serviceIndex)).getAllCharacteristics(device)
+        int size = mapDeviceServices.get(deviceAddress).get(Integer.parseInt(serviceIndex)).getAllCharacteristics(device)
                 .size();
         for (int i = 0; i < size; i++) {
-            BleCharacteristic bleCharacteristic = getCharacteristic(deviceID, serviceIndex, String.valueOf(i));
+            BleCharacteristic bleCharacteristic = getCharacteristic(deviceAddress, serviceIndex, String.valueOf(i));
             bleCharacteristic.setProperty(154);
             UUID charateristicUUID = bleCharacteristic.getID().getUuid();
             JSONObject characteristic = new JSONObject();
@@ -674,22 +674,22 @@ public class BluetoothHTC41 implements IBluetooth {
         if (!isInitialized(callbackContext)) {
             return;
         }
-        String deviceID = Tools.getData(json, Tools.DEVICE_ID);
+        String deviceAddress = Tools.getData(json, Tools.DEVICE_ADDRESS);
         String serviceIndex = Tools.getData(json, Tools.SERVICE_INDEX);
         String characteristicIndex = Tools.getData(json, Tools.CHARACTERISTIC_INDEX);
-        String[] args = new String[] { deviceID, serviceIndex, characteristicIndex };
+        String[] args = new String[] { deviceAddress, serviceIndex, characteristicIndex };
         if (!isNullOrEmpty(args, callbackContext)) {
             return;
         }
-        BluetoothDevice device = bluetoothAdapter.getRemoteDevice(deviceID);
+        BluetoothDevice device = bluetoothAdapter.getRemoteDevice(deviceAddress);
         if (device == null) {
             Tools.sendErrorMsg(callbackContext);
             return;
         }
         JSONObject jsonObject = new JSONObject();
-        Tools.addProperty(jsonObject, Tools.DEVICE_ID, deviceID);
+        Tools.addProperty(jsonObject, Tools.DEVICE_ADDRESS, deviceAddress);
         JSONArray descriptors = new JSONArray();
-        List<BleDescriptor> listBleDescriptors = getCharacteristic(deviceID, serviceIndex, characteristicIndex)
+        List<BleDescriptor> listBleDescriptors = getCharacteristic(deviceAddress, serviceIndex, characteristicIndex)
                 .getAllDescriptors();
         int length = listBleDescriptors.size();
         for (int i = 0; i < length; i++) {
@@ -743,14 +743,14 @@ public class BluetoothHTC41 implements IBluetooth {
             String action = paramIntent.getAction();
             if (BluetoothDevice.ACTION_FOUND.equals(action)) {
                 BluetoothDevice device = (BluetoothDevice) paramIntent.getParcelableExtra(BluetoothDevice.EXTRA_DEVICE);
-                String deviceID = device.getAddress();
+                String deviceAddress = device.getAddress();
                 short RSSI = paramIntent.getShortExtra(BluetoothDevice.EXTRA_RSSI, (short) -32768);
                 if (BleAdapter.getDeviceType(device) == BleAdapter.DEVICE_TYPE_BLE
                         || BleAdapter.getDeviceType(device) == BleAdapter.DEVICE_TYPE_DUMO) {
                     if (!bluetoothDevices.contains(device)) {
-                        Log.i(TAG, "deviceID " + device + " RSSI " + RSSI);
+                        Log.i(TAG, "deviceAddress " + device + " RSSI " + RSSI);
                         bluetoothDevices.add(device);
-                        mapRssiData.put(deviceID, RSSI);
+                        mapRssiData.put(deviceAddress, RSSI);
                     }
                 }
             }
@@ -785,10 +785,10 @@ public class BluetoothHTC41 implements IBluetooth {
         public void onDeviceConnected(BluetoothDevice device) {
             Log.i(TAG, "onDeviceConnected");
             super.onDeviceConnected(device);
-            String deviceID = device.getAddress();
+            String deviceAddress = device.getAddress();
             peerServices = getPeerServices();
             if (listServices == null) {
-                listServices = (ArrayList<BleClientService>) mapDeviceServices.get(deviceID);
+                listServices = (ArrayList<BleClientService>) mapDeviceServices.get(deviceAddress);
             }
             if (peerServices != null) {
                 if (bleClientProfile == null) {
@@ -804,7 +804,7 @@ public class BluetoothHTC41 implements IBluetooth {
                 if (mapDeviceServices == null) {
                     mapDeviceServices = new HashMap<String, List<BleClientService>>();
                 }
-                mapDeviceServices.put(deviceID, listServices);
+                mapDeviceServices.put(deviceAddress, listServices);
 
                 if (undefinedService != null) {
                     bluetoothClientProfile.deregisterProfile();
@@ -817,11 +817,11 @@ public class BluetoothHTC41 implements IBluetooth {
 
             CallbackContext callbackContext = null;
             if (mapConnectCallBack != null) {
-                callbackContext = mapConnectCallBack.get(deviceID);
+                callbackContext = mapConnectCallBack.get(deviceAddress);
             }
             if (callbackContext != null && undefinedService == null) {
                 JSONObject jsonObject = new JSONObject();
-                Tools.addProperty(jsonObject, Tools.DEVICE_ID, deviceID);
+                Tools.addProperty(jsonObject, Tools.DEVICE_ADDRESS, deviceAddress);
                 Tools.addProperty(jsonObject, Tools.MES, Tools.SUCCESS);
                 callbackContext.success(jsonObject);
             }
@@ -841,18 +841,18 @@ public class BluetoothHTC41 implements IBluetooth {
         public void onDeviceDisconnected(BluetoothDevice device) {
             Log.i(TAG, "onDeviceDisconnected");
             super.onDeviceDisconnected(device);
-            String deviceID = device.getAddress();
-            Log.i(TAG, "device: " + deviceID + " disconnect!");
+            String deviceAddress = device.getAddress();
+            Log.i(TAG, "device: " + deviceAddress + " disconnect!");
             CallbackContext callbackContext = null;
             if(mapDisconnectCallBack != null){
-                callbackContext = mapDisconnectCallBack.get(deviceID);
+                callbackContext = mapDisconnectCallBack.get(deviceAddress);
             }
             if (callbackContext == null && mapAddListenerCallBack != null) {
                 callbackContext = mapAddListenerCallBack.get(Tools.DISCONNECT);
             }
             if (callbackContext != null) {
                 JSONObject jsonObject = new JSONObject();
-                Tools.addProperty(jsonObject, Tools.DEVICE_ID, deviceID);
+                Tools.addProperty(jsonObject, Tools.DEVICE_ADDRESS, deviceAddress);
                 Tools.addProperty(jsonObject, Tools.MES, Tools.SUCCESS);
                 PluginResult pluginResult = new PluginResult(PluginResult.Status.OK, jsonObject);
                 pluginResult.setKeepCallback(true);
@@ -931,14 +931,14 @@ public class BluetoothHTC41 implements IBluetooth {
         public void onCharacteristicChanged(BluetoothDevice device, BleCharacteristic characteristic) {
             super.onCharacteristicChanged(device, characteristic);
             Log.i(TAG, "onCharacteristicChanged");
-            String deviceID = device.getAddress();
+            String deviceAddress = device.getAddress();
             CallbackContext callbackContext = null;
             if (mapSetNotificationCallBack != null) {
                 callbackContext = mapSetNotificationCallBack.get(characteristic);
             }
             if (callbackContext != null) {
                 JSONObject jsonObject = new JSONObject();
-                Tools.addProperty(jsonObject, Tools.DEVICE_ID, deviceID);
+                Tools.addProperty(jsonObject, Tools.DEVICE_ADDRESS, deviceAddress);
                 Tools.addProperty(jsonObject, Tools.VALUE, Tools.encodeBase64(characteristic.getValue()));
                 Tools.addProperty(jsonObject, Tools.DATE, Tools.getDateString());
                 PluginResult pluginResult = new PluginResult(PluginResult.Status.OK, jsonObject);
@@ -977,26 +977,26 @@ public class BluetoothHTC41 implements IBluetooth {
         return true;
     }
 
-    private BleDescriptor getDescriptor(String deviceID, String serviceIndex, String characteristicIndex,
+    private BleDescriptor getDescriptor(String deviceAddress, String serviceIndex, String characteristicIndex,
             String descriptorIndex) {
-        return getCharacteristic(deviceID, serviceIndex, characteristicIndex).getAllDescriptors().get(
+        return getCharacteristic(deviceAddress, serviceIndex, characteristicIndex).getAllDescriptors().get(
                 Integer.parseInt(descriptorIndex));
     }
 
-    private BleCharacteristic getCharacteristic(String deviceID, String serviceIndex, String characteristicIndex) {
-        return getService(deviceID, serviceIndex).getAllCharacteristics(bluetoothAdapter.getRemoteDevice(deviceID))
+    private BleCharacteristic getCharacteristic(String deviceAddress, String serviceIndex, String characteristicIndex) {
+        return getService(deviceAddress, serviceIndex).getAllCharacteristics(bluetoothAdapter.getRemoteDevice(deviceAddress))
                 .get(Integer.parseInt(characteristicIndex));
     }
 
-    private BleClientService getService(String deviceID, String serviceIndex) {
-        return mapDeviceServices.get(deviceID).get(Integer.parseInt(serviceIndex));
+    private BleClientService getService(String deviceAddress, String serviceIndex) {
+        return mapDeviceServices.get(deviceAddress).get(Integer.parseInt(serviceIndex));
     }
 
     private int writeCharacteristic(BluetoothDevice device, String serviceIndex, String characteristicIndex,
             byte[] value, CallbackContext callbackContext) {
-        String deviceID = device.getAddress();
-        BleClientService bleClientService = getService(deviceID, serviceIndex);
-        BleCharacteristic bleCharacteristic = getCharacteristic(deviceID, serviceIndex, characteristicIndex);
+        String deviceAddress = device.getAddress();
+        BleClientService bleClientService = getService(deviceAddress, serviceIndex);
+        BleCharacteristic bleCharacteristic = getCharacteristic(deviceAddress, serviceIndex, characteristicIndex);
         bleCharacteristic.setValue(value);
         bleCharacteristic.setWriteType(BleConstants.GATTC_TYPE_WRITE);
         return bleClientService.writeCharacteristic(device, 0, bleCharacteristic);
@@ -1004,10 +1004,10 @@ public class BluetoothHTC41 implements IBluetooth {
 
     private int writeDescriptor(BluetoothDevice device, String serviceIndex, String characteristicIndex,
             String descriptorIndex, byte[] value, CallbackContext callbackContext) {
-        String deviceID = device.getAddress();
-        BleClientService bleClientService = getService(deviceID, serviceIndex);
-        BleCharacteristic bleCharacteristic = getCharacteristic(deviceID, serviceIndex, characteristicIndex);
-        BleDescriptor bleDescriptor = getDescriptor(deviceID, serviceIndex, characteristicIndex, descriptorIndex);
+        String deviceAddress = device.getAddress();
+        BleClientService bleClientService = getService(deviceAddress, serviceIndex);
+        BleCharacteristic bleCharacteristic = getCharacteristic(deviceAddress, serviceIndex, characteristicIndex);
+        BleDescriptor bleDescriptor = getDescriptor(deviceAddress, serviceIndex, characteristicIndex, descriptorIndex);
         mapWriteValueCallBack.put(bleDescriptor, callbackContext);
         bleDescriptor.setWriteType(BleConstants.GATTC_TYPE_WRITE);
         bleDescriptor.setValue(value);
@@ -1016,9 +1016,9 @@ public class BluetoothHTC41 implements IBluetooth {
 
     private byte[] readCharacteristic(BluetoothDevice device, String serviceIndex, String characteristicIndex,
             CallbackContext callbackContext) {
-        String deviceID = device.getAddress();
-        BleClientService bleClientService = getService(deviceID, serviceIndex);
-        BleCharacteristic bleCharacteristic = getCharacteristic(deviceID, serviceIndex, characteristicIndex);
+        String deviceAddress = device.getAddress();
+        BleClientService bleClientService = getService(deviceAddress, serviceIndex);
+        BleCharacteristic bleCharacteristic = getCharacteristic(deviceAddress, serviceIndex, characteristicIndex);
         mapReadValueCallBack.put(bleCharacteristic, callbackContext);
         bleClientService.readCharacteristic(device, bleCharacteristic);
         try {
@@ -1031,8 +1031,8 @@ public class BluetoothHTC41 implements IBluetooth {
 
     private byte[] readDescriptor(BluetoothDevice device, String serviceIndex, String characteristicIndex,
             String descriptorIndex, CallbackContext callbackContext) {
-        String deviceID = device.getAddress();
-        BleDescriptor bleDescriptor = getDescriptor(deviceID, serviceIndex, characteristicIndex, descriptorIndex);
+        String deviceAddress = device.getAddress();
+        BleDescriptor bleDescriptor = getDescriptor(deviceAddress, serviceIndex, characteristicIndex, descriptorIndex);
         return bleDescriptor.getValue();
     }
 

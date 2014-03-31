@@ -94,7 +94,7 @@ public class BCBluetooth extends CordovaPlugin {
 		if (action.equals("getEnvironment")) {
 			JSONObject jo = new JSONObject();
 			Tools.addProperty(jo, "appID", "com.test.yourappid");
-			Tools.addProperty(jo, "deviceID", "N/A");
+			Tools.addProperty(jo, "deviceAddress", "N/A");
 			Tools.addProperty(jo, "api", versionOfAPI);
 			callbackContext.success(jo);
 		}

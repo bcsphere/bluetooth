@@ -61,7 +61,7 @@ public class Tools {
 	public static final String DESCRIPTOR_VALUE = "descriptorValue";
 	public static final String DESCRIPTOR_VALUE_TYPE = "descriptorValueType";
 	public static final String DESCRIPTORS = "descriptors";
-	public static final String DEVICE_ID = "deviceID";
+	public static final String DEVICE_ADDRESS = "deviceAddress";
 	public static final String DEVICE_NAME = "deviceName";
 	public static final String DISCONNECT = "disconnect";
 	public static final String ENABLE = "enable";

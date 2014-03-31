@@ -148,13 +148,13 @@ public class BluetoothSam42 implements IBluetooth {
         Log.i(TAG, "getScanData");
         JSONArray jsonDevices = new JSONArray();
         for (BluetoothDevice device : bluetoothDevices) {
-            String deviceID = device.getAddress();
+            String deviceAddress = device.getAddress();
             JSONObject jsonDevice = new JSONObject();
-            Tools.addProperty(jsonDevice, Tools.DEVICE_ID, deviceID);
+            Tools.addProperty(jsonDevice, Tools.DEVICE_ADDRESS, deviceAddress);
             Tools.addProperty(jsonDevice, Tools.DEVICE_NAME, device.getName());
             Tools.addProperty(jsonDevice, Tools.IS_CONNECTED, bluetoothGatt.getConnectedDevices().contains(device));
-            Tools.addProperty(jsonDevice, Tools.RSSI, mapRssiData.get(deviceID));
-            Tools.addProperty(jsonDevice, Tools.ADVERTISEMENT_DATA, Tools.decodeAdvData(mapDeviceAdvData.get(deviceID)));
+            Tools.addProperty(jsonDevice, Tools.RSSI, mapRssiData.get(deviceAddress));
+            Tools.addProperty(jsonDevice, Tools.ADVERTISEMENT_DATA, Tools.decodeAdvData(mapDeviceAdvData.get(deviceAddress)));
             jsonDevices.put(jsonDevice);
         }
         callbackContext.success(jsonDevices);
@@ -179,12 +179,12 @@ public class BluetoothSam42 implements IBluetooth {
         if (!isInitialized(callbackContext)) {
             return;
         }
-        String deviceID = Tools.getData(json, Tools.DEVICE_ID);
-        if (deviceID == null) {
+        String deviceAddress = Tools.getData(json, Tools.DEVICE_ADDRESS);
+        if (deviceAddress == null) {
             Tools.sendErrorMsg(callbackContext);
             return;
         }
-        BluetoothDevice device = bluetoothAdapter.getRemoteDevice(deviceID);
+        BluetoothDevice device = bluetoothAdapter.getRemoteDevice(deviceAddress);
         if (isConnected(device)) {
             Tools.sendSuccessMsg(callbackContext);
             return;
@@ -192,19 +192,19 @@ public class BluetoothSam42 implements IBluetooth {
         if (mapConnectCallBack == null) {
             mapConnectCallBack = new HashMap<String, CallbackContext>();
         }
-        mapConnectCallBack.put(deviceID, callbackContext);
+        mapConnectCallBack.put(deviceAddress, callbackContext);
         bluetoothGatt.connect(device, false);
     }
 
     @Override
     public void disconnect(JSONArray json, CallbackContext callbackContext) {
         Log.i(TAG, "disconnect");
-        String deviceID = Tools.getData(json, Tools.DEVICE_ID);
-        if (deviceID == null) {
+        String deviceAddress = Tools.getData(json, Tools.DEVICE_ADDRESS);
+        if (deviceAddress == null) {
             Tools.sendErrorMsg(callbackContext);
             return;
         }
-        BluetoothDevice device = bluetoothAdapter.getRemoteDevice(deviceID);
+        BluetoothDevice device = bluetoothAdapter.getRemoteDevice(deviceAddress);
         if (!isConnected(device)) {
             Tools.sendSuccessMsg(callbackContext);
             return;
@@ -212,7 +212,7 @@ public class BluetoothSam42 implements IBluetooth {
         if (mapDisconnectCallBack == null) {
             mapDisconnectCallBack = new HashMap<String, CallbackContext>();
         }
-        mapDisconnectCallBack.put(deviceID, callbackContext);
+        mapDisconnectCallBack.put(deviceAddress, callbackContext);
         bluetoothGatt.cancelConnection(device);
     }
 
@@ -227,7 +227,7 @@ public class BluetoothSam42 implements IBluetooth {
         JSONArray jsonDevices = new JSONArray();
         for (BluetoothDevice device : bluetoothDevices) {
             JSONObject jsonDevice = new JSONObject();
-            Tools.addProperty(jsonDevice, Tools.DEVICE_ID, device.getAddress());
+            Tools.addProperty(jsonDevice, Tools.DEVICE_ADDRESS, device.getAddress());
             Tools.addProperty(jsonDevice, Tools.DEVICE_NAME, device.getName());
             jsonDevices.put(jsonDevice);
         }
@@ -244,7 +244,7 @@ public class BluetoothSam42 implements IBluetooth {
         JSONArray jsonDevices = new JSONArray();
         for (BluetoothDevice device : bondedDevices) {
             JSONObject jsonDevice = new JSONObject();
-            Tools.addProperty(jsonDevice, Tools.DEVICE_ID, device.getAddress());
+            Tools.addProperty(jsonDevice, Tools.DEVICE_ADDRESS, device.getAddress());
             Tools.addProperty(jsonDevice, Tools.DEVICE_NAME, device.getName());
             jsonDevices.put(jsonDevice);
         }
@@ -257,12 +257,12 @@ public class BluetoothSam42 implements IBluetooth {
         if (!isInitialized(callbackContext)) {
             return;
         }
-        String deviceID = Tools.getData(json, Tools.DEVICE_ID);
-        if (deviceID == null) {
+        String deviceAddress = Tools.getData(json, Tools.DEVICE_ADDRESS);
+        if (deviceAddress == null) {
             Tools.sendErrorMsg(callbackContext);
             return;
         }
-        BluetoothDevice device = bluetoothAdapter.getRemoteDevice(deviceID);
+        BluetoothDevice device = bluetoothAdapter.getRemoteDevice(deviceAddress);
         if (device == null) {
             Tools.sendErrorMsg(callbackContext);
             return;
@@ -272,7 +272,7 @@ public class BluetoothSam42 implements IBluetooth {
             return;
         }
         JSONObject jsonObject = new JSONObject();
-        Tools.addProperty(jsonObject, Tools.DEVICE_ID, deviceID);
+        Tools.addProperty(jsonObject, Tools.DEVICE_ADDRESS, deviceAddress);
         try {
             if (Tools.creatBond(device.getClass(), device)) {
                 Tools.addProperty(jsonObject, Tools.MES, Tools.SUCCESS);
@@ -292,18 +292,18 @@ public class BluetoothSam42 implements IBluetooth {
         if (!isInitialized(callbackContext)) {
             return;
         }
-        String deviceID = Tools.getData(json, Tools.DEVICE_ID);
-        if (deviceID == null) {
+        String deviceAddress = Tools.getData(json, Tools.DEVICE_ADDRESS);
+        if (deviceAddress == null) {
             Tools.sendErrorMsg(callbackContext);
             return;
         }
-        BluetoothDevice device = bluetoothAdapter.getRemoteDevice(deviceID);
+        BluetoothDevice device = bluetoothAdapter.getRemoteDevice(deviceAddress);
         if (device == null) {
             Tools.sendErrorMsg(callbackContext);
             return;
         }
         JSONObject jsonObject = new JSONObject();
-        Tools.addProperty(jsonObject, Tools.DEVICE_ID, deviceID);
+        Tools.addProperty(jsonObject, Tools.DEVICE_ADDRESS, deviceAddress);
         try {
             if (Tools.removeBond(device.getClass(), device)) {
                 Tools.addProperty(jsonObject, Tools.MES, Tools.SUCCESS);
@@ -323,12 +323,12 @@ public class BluetoothSam42 implements IBluetooth {
         if (!isInitialized(callbackContext)) {
             return;
         }
-        String deviceID = Tools.getData(json, Tools.DEVICE_ID);
-        if (deviceID == null) {
+        String deviceAddress = Tools.getData(json, Tools.DEVICE_ADDRESS);
+        if (deviceAddress == null) {
             Tools.sendErrorMsg(callbackContext);
             return;
         }
-        BluetoothDevice device = bluetoothAdapter.getRemoteDevice(deviceID);
+        BluetoothDevice device = bluetoothAdapter.getRemoteDevice(deviceAddress);
         if (!isConnected(device)) {
             Tools.sendErrorMsg(callbackContext);
             return;
@@ -336,7 +336,7 @@ public class BluetoothSam42 implements IBluetooth {
         if (mapGetServicesCallBack == null) {
             mapGetServicesCallBack = new HashMap<String, CallbackContext>();
         }
-        mapGetServicesCallBack.put(deviceID, callbackContext);
+        mapGetServicesCallBack.put(deviceAddress, callbackContext);
         bluetoothGatt.discoverServices(device);
     }
 
@@ -346,13 +346,13 @@ public class BluetoothSam42 implements IBluetooth {
         if (!isInitialized(callbackContext)) {
             return;
         }
-        String deviceID = Tools.getData(json, Tools.DEVICE_ID);
+        String deviceAddress = Tools.getData(json, Tools.DEVICE_ADDRESS);
         String serviceIndex = Tools.getData(json, Tools.SERVICE_INDEX);
-        String[] args = new String[] { deviceID, serviceIndex };
+        String[] args = new String[] { deviceAddress, serviceIndex };
         if (!isNullOrEmpty(args, callbackContext)) {
             return;
         }
-        BluetoothDevice device = bluetoothAdapter.getRemoteDevice(deviceID);
+        BluetoothDevice device = bluetoothAdapter.getRemoteDevice(deviceAddress);
         if (!isConnected(device)) {
             Tools.sendErrorMsg(callbackContext);
             return;
@@ -363,11 +363,11 @@ public class BluetoothSam42 implements IBluetooth {
             return;
         }
         JSONObject jsonObject = new JSONObject();
-        Tools.addProperty(jsonObject, Tools.DEVICE_ID, deviceID);
+        Tools.addProperty(jsonObject, Tools.DEVICE_ADDRESS, deviceAddress);
         JSONArray characteristics = new JSONArray();
-        int size = getService(deviceID, serviceIndex).getCharacteristics().size();
+        int size = getService(deviceAddress, serviceIndex).getCharacteristics().size();
         for (int i = 0; i < size; i++) {
-            BluetoothGattCharacteristic bluetoothGattCharacteristic = getCharacteristic(deviceID, serviceIndex,
+            BluetoothGattCharacteristic bluetoothGattCharacteristic = getCharacteristic(deviceAddress, serviceIndex,
                     String.valueOf(i));
             UUID charateristicUUID = bluetoothGattCharacteristic.getUuid();
             JSONObject characteristic = new JSONObject();
@@ -388,23 +388,23 @@ public class BluetoothSam42 implements IBluetooth {
         if (!isInitialized(callbackContext)) {
             return;
         }
-        String deviceID = Tools.getData(json, Tools.DEVICE_ID);
+        String deviceAddress = Tools.getData(json, Tools.DEVICE_ADDRESS);
         String serviceIndex = Tools.getData(json, Tools.SERVICE_INDEX);
         String characteristicIndex = Tools.getData(json, Tools.CHARACTERISTIC_INDEX);
-        String[] args = new String[] { deviceID, serviceIndex, characteristicIndex };
+        String[] args = new String[] { deviceAddress, serviceIndex, characteristicIndex };
         if (!isNullOrEmpty(args, callbackContext)) {
             return;
         }
-        BluetoothDevice device = bluetoothAdapter.getRemoteDevice(deviceID);
+        BluetoothDevice device = bluetoothAdapter.getRemoteDevice(deviceAddress);
         if (!isConnected(device)) {
             Tools.sendErrorMsg(callbackContext);
             return;
         }
         JSONObject jsonObject = new JSONObject();
-        Tools.addProperty(jsonObject, Tools.DEVICE_ID, deviceID);
+        Tools.addProperty(jsonObject, Tools.DEVICE_ADDRESS, deviceAddress);
         JSONArray descriptors = new JSONArray();
         @SuppressWarnings("unchecked")
-        List<BluetoothGattDescriptor> listBluetoothGattDescriptors = getCharacteristic(deviceID, serviceIndex,
+        List<BluetoothGattDescriptor> listBluetoothGattDescriptors = getCharacteristic(deviceAddress, serviceIndex,
                 characteristicIndex).getDescriptors();
         int length = listBluetoothGattDescriptors.size();
         for (int i = 0; i < length; i++) {
@@ -425,12 +425,12 @@ public class BluetoothSam42 implements IBluetooth {
         if (!isInitialized(callbackContext)) {
             return;
         }
-        String deviceID = Tools.getData(json, Tools.DEVICE_ID);
+        String deviceAddress = Tools.getData(json, Tools.DEVICE_ADDRESS);
         String serviceIndex = Tools.getData(json, Tools.SERVICE_INDEX);
         String characteristicIndex = Tools.getData(json, Tools.CHARACTERISTIC_INDEX);
         String descriptorIndex = Tools.getData(json, Tools.DESCRIPTOR_INDEX);
         String writeValue = Tools.getData(json, Tools.WRITE_VALUE);
-        String[] args = new String[] { deviceID, serviceIndex, characteristicIndex, writeValue };
+        String[] args = new String[] { deviceAddress, serviceIndex, characteristicIndex, writeValue };
         if (!isNullOrEmpty(args, callbackContext)) {
             return;
         }
@@ -438,7 +438,7 @@ public class BluetoothSam42 implements IBluetooth {
             Tools.sendErrorMsg(callbackContext);
             return;
         }
-        BluetoothDevice device = bluetoothAdapter.getRemoteDevice(deviceID);
+        BluetoothDevice device = bluetoothAdapter.getRemoteDevice(deviceAddress);
         if (!isConnected(device)) {
             Tools.sendErrorMsg(callbackContext);
             return;
@@ -448,9 +448,9 @@ public class BluetoothSam42 implements IBluetooth {
             mapWriteValueCallBack = new HashMap<Object, CallbackContext>();
         }
         if ("".equals(descriptorIndex)) {
-            writeCharacteristic(deviceID, serviceIndex, characteristicIndex, value,callbackContext);
+            writeCharacteristic(deviceAddress, serviceIndex, characteristicIndex, value,callbackContext);
         } else {
-            writeDescriptor(deviceID, serviceIndex, characteristicIndex, descriptorIndex, value,callbackContext);
+            writeDescriptor(deviceAddress, serviceIndex, characteristicIndex, descriptorIndex, value,callbackContext);
         }
     }
 
@@ -460,11 +460,11 @@ public class BluetoothSam42 implements IBluetooth {
         if (!isInitialized(callbackContext)) {
             return;
         }
-        String deviceID = Tools.getData(json, Tools.DEVICE_ID);
+        String deviceAddress = Tools.getData(json, Tools.DEVICE_ADDRESS);
         String serviceIndex = Tools.getData(json, Tools.SERVICE_INDEX);
         String characteristicIndex = Tools.getData(json, Tools.CHARACTERISTIC_INDEX);
         String descriptorIndex = Tools.getData(json, Tools.DESCRIPTOR_INDEX);
-        String[] args = new String[] { deviceID, serviceIndex, characteristicIndex};
+        String[] args = new String[] { deviceAddress, serviceIndex, characteristicIndex};
         if (!isNullOrEmpty(args, callbackContext)) {
             return;
         }
@@ -472,7 +472,7 @@ public class BluetoothSam42 implements IBluetooth {
             Tools.sendErrorMsg(callbackContext);
             return;
         }
-        BluetoothDevice device = bluetoothAdapter.getRemoteDevice(deviceID);
+        BluetoothDevice device = bluetoothAdapter.getRemoteDevice(deviceAddress);
         if (!isConnected(device)) {
             Tools.sendErrorMsg(callbackContext);
             return;
@@ -481,9 +481,9 @@ public class BluetoothSam42 implements IBluetooth {
             mapReadValueCallBack = new HashMap<Object, CallbackContext>();
         }
         if ("".equals(descriptorIndex)) {
-            readCharacteristic(deviceID, serviceIndex, characteristicIndex,callbackContext);
+            readCharacteristic(deviceAddress, serviceIndex, characteristicIndex,callbackContext);
         } else {
-            readDescriptor(deviceID, serviceIndex, characteristicIndex, descriptorIndex,callbackContext);
+            readDescriptor(deviceAddress, serviceIndex, characteristicIndex, descriptorIndex,callbackContext);
         }
     }
 
@@ -493,20 +493,20 @@ public class BluetoothSam42 implements IBluetooth {
         if (!isInitialized(callbackContext)) {
             return;
         }
-        String deviceID = Tools.getData(json, Tools.DEVICE_ID);
+        String deviceAddress = Tools.getData(json, Tools.DEVICE_ADDRESS);
         String serviceIndex = Tools.getData(json, Tools.SERVICE_INDEX);
         String characteristicIndex = Tools.getData(json, Tools.CHARACTERISTIC_INDEX);
         String enable = Tools.getData(json, Tools.ENABLE);
-        String[] args = new String[] { deviceID, serviceIndex, characteristicIndex, enable };
+        String[] args = new String[] { deviceAddress, serviceIndex, characteristicIndex, enable };
         if (!isNullOrEmpty(args, callbackContext)) {
             return;
         }
-        BluetoothDevice device = bluetoothAdapter.getRemoteDevice(deviceID);
+        BluetoothDevice device = bluetoothAdapter.getRemoteDevice(deviceAddress);
         if (!isConnected(device)) {
             Tools.sendErrorMsg(callbackContext);
             return;
         }
-        BluetoothGattCharacteristic bluetoothGattCharacteristic = getCharacteristic(deviceID, serviceIndex,
+        BluetoothGattCharacteristic bluetoothGattCharacteristic = getCharacteristic(deviceAddress, serviceIndex,
                 characteristicIndex);
         BluetoothGattDescriptor bluetoothGattDescriptor = bluetoothGattCharacteristic.getDescriptor(Tools.NOTIFICATION_UUID);
         if ("true".equalsIgnoreCase(enable)) {
@@ -530,12 +530,12 @@ public class BluetoothSam42 implements IBluetooth {
         if (!isInitialized(callbackContext)) {
             return;
         }
-        String deviceID = Tools.getData(json, Tools.DEVICE_ID);
-        if (deviceID == null) {
+        String deviceAddress = Tools.getData(json, Tools.DEVICE_ADDRESS);
+        if (deviceAddress == null) {
             Tools.sendErrorMsg(callbackContext);
             return;
         }
-        BluetoothDevice device = bluetoothAdapter.getRemoteDevice(deviceID);
+        BluetoothDevice device = bluetoothAdapter.getRemoteDevice(deviceAddress);
         if (!isConnected(device)) {
             Tools.sendErrorMsg(callbackContext);
             return;
@@ -546,7 +546,7 @@ public class BluetoothSam42 implements IBluetooth {
         if (mapGetDeviceAllDataCallBack == null) {
             mapGetDeviceAllDataCallBack = new HashMap<String, CallbackContext>();
         }
-        mapGetDeviceAllDataCallBack.put(deviceID, callbackContext);
+        mapGetDeviceAllDataCallBack.put(deviceAddress, callbackContext);
         bluetoothGatt.discoverServices(device);
     }
 
@@ -641,12 +641,12 @@ public class BluetoothSam42 implements IBluetooth {
     @Override
     public void getRSSI(JSONArray json, CallbackContext callbackContext) {
         Log.i(TAG, "getRSSI");
-        String deviceID = Tools.getData(json, Tools.DEVICE_ID);
-        if (deviceID == null) {
+        String deviceAddress = Tools.getData(json, Tools.DEVICE_ADDRESS);
+        if (deviceAddress == null) {
             Tools.sendErrorMsg(callbackContext);
             return;
         }
-        BluetoothDevice device = bluetoothAdapter.getRemoteDevice(deviceID);
+        BluetoothDevice device = bluetoothAdapter.getRemoteDevice(deviceAddress);
         if (!isConnected(device)) {
             Tools.sendErrorMsg(callbackContext);
             return;
@@ -657,7 +657,7 @@ public class BluetoothSam42 implements IBluetooth {
         if (mapRssiData == null) {
             mapRssiData = new HashMap<String, Integer>();
         }
-        mapGetRSSICallBack.put(deviceID, callbackContext);
+        mapGetRSSICallBack.put(deviceAddress, callbackContext);
         bluetoothGatt.readRemoteRssi(device);
     }
 
@@ -687,59 +687,59 @@ public class BluetoothSam42 implements IBluetooth {
         return bluetoothGattDescriptor;
     }
 
-    private boolean writeCharacteristic(String deviceID, String serviceIndex, String characteristicIndex, byte[] value, CallbackContext callbackContext) {
-        BluetoothGattCharacteristic bluetoothGattCharacteristic = getCharacteristic(deviceID, serviceIndex,characteristicIndex);
+    private boolean writeCharacteristic(String deviceAddress, String serviceIndex, String characteristicIndex, byte[] value, CallbackContext callbackContext) {
+        BluetoothGattCharacteristic bluetoothGattCharacteristic = getCharacteristic(deviceAddress, serviceIndex,characteristicIndex);
         mapWriteValueCallBack.put(bluetoothGattCharacteristic, callbackContext);
         bluetoothGattCharacteristic.setValue(value);
         return bluetoothGatt.writeCharacteristic(bluetoothGattCharacteristic);
     }
 
-    private boolean writeDescriptor(String deviceID, String serviceIndex, String characteristicIndex,
+    private boolean writeDescriptor(String deviceAddress, String serviceIndex, String characteristicIndex,
             String descriptorIndex, byte[] value, CallbackContext callbackContext) {
-        BluetoothGattDescriptor bluetoothGattDescriptor = getDescriptor(deviceID, serviceIndex, characteristicIndex,descriptorIndex);
+        BluetoothGattDescriptor bluetoothGattDescriptor = getDescriptor(deviceAddress, serviceIndex, characteristicIndex,descriptorIndex);
         mapWriteValueCallBack.put(bluetoothGattDescriptor, callbackContext);
         bluetoothGattDescriptor.setValue(value);
         return bluetoothGatt.writeDescriptor(bluetoothGattDescriptor);
     }
 
-    private boolean readCharacteristic(String deviceID, String serviceIndex, String characteristicIndex,CallbackContext callbackContext) {
-        BluetoothGattCharacteristic bluetoothGattCharacteristic = getCharacteristic(deviceID, serviceIndex,characteristicIndex);
+    private boolean readCharacteristic(String deviceAddress, String serviceIndex, String characteristicIndex,CallbackContext callbackContext) {
+        BluetoothGattCharacteristic bluetoothGattCharacteristic = getCharacteristic(deviceAddress, serviceIndex,characteristicIndex);
         mapReadValueCallBack.put(bluetoothGattCharacteristic, callbackContext);
         return bluetoothGatt.readCharacteristic(bluetoothGattCharacteristic);
     }
 
-    private boolean readDescriptor(String deviceID, String serviceIndex, String characteristicIndex,String descriptorIndex,CallbackContext callbackContext) {
-        BluetoothGattDescriptor bluetoothGattDescriptor = getDescriptor(deviceID, serviceIndex, characteristicIndex,descriptorIndex);
+    private boolean readDescriptor(String deviceAddress, String serviceIndex, String characteristicIndex,String descriptorIndex,CallbackContext callbackContext) {
+        BluetoothGattDescriptor bluetoothGattDescriptor = getDescriptor(deviceAddress, serviceIndex, characteristicIndex,descriptorIndex);
         mapReadValueCallBack.put(bluetoothGattDescriptor, callbackContext);
         return bluetoothGatt.readDescriptor(bluetoothGattDescriptor);
     }
 
-    private BluetoothGattDescriptor getDescriptor(String deviceID, String serviceIndex, String characteristicIndex,String descriptorIndex) {
-        return (BluetoothGattDescriptor) getCharacteristic(deviceID, serviceIndex, characteristicIndex).getDescriptors().get(Integer.parseInt(descriptorIndex));
+    private BluetoothGattDescriptor getDescriptor(String deviceAddress, String serviceIndex, String characteristicIndex,String descriptorIndex) {
+        return (BluetoothGattDescriptor) getCharacteristic(deviceAddress, serviceIndex, characteristicIndex).getDescriptors().get(Integer.parseInt(descriptorIndex));
     }
 
-    private BluetoothGattCharacteristic getCharacteristic(String deviceID, String serviceIndex,
+    private BluetoothGattCharacteristic getCharacteristic(String deviceAddress, String serviceIndex,
             String characteristicIndex) {
-        return (BluetoothGattCharacteristic) getService(deviceID, serviceIndex).getCharacteristics().get(
+        return (BluetoothGattCharacteristic) getService(deviceAddress, serviceIndex).getCharacteristics().get(
                 Integer.parseInt(characteristicIndex));
     }
 
-    private BluetoothGattService getService(String deviceID, String serviceIndex) {
-        return mapDeviceServices.get(deviceID).get(Integer.parseInt(serviceIndex));
+    private BluetoothGattService getService(String deviceAddress, String serviceIndex) {
+        return mapDeviceServices.get(deviceAddress).get(Integer.parseInt(serviceIndex));
     }
 
 
-    private String getDeviceID(BluetoothGattService service) {
-        String deviceID = "";
+    private String getdeviceAddress(BluetoothGattService service) {
+        String deviceAddress = "";
         Iterator<Entry<String, List<BluetoothGattService>>> it = mapDeviceServices.entrySet().iterator();
         while (it.hasNext()) {
             Entry<String, List<BluetoothGattService>> bluetoothEntry = it.next();
             if (bluetoothEntry.getValue().contains(service)) {
-                deviceID = bluetoothEntry.getKey();
+                deviceAddress = bluetoothEntry.getKey();
                 break;
             }
         }
-        return deviceID;
+        return deviceAddress;
     }
 
     private String getServiceIndex(BluetoothGattService service) {
@@ -793,14 +793,14 @@ public class BluetoothSam42 implements IBluetooth {
         public void onCharacteristicChanged(BluetoothGattCharacteristic characteristic) {
             Log.i(TAG, "onCharacteristicChanged");
             super.onCharacteristicChanged(characteristic);
-            String deviceID = getDeviceID(characteristic.getService());
+            String deviceAddress = getdeviceAddress(characteristic.getService());
             CallbackContext callbackContext = null;
             if (mapSetNotificationCallBack != null) {
                 callbackContext = mapSetNotificationCallBack.get(characteristic);
             }
             if (callbackContext != null) {
                 JSONObject jsonObject = new JSONObject();
-                Tools.addProperty(jsonObject, Tools.DEVICE_ID, deviceID);
+                Tools.addProperty(jsonObject, Tools.DEVICE_ADDRESS, deviceAddress);
                 Tools.addProperty(jsonObject, Tools.SERVICE_INDEX, getServiceIndex(characteristic.getService()));
                 Tools.addProperty(jsonObject, Tools.CHARACTERISTIC_INDEX,
                         getCharacteristicIndex(characteristic.getService(), characteristic));
@@ -816,7 +816,7 @@ public class BluetoothSam42 implements IBluetooth {
         public void onCharacteristicRead(BluetoothGattCharacteristic characteristic, int status) {
             Log.i(TAG, "onCharacteristicRead");
             super.onCharacteristicRead(characteristic, status);
-            String deviceID = getDeviceID(characteristic.getService());
+            String deviceAddress = getdeviceAddress(characteristic.getService());
             CallbackContext callbackContext = null;
             if (mapReadValueCallBack != null) {
                 callbackContext = mapReadValueCallBack.get(characteristic);
@@ -824,7 +824,7 @@ public class BluetoothSam42 implements IBluetooth {
             if (callbackContext != null) {
                 if (status == BluetoothGatt.GATT_SUCCESS) {
                     JSONObject jsonObject = new JSONObject();
-                    Tools.addProperty(jsonObject, Tools.DEVICE_ID, deviceID);
+                    Tools.addProperty(jsonObject, Tools.DEVICE_ADDRESS, deviceAddress);
                     Tools.addProperty(jsonObject, Tools.VALUE, Tools.encodeBase64(characteristic.getValue()));
                     Tools.addProperty(jsonObject, Tools.DATE, Tools.getDateString());
                     callbackContext.success(jsonObject);
@@ -854,34 +854,34 @@ public class BluetoothSam42 implements IBluetooth {
         public void onConnectionStateChange(BluetoothDevice device, int status, int newState) {
             super.onConnectionStateChange(device, status, newState);
             Log.i(TAG, "onConnectionStateChange");
-            String deviceID = device.getAddress();
+            String deviceAddress = device.getAddress();
             CallbackContext connectCallbackContext = null;
             CallbackContext disConnectCallbackContext = null;
             JSONObject jsonObject = new JSONObject();
             if (mapConnectCallBack != null) {
-                connectCallbackContext = mapConnectCallBack.get(deviceID);
+                connectCallbackContext = mapConnectCallBack.get(deviceAddress);
             }
             if (mapDisconnectCallBack != null) {
-                disConnectCallbackContext = mapDisconnectCallBack.get(deviceID);
+                disConnectCallbackContext = mapDisconnectCallBack.get(deviceAddress);
             }
             if (disConnectCallbackContext == null && mapAddListenerCallBack != null) {
                 disConnectCallbackContext = mapAddListenerCallBack.get(Tools.DISCONNECT);
             }
             if (connectCallbackContext != null) {
                 if (status == BluetoothGatt.GATT_SUCCESS && newState == BluetoothProfile.STATE_CONNECTED) {
-                    Tools.addProperty(jsonObject, Tools.DEVICE_ID, deviceID);
+                    Tools.addProperty(jsonObject, Tools.DEVICE_ADDRESS, deviceAddress);
                     Tools.addProperty(jsonObject, Tools.MES, Tools.SUCCESS);
                     connectCallbackContext.success(jsonObject);
                 } else {
                     Tools.sendErrorMsg(connectCallbackContext);
                 }
-                mapConnectCallBack.remove(deviceID);
+                mapConnectCallBack.remove(deviceAddress);
                 return;
             }
             if (disConnectCallbackContext != null) {
-            	Log.i(TAG, "device: "+deviceID+" disconnect!");
+            	Log.i(TAG, "device: "+deviceAddress+" disconnect!");
                 if (newState == BluetoothProfile.STATE_DISCONNECTED && status == BluetoothGatt.GATT_SUCCESS) {
-                    Tools.addProperty(jsonObject, Tools.DEVICE_ID, deviceID);
+                    Tools.addProperty(jsonObject, Tools.DEVICE_ADDRESS, deviceAddress);
                     Tools.addProperty(jsonObject, Tools.MES, Tools.SUCCESS);
                     PluginResult pluginResult = new PluginResult(PluginResult.Status.OK, jsonObject);
                     pluginResult.setKeepCallback(true);
@@ -889,7 +889,7 @@ public class BluetoothSam42 implements IBluetooth {
                 } else {
                     Tools.sendErrorMsg(disConnectCallbackContext);
                 }
-                mapDisconnectCallBack.remove(deviceID);
+                mapDisconnectCallBack.remove(deviceAddress);
             }
         }
 
@@ -897,21 +897,21 @@ public class BluetoothSam42 implements IBluetooth {
         public void onReadRemoteRssi(BluetoothDevice device, int rssi, int status) {
             super.onReadRemoteRssi(device, rssi, status);
             Log.i(TAG, "onReadRemoteRssi");
-            String deviceID = device.getAddress();
+            String deviceAddress = device.getAddress();
             CallbackContext callbackContext = null;
             if (mapGetRSSICallBack != null) {
-                callbackContext = mapGetRSSICallBack.get(deviceID);
+                callbackContext = mapGetRSSICallBack.get(deviceAddress);
             }
             if (callbackContext != null) {
                 if (status == BluetoothGatt.GATT_SUCCESS) {
                     JSONObject jsonObject = new JSONObject();
-                    Tools.addProperty(jsonObject, Tools.DEVICE_ID, deviceID);
+                    Tools.addProperty(jsonObject, Tools.DEVICE_ADDRESS, deviceAddress);
                     Tools.addProperty(jsonObject, Tools.RSSI, Integer.toString(rssi));
                     callbackContext.success(jsonObject);
                 } else {
                     Tools.sendErrorMsg(callbackContext);
                 }
-                mapGetRSSICallBack.remove(deviceID);
+                mapGetRSSICallBack.remove(deviceAddress);
             }
         }
 
@@ -919,12 +919,12 @@ public class BluetoothSam42 implements IBluetooth {
         public void onDescriptorRead(BluetoothGattDescriptor descriptor, int status) {
             super.onDescriptorRead(descriptor, status);
             Log.i(TAG, "onDescriptorRead");
-            String deviceID = getDeviceID(descriptor.getCharacteristic().getService());
+            String deviceAddress = getdeviceAddress(descriptor.getCharacteristic().getService());
             CallbackContext callbackContext = mapReadValueCallBack.get(descriptor);
             if (callbackContext != null) {
                 if (status == BluetoothGatt.GATT_SUCCESS) {
                     JSONObject jsonObject = new JSONObject();
-                    Tools.addProperty(jsonObject, Tools.DEVICE_ID, deviceID);
+                    Tools.addProperty(jsonObject, Tools.DEVICE_ADDRESS, deviceAddress);
                     Tools.addProperty(jsonObject, Tools.VALUE, Tools.encodeBase64(descriptor.getValue()));
                     Tools.addProperty(jsonObject, Tools.DATE, Tools.getDateString());
                     callbackContext.success(jsonObject);
@@ -969,11 +969,11 @@ public class BluetoothSam42 implements IBluetooth {
         public void onServicesDiscovered(BluetoothDevice device, int status) {
             super.onServicesDiscovered(device, status);
             Log.i(TAG, "onServicesDiscovered");
-            String deviceID = device.getAddress();
+            String deviceAddress = device.getAddress();
             @SuppressWarnings("unchecked")
             List<BluetoothGattService> listServices = bluetoothGatt.getServices(device);
             JSONObject jsonObject = new JSONObject();
-            Tools.addProperty(jsonObject, Tools.DEVICE_ID, deviceID);
+            Tools.addProperty(jsonObject, Tools.DEVICE_ADDRESS, deviceAddress);
             JSONArray services = new JSONArray();
             int index = 0;
             for(Iterator<BluetoothGattService> it = listServices.iterator();it.hasNext();){
@@ -989,19 +989,19 @@ public class BluetoothSam42 implements IBluetooth {
             if (mapDeviceServices == null) {
                 mapDeviceServices = new HashMap<String, List<BluetoothGattService>>();
             }
-            mapDeviceServices.put(deviceID, listServices);
+            mapDeviceServices.put(deviceAddress, listServices);
             CallbackContext getServicesCallback = null;
             CallbackContext getDeviceAllDataCallback = null;
             if (mapGetServicesCallBack != null) {
-                getServicesCallback = mapGetServicesCallBack.get(deviceID);
+                getServicesCallback = mapGetServicesCallBack.get(deviceAddress);
             }
             if (mapGetDeviceAllDataCallBack != null) {
-                getDeviceAllDataCallback = mapGetDeviceAllDataCallBack.get(deviceID);
+                getDeviceAllDataCallback = mapGetDeviceAllDataCallBack.get(deviceAddress);
             }
             int serviceLength = listServices.size();
             if (getServicesCallback != null) {
                 getServicesCallback.success(jsonObject);
-                mapGetServicesCallBack.remove(deviceID);
+                mapGetServicesCallBack.remove(deviceAddress);
             }
             if (getDeviceAllDataCallback != null) {
                 JSONArray deviceAllData = null;
@@ -1019,7 +1019,7 @@ public class BluetoothSam42 implements IBluetooth {
                     }
                     JSONArray characteristics = new JSONArray();
                     @SuppressWarnings("unchecked")
-                    List<BluetoothGattCharacteristic> bluetoothGattCharacteristics = getService(deviceID, Integer.toString(i)).getCharacteristics();
+                    List<BluetoothGattCharacteristic> bluetoothGattCharacteristics = getService(deviceAddress, Integer.toString(i)).getCharacteristics();
                     int charaLength = bluetoothGattCharacteristics.size();
                     for (int j = 0; j < charaLength; j++) {
                         JSONObject characteristic = new JSONObject();
@@ -1049,7 +1049,7 @@ public class BluetoothSam42 implements IBluetooth {
                 }
                 Tools.addProperty(jsonObject, Tools.SERVICES, deviceAllData);
                 getDeviceAllDataCallback.success(jsonObject);
-                mapGetDeviceAllDataCallBack.remove(deviceID);
+                mapGetDeviceAllDataCallBack.remove(deviceAddress);
             }
         }
 
@@ -1057,12 +1057,12 @@ public class BluetoothSam42 implements IBluetooth {
         public void onScanResult(BluetoothDevice device, int rssi, byte[] scanRecord) {
             super.onScanResult(device, rssi, scanRecord);
             Log.i(TAG, "onScanResult");
-            String deviceID = device.getAddress();
+            String deviceAddress = device.getAddress();
             if (!bluetoothDevices.contains(device)) {
                 bluetoothDevices.add(device);
-                mapDeviceAdvData.put(deviceID, scanRecord);
+                mapDeviceAdvData.put(deviceAddress, scanRecord);
             }
-            mapRssiData.put(deviceID, rssi);
+            mapRssiData.put(deviceAddress, rssi);
         }
     };
 

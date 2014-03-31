@@ -59,7 +59,7 @@
 	 * 	alert("device:"+ deviceAddress +" is disconnect!");
 	 * }
 	 * @event devicedisconnect
-	 * @property {string} deviceAddress - The ID of this device which is disconnected
+	 * @property {string} deviceAddress - The Address of this device which is disconnected
 	 * @type {object}
 	 */
 	
@@ -295,7 +295,7 @@
 				alert(JSON.stringify(data));
 			}
 			window.APPID = data.appID;
-			window.DEVICEID = data.deviceAddress;
+			window.DEVICEADDRESS = data.deviceAddress;
 			window.API = data.api;
 			window.VERSION = data.version;
 			
@@ -1148,12 +1148,12 @@
 	 * <p><b>Please note</b> that the application should not create Device object, BC manages the object model.
 	 * @class
 	 * @param {string} deviceName - The name of the device
-	 * @param {string} deviceAddress - The ID of the device(ID is assigned by the smart phone,if there is no ID, it is recommended to new the device instance after obtaining devices' information from BC.Bluetooth.startScan)
+	 * @param {string} deviceAddress - The Address of the device(Address is assigned by the smart phone,if there is no Address, it is recommended to new the device instance after obtaining devices' information from BC.Bluetooth.StartScan)
 	 * @param {object} advertisementData - The device advertisement data, includes LocalName, TxPowerLevel, IsConnectable, ServiceData, ManufacturerData, ServiceUUIDs, SolicitedServiceUUIDs, OverflowServiceUUIDs
 	 * @param {boolean} isConnected - If this device is connected
 	 * @param {int} RSSI - The RSSI of the device
 	 * @property {string} deviceName - The name of this device
-	 * @property {string} deviceAddress - The ID of this device
+	 * @property {string} deviceAddress - The Address of this device
 	 * @property {Array<Service>} services - The services of this device
 	 * @property {boolean} isConnected - If this device is connected
 	 * @property {int} RSSI - The RSSI of the device
