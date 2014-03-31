@@ -1,0 +1,18 @@
+{
+    "version": "1.0.0",
+    "name": "org.bcsphere.bluetooth",
+    "cordova_name": "bcsphere.bluetooth",
+    "description": "Use the Bluetooth Low Energy plugin to connect your Phonegap app to new Bluetooth devices like heart rate monitors, thermometers, etc...",
+    "license": "Apache 2.0 License",
+    "keywords": [
+        "bluetooth",
+        "low energy",
+        "smart"
+    ],
+    "engines": [
+        {
+            "name": "cordova",
+            "version": ">=3.0.0"
+        }
+    ]
+}
