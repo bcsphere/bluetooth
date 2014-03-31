@@ -54,56 +54,56 @@ var bluetooth = {
 		}
     },
     
-    connectDevice: function(successFunc,errorFunc,deviceID,appID){
-    	cordova.exec(successFunc,errorFunc, "BCBluetooth", "connect", [{"deviceID":deviceID,"appID":appID}]);
+    connectDevice: function(successFunc,errorFunc,deviceAddress,appID){
+    	cordova.exec(successFunc,errorFunc, "BCBluetooth", "connect", [{"deviceAddress":deviceAddress,"appID":appID}]);
     },
     
-    disconnectDevice: function(successFunc,errorFunc,deviceID,appID){
-    	cordova.exec(successFunc,errorFunc, "BCBluetooth", "disconnect", [{"deviceID":deviceID,"appID":appID}]);
+    disconnectDevice: function(successFunc,errorFunc,deviceAddress,appID){
+    	cordova.exec(successFunc,errorFunc, "BCBluetooth", "disconnect", [{"deviceAddress":deviceAddress,"appID":appID}]);
     },
     
-    discoverServices: function(successFunc,errorFunc,deviceID){
-    	cordova.exec(successFunc,errorFunc, "BCBluetooth", "getServices", [{"deviceID":deviceID}]);
+    discoverServices: function(successFunc,errorFunc,deviceAddress){
+    	cordova.exec(successFunc,errorFunc, "BCBluetooth", "getServices", [{"deviceAddress":deviceAddress}]);
     },
     
-    discoverCharacteristics: function(successFunc,errorFunc,deviceID,serviceIndex){
-    	cordova.exec(successFunc,errorFunc, "BCBluetooth", "getCharacteristics", [{"deviceID":deviceID,"serviceIndex":serviceIndex}]);
+    discoverCharacteristics: function(successFunc,errorFunc,deviceAddress,serviceIndex){
+    	cordova.exec(successFunc,errorFunc, "BCBluetooth", "getCharacteristics", [{"deviceAddress":deviceAddress,"serviceIndex":serviceIndex}]);
     },
     
-    discoverDescriptors: function(successFunc,errorFunc,deviceID,serviceIndex,charcteristicIndex){
-    	cordova.exec(successFunc,errorFunc, "BCBluetooth", "getDescriptors", [{"deviceID":deviceID,"serviceIndex":serviceIndex,"characteristicIndex":charcteristicIndex}]);
+    discoverDescriptors: function(successFunc,errorFunc,deviceAddress,serviceIndex,charcteristicIndex){
+    	cordova.exec(successFunc,errorFunc, "BCBluetooth", "getDescriptors", [{"deviceAddress":deviceAddress,"serviceIndex":serviceIndex,"characteristicIndex":charcteristicIndex}]);
     },
     
-    readCharacteristic: function(successFunc,errorFunc,deviceID,serviceIndex,characteristicIndex){
-    	cordova.exec(successFunc,errorFunc, "BCBluetooth", "readValue", [{"deviceID":deviceID,"serviceIndex":serviceIndex,"characteristicIndex":characteristicIndex,"descriptorIndex":""}]);
+    readCharacteristic: function(successFunc,errorFunc,deviceAddress,serviceIndex,characteristicIndex){
+    	cordova.exec(successFunc,errorFunc, "BCBluetooth", "readValue", [{"deviceAddress":deviceAddress,"serviceIndex":serviceIndex,"characteristicIndex":characteristicIndex,"descriptorIndex":""}]);
     },
     
-    writeCharacteristic: function(successFunc,errorFunc,deviceID,serviceIndex,characteristicIndex,writeValue){
-    	cordova.exec(successFunc,errorFunc, "BCBluetooth", "writeValue", [{"deviceID":deviceID,"serviceIndex":serviceIndex,"characteristicIndex":characteristicIndex,"descriptorIndex":"","writeValue":writeValue}]);
+    writeCharacteristic: function(successFunc,errorFunc,deviceAddress,serviceIndex,characteristicIndex,writeValue){
+    	cordova.exec(successFunc,errorFunc, "BCBluetooth", "writeValue", [{"deviceAddress":deviceAddress,"serviceIndex":serviceIndex,"characteristicIndex":characteristicIndex,"descriptorIndex":"","writeValue":writeValue}]);
     },
     
-    subscribe: function(successFunc,errorFunc,deviceID,serviceIndex,characteristicIndex,notifyEventName){
-        cordova.exec(successFunc,errorFunc, "BCBluetooth", "setNotification", [{"deviceID":deviceID,"serviceIndex":serviceIndex,"characteristicIndex":characteristicIndex,"enable":"true"}]); 
+    subscribe: function(successFunc,errorFunc,deviceAddress,serviceIndex,characteristicIndex,notifyEventName){
+        cordova.exec(successFunc,errorFunc, "BCBluetooth", "setNotification", [{"deviceAddress":deviceAddress,"serviceIndex":serviceIndex,"characteristicIndex":characteristicIndex,"enable":"true"}]); 
     },
     
-    unsubscribe: function(successFunc,errorFunc,deviceID,serviceIndex,characteristicIndex,notifyEventName){
-        cordova.exec(successFunc,errorFunc, "BCBluetooth", "setNotification", [{"deviceID":deviceID,"serviceIndex":serviceIndex,"characteristicIndex":characteristicIndex,"enable":"false"}]); 
+    unsubscribe: function(successFunc,errorFunc,deviceAddress,serviceIndex,characteristicIndex,notifyEventName){
+        cordova.exec(successFunc,errorFunc, "BCBluetooth", "setNotification", [{"deviceAddress":deviceAddress,"serviceIndex":serviceIndex,"characteristicIndex":characteristicIndex,"enable":"false"}]); 
     },
 	
 	notify: function(successFunc,errorFunc,uniqueID,characteristicIndex,data){
 		cordova.exec(successFunc,errorFunc, "BCBluetooth", "notify" , [{"uniqueID":uniqueID,"characteristicIndex":characteristicIndex,"data":data}]);
 	},
 
-	readDescriptor: function(successFunc,errorFunc,deviceID,serviceIndex,characteristicIndex,descriptorIndex){
-    	cordova.exec(successFunc,errorFunc, "BCBluetooth", "readValue", [{"deviceID":deviceID,"serviceIndex":serviceIndex,"characteristicIndex":characteristicIndex,"descriptorIndex":descriptorIndex}]);
+	readDescriptor: function(successFunc,errorFunc,deviceAddress,serviceIndex,characteristicIndex,descriptorIndex){
+    	cordova.exec(successFunc,errorFunc, "BCBluetooth", "readValue", [{"deviceAddress":deviceAddress,"serviceIndex":serviceIndex,"characteristicIndex":characteristicIndex,"descriptorIndex":descriptorIndex}]);
     },
 	
-	getDeviceAllData : function(successFunc,errorFunc,deviceID){
-		cordova.exec(successFunc,errorFunc, "BCBluetooth", "getDeviceAllData",[{"deviceID":deviceID}]);
+	getDeviceAllData : function(successFunc,errorFunc,deviceAddress){
+		cordova.exec(successFunc,errorFunc, "BCBluetooth", "getDeviceAllData",[{"deviceAddress":deviceAddress}]);
 	},
 	
-	getRSSI : function(successFunc,errorFunc,deviceID){
-		cordova.exec(successFunc,errorFunc, "BCBluetooth", "getRSSI",[{"deviceID":deviceID}]);
+	getRSSI : function(successFunc,errorFunc,deviceAddress){
+		cordova.exec(successFunc,errorFunc, "BCBluetooth", "getRSSI",[{"deviceAddress":deviceAddress}]);
 	},
 	
 	addServices : function(successFunc,errorFunc,servicesData){
@@ -122,12 +122,12 @@ var bluetooth = {
 		cordova.exec(successFunc,errorFunc,"BCBluetooth","getPairedDevices",[]);
 	},
 	
-	createPair : function(successFunc,errorFunc,deviceID){
-		cordova.exec(successFunc,errorFunc, "BCBluetooth", "createPair",[{"deviceID":deviceID}]);
+	createPair : function(successFunc,errorFunc,deviceAddress){
+		cordova.exec(successFunc,errorFunc, "BCBluetooth", "createPair",[{"deviceAddress":deviceAddress}]);
 	},
 	
-	removePair : function(successFunc,errorFunc,deviceID){
-		cordova.exec(successFunc,errorFunc, "BCBluetooth", "removePair",[{"deviceID":deviceID}]);
+	removePair : function(successFunc,errorFunc,deviceAddress){
+		cordova.exec(successFunc,errorFunc, "BCBluetooth", "removePair",[{"deviceAddress":deviceAddress}]);
 	},
 	
 	getEnvironment : function(successFunc,errorFunc){
