@@ -26,6 +26,7 @@
 #import <CoreLocation/CoreLocation.h>
 @interface BCBluetooth : CDVPlugin <CBCentralManagerDelegate, CBPeripheralDelegate,CBPeripheralManagerDelegate,CLLocationManagerDelegate>
 {
+    NSTimer *stopScanTimer;
     NSInteger serviceNum;
     NSInteger characteristicNum;
     NSInteger stateChangeCount;
@@ -34,6 +35,7 @@
     BOOL isConnectedByManager;
     BOOL isVariableInit;
     BOOL isRead;
+    BOOL isFindingPeripheral;
 }
 
 @property (retain, nonatomic) CBPeripheralManager *myPeripheralManager;

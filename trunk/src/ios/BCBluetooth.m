@@ -26,6 +26,7 @@
 #define BLUETOOTH_CLOSE @"bluetoothclose"
 #define DEVICE_NAME @"deviceName"
 #define DEVICE_ADDRESS @"deviceAddress"
+#define PERIPHERALADDRESS @"peripheralAddress"
 #define MES @"mes"
 #define DATA @"data"
 #define ADVERTISEMENT_DATA @"advertisementData"
@@ -183,6 +184,7 @@
     isAddAllData = FALSE;
     isConnectedByManager = FALSE;
     isRead = FALSE;
+    isFindingPeripheral = FALSE;
     myPeripheralManager = [[CBPeripheralManager alloc] initWithDelegate:self queue:nil];
     serviceAndKeyDic = [[NSMutableDictionary alloc] init];
     eventNameAndCallbackIdDic = [[NSMutableDictionary alloc] init];
@@ -260,6 +262,7 @@
         }else{
             [myCentralManager scanForPeripheralsWithServices:nil options:0];
         }
+        isFindingPeripheral = FALSE;
         NSMutableDictionary *callbackInfo = [[NSMutableDictionary alloc] init];
         [callbackInfo setValue:SUCCESS forKey:MES];
         CDVPluginResult* result = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK messageAsDictionary:callbackInfo];
@@ -271,6 +274,7 @@
 
 - (void)stopScan:(CDVInvokedUrlCommand*)command{
     [myCentralManager stopScan];
+    isFindingPeripheral = TRUE;
     NSMutableDictionary *callbackInfo = [[NSMutableDictionary alloc] init];
     [callbackInfo setValue:SUCCESS forKey:MES];
     CDVPluginResult* result = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK messageAsDictionary:callbackInfo];
@@ -329,7 +333,14 @@
                     }
                 }
             }else{
-                [self error:command.callbackId];
+                if (!isFindingPeripheral) {
+                    isFindingPeripheral = TRUE;
+                    [myCentralManager scanForPeripheralsWithServices:nil options:nil];
+                    [[NSUserDefaults standardUserDefaults] setValue:deviceAddress forKey:PERIPHERALADDRESS];
+                    stopScanTimer = [NSTimer scheduledTimerWithTimeInterval:5 target:self selector:@selector(stopToScan) userInfo:nil repeats:NO];
+                }else{
+                    [self error:command.callbackId];
+                }
             }
         }else{
             [self error:command.callbackId];
@@ -337,6 +348,11 @@
     }else{
         [self error:command.callbackId];
     }
+}
+
+- (void)stopToScan{
+    [myCentralManager stopScan];
+    [self error:[[NSUserDefaults standardUserDefaults] valueForKey:[[NSUserDefaults standardUserDefaults] valueForKey:PERIPHERALADDRESS]]];
 }
 
 - (void)disconnect:(CDVInvokedUrlCommand*)command{
@@ -916,7 +932,7 @@
 - (void)peripheralManager:(CBPeripheralManager *)peripheral didAddService:(CBService *)service error:(NSError *)error{
     if (!error) {
         if (isEndOfAddService) {
-            [myPeripheralManager startAdvertising:@{ CBAdvertisementDataLocalNameKey : @"jumacc", CBAdvertisementDataServiceUUIDsKey:@[[CBUUID UUIDWithString:@"0000ffe0-0000-1000-8000-00805f9b34fb"]]}];
+            [myPeripheralManager startAdvertising:@{ CBAdvertisementDataLocalNameKey : @"bcsocket", CBAdvertisementDataServiceUUIDsKey:@[[CBUUID UUIDWithString:@"0000ffe0-0000-1000-8000-00805f9b34fb"]]}];
             CDVPluginResult* result = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK];
             [self.commandDelegate sendPluginResult:result callbackId:[[NSUserDefaults standardUserDefaults] objectForKey:ADDSERVICE]];
         }
@@ -1008,6 +1024,14 @@
 }
 
 - (void)centralManager:(CBCentralManager *)central didDiscoverPeripheral:(CBPeripheral *)peripheral advertisementData:(NSDictionary *)advertisementData RSSI:(NSNumber *)RSSI{
+    if (isFindingPeripheral) {
+        if ([[[NSUserDefaults standardUserDefaults] valueForKey:PERIPHERALADDRESS] isEqual:[self getPeripheralUUID:peripheral]]) {
+            [myCentralManager stopScan];
+            [myCentralManager connectPeripheral:peripheral options:nil];
+            isFindingPeripheral = FALSE;
+            [stopScanTimer invalidate];
+        }
+    }
     NSString *peripheralUUID = [self getPeripheralUUID:peripheral];
     if (_peripherals.count == 0){
         _peripherals = [[NSMutableArray alloc] initWithObjects:peripheral,nil];
