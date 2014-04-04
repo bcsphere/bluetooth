@@ -306,10 +306,6 @@ public class BluetoothHTC41 implements IBluetooth {
             return;
         }
         BluetoothDevice device = bluetoothAdapter.getRemoteDevice(deviceAddress);
-        // if (!isConnected(device)) {
-        // Tools.sendErrorMsg(callbackContext);
-        // return;
-        // }
         byte[] value = Tools.decodeBase64(writeValue);
         if (mapWriteValueCallBack == null) {
             mapWriteValueCallBack = new HashMap<Object, CallbackContext>();
