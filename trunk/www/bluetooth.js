@@ -1,4 +1,4 @@
-/*
+cordova.define("org.bcsphere.bluetooth.bluetooth", function(require, exports, module) { /*
 	Copyright 2013-2014, JUMA Technology
 
 	Licensed under the Apache License, Version 2.0 (the "License");
@@ -37,7 +37,6 @@ var bluetooth = {
      */
     startScan: function(successFunc,errorFunc,serviceUUIDs) {
         cordova.exec(successFunc,errorFunc, "BCBluetooth", "startScan", serviceUUIDs);
-
     },
     
 	getScanData: function(getDevicesSuccess,getDevicesError){
@@ -147,3 +146,4 @@ var bluetooth = {
 	},
 };
 module.exports = bluetooth;
+});

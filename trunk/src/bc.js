@@ -37,6 +37,7 @@
 	 */
 	DEBUG = false;
 	
+	BC.plugins = {};
 	
 	/**
 	 * BC ready event,this is the "main" function of BLE application.
@@ -45,6 +46,16 @@
 	 * 	alert("BC is ready now! you can process UI event here");
 	 * }
 	 * @event bcready
+	 * @type {object}
+	 */
+	 
+	/**
+	 * BC core ready event,this is the "main" function of BLE plugin based on BC.js .
+	 * @example document.addEventListener('bccoreready', onBCCoreReady, false);
+	 * function onBCCoreReady(){
+	 *  BC.bluetooth.registerPlugin("your.plugin.id","your.plugin.ready.event");
+	 * }
+	 * @event bccoreready
 	 * @type {object}
 	 */
 	
@@ -56,6 +67,28 @@
 			alert(JSON.stringify(message));
 		}	
 	}
+	
+	//wait for plugin ready
+	var time = 0;
+	window.setTimeout(function(){
+		var interval = window.setInterval(function() {
+			var isAllReady = true;
+			for(var plugin in BC.plugins){
+				if(time == 5){
+					window.clearInterval(interval);
+					BC.bluetooth.dispatchEvent("pulginTimeout");
+				}else{
+					if(!plugin.isReady){
+						isAllReady = false;
+					}
+				}
+			}
+			time++;
+			if(isAllReady){
+				fireDocumentEvent("bcready");
+			}
+		}, 100);
+	},100);
 	
 	//class extend function
 	var extend = function(protoProps, staticProps) {
@@ -197,7 +230,7 @@
 				}else{
 					BC.bluetooth.isopen = true;
 				}
-				fireDocumentEvent("bcready");
+				fireDocumentEvent("bccoreready");
 			},testFunc);
 		},function(mes){alert(JSON.stringify(mes));});
 	}
@@ -278,11 +311,11 @@
 			this._eventList.push({listener:listener,type:type});
 		},
 		
-		removeEventListener:function(type,listener){
+		removeEventListener:function(type){
 			var s = this,i,length;
 			length = s._eventList.length;
 			for(i=0; i < length; i++){
-				if(type == s._eventList[i].type && s._eventList[i].listener == listener){
+				if(type == s._eventList[i].type){
 					s._eventList.splice(i,1);
 					return;
 				}
@@ -892,6 +925,27 @@
 			return result;
 		},
 	   
+	});
+	
+	/**
+	 * Plugin class provide a way to develop your HW SDK based on BC.js .
+	 * @class
+	 * @property {string} pluginID - the pluginID of your plugin, it is recommend to use reverse domain name format(such as "your.plugin.id").
+	 * @property {string} pluginReadyEvent - The services add by 'AddService' interface
+	 */
+	var Plugin = BC.Plugin = BC.EventDispatcher.extend({
+		initialize : function(pluginID,pluginReadyEvent){
+			this.pluginID = pluginID;
+			this.isReady = false;
+			BC.plugins[pluginID] = this;
+			this.pluginReadyEvent = pluginReadyEvent;
+			BC.bluetooth.addEventListener(pluginReadyEvent,function(){
+				BC.plugins[pluginID].isReady = true;
+				BC.bluetooth.removeEventListener(pluginReadyEvent);
+			});
+
+			this.pluginInitialize.apply(this, arguments);
+		},
 	});
 	
 	/**
