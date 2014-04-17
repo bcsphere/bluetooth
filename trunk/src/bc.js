@@ -13,7 +13,7 @@
 	See the License for the specific language governing permissions and
 	limitations under the License.
 */
-(function(){
+//(function(){
 	var root = this;
 	/**
 	 * BC namespace includes all kinds of magic things, all the classes is registered on it, enjoy it :).
@@ -28,7 +28,7 @@
 		BC = root.BC = {};
 	}
 	
-	BC.VERSION = "0.2.1";
+	BC.VERSION = "0.3.0";
 	/** 
 	 * Opens all useful alert.
 	 * @global 
@@ -51,8 +51,11 @@
 	/**
 	 * BC core ready event,this is the "main" function of BLE plugin based on BC.js .
 	 * @example document.addEventListener('bccoreready', onBCCoreReady, false);
-	 * function onBCCoreReady(){
-	 *  BC.bluetooth.registerPlugin("your.plugin.id","your.plugin.ready.event");
+	 * 	function onBCCoreReady(){
+	 *	var eventName = "org.bcsphere.ibeacon.ready";
+	 *	var iBeaconManager = BC.iBeaconManager = new BC.IBeaconManager("org.bcsphere.ibeacon",eventName);
+	 *	//plugin is ready, fire the event.
+	 *	BC.bluetooth.dispatchEvent(eventName);
 	 * }
 	 * @event bccoreready
 	 * @type {object}
@@ -612,13 +615,16 @@
 	 * var property = ["read","write","writeWithoutResponse",
 	 *				   "broadcast","notify","indicate","authenticatedSignedWrites",
 	 *				   "extendedProperties","notifyEncryptionRequired","indicateEncryptionRequired"];
-	 * var character1 = BC.Bluetooth.CreateCharacteristic("0000ffe1-0000-1000-8000-00805f9b34fb","01","Hex",property,permission);
-	 *
-	 * //Generates a service instance.
-	 * var service = BC.Bluetooth.CreateService("0000ffe0-0000-1000-8000-00805f9b34fb");
-	 *
+	 * var service = new BC.Service({uuid:"ffe0"});
+	 * var character1 = new BC.Characteristic({uuid:"ffe1",value:"01",type:"Hex",property:property,permission:permission});
+	 * character1.addEventListener("onsubscribestatechange",function(s){alert("OBJECT EVENT!! onsubscribestatechange : (" + s.uuid + ") state:" + s.isSubscribed);});
+	 * character1.addEventListener("oncharacteristicread",function(s){alert("OBJECT EVENT!! oncharacteristicread : (" + s.uuid + ")");});
+	 * character1.addEventListener("oncharacteristicwrite",function(s){alert("OBJECT EVENT!! oncharacteristicwrite : (" + s.uuid + ") writeValue:" + s.writeValue.getHexString());});
+	 * var descriptor1 = new BC.Descriptor({uuid:"2901",value:"00",type:"Hex",permission:permission});
+	 * descriptor1.addEventListener("ondescriptorread",function(s){alert("OBJECT EVENT!! ondescriptorread : " + s.uuid);});
 	 * //Adds a characteristic to a service. 
 	 * service.addCharacteristic(character1);
+	 * character1.addDescriptor(descriptor1);
 	 *
 	 * //Adds a service to the smart phone.
 	 * BC.Bluetooth.AddService(service,app.addServiceSusscess,app.addServiceError);
@@ -861,8 +867,21 @@
 	});
 	
 	/**
-	 * Plugin class provide a way to develop your HW SDK based on BC.js .
+	 * Plugin class provide a way to develop your HW SDK based on BC.js . Plugin should inherit this class,and implement your own 'pluginInitialize' method and fire the pluginReadyEvent after the plugin is ready.
 	 * @class
+	 * @example document.addEventListener('bccoreready', onBCCoreReady, false);
+	 * function onBCCoreReady(){
+	 *	var eventName = "org.bcsphere.ibeacon.ready";
+	 *	var	iBeaconManager = BC.iBeaconManager = new BC.IBeaconManager("org.bcsphere.ibeacon",eventName);
+	 *	//plugin is ready, fire the event.
+	 *	BC.bluetooth.dispatchEvent(eventName);
+	 * }
+	 * var IBeaconManager = BC.IBeaconManager = BC.Plugin.extend({
+	 *	pluginInitialize : function(){
+	 *	 this.ibeacons = {};
+	 *	 this.regions = [];
+	 *	},
+	 * }
 	 * @property {string} pluginID - the pluginID of your plugin, it is recommend to use reverse domain name format(such as "your.plugin.id").
 	 * @property {string} pluginReadyEvent - The services add by 'AddService' interface
 	 */
@@ -907,7 +926,16 @@
 	
 	/**
 	 * Device represents the remote BLE Peripheral device. 
-	 * <p><b>Please note</b> that the application should not create Device object, BC manages the object model.
+	 * <p><b>Please note</b> that the application should not create Device object, BC manages the object model.The plugin can inherit this class,and encapsulate the function based on this class
+	 * @example var BLELight = BC.BLELight = BC.Device.extend({
+	 *  deviceInitialize : function(){},
+	 *  open : function(successFunc,errorFunc){
+	 *  	this.services[0].characteristics[1].write("Hex","1",successFunc,errorFunc);
+	 *  },
+	 *  close : function(successFunc,errorFunc){
+	 *  	this.services[0].characteristics[1].write("Hex","0",successFunc,errorFunc);
+	 *  },
+	 * })
 	 * @class
 	 * @param {string} deviceAddress - The Address of the device(Address is assigned by the smart phone,if there is no Address, it is recommended to new the device instance after obtaining devices' information from BC.Bluetooth.StartScan)
 	 * @param {string} deviceName - The name of the device
@@ -1718,4 +1746,4 @@
 		},
     });
   
-})();
+//})();

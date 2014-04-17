@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>JSDoc: Namespace: BC</title>
+    <title>JSDoc: Class: Plugin</title>
     
     <script src="scripts/prettify/prettify.js"> </script>
     <script src="scripts/prettify/lang-css.js"> </script>
@@ -17,7 +17,7 @@
 
 <div id="main">
     
-    <h1 class="page-title">Namespace: BC</h1>
+    <h1 class="page-title">Class: Plugin</h1>
     
     
 
@@ -27,7 +27,7 @@
     
 <header>
     <h2>
-    BC
+    Plugin
     </h2>
     
 </header>  
@@ -38,10 +38,26 @@
     
     
         
-            <div class="description">BC namespace includes all kinds of magic things, all the classes is registered on it, enjoy it :).</div>
-        
-        
-        
+<dt>
+    <h4 class="name" id="Plugin"><span class="type-signature"></span>new Plugin<span class="signature">()</span><span class="type-signature"></span></h4>
+    
+    
+</dt>
+<dd>
+    
+    
+    <div class="description">
+        Plugin class provide a way to develop your HW SDK based on BC.js . Plugin should inherit this class,and implement your own 'pluginInitialize' method and fire the pluginReadyEvent after the plugin is ready.
+    </div>
+    
+
+    
+    
+    
+    
+    
+    
+    
 <dl class="details">
     
         
@@ -71,7 +87,7 @@
 	
         <tr>
             
-                <td class="name"><code>VERSION</code></td>
+                <td class="name"><code>pluginID</code></td>
             
             
             <td class="type">
@@ -87,7 +103,30 @@
             
             
             
-            <td class="description last">The version of BC</td>
+            <td class="description last">the pluginID of your plugin, it is recommend to use reverse domain name format(such as "your.plugin.id").</td>
+        </tr>
+	
+	
+	
+        <tr>
+            
+                <td class="name"><code>pluginReadyEvent</code></td>
+            
+            
+            <td class="type">
+            
+                
+<span class="param-type">string</span>
+
+
+            
+            </td>
+            
+            
+            
+            
+            
+            <td class="description last">The services add by 'AddService' interface</td>
         </tr>
 	
 	
@@ -115,7 +154,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="bc.js.html">bc.js</a>, <a href="bc.js.html#line23">line 23</a>
+        <a href="bc.js.html">bc.js</a>, <a href="bc.js.html#line888">line 888</a>
     </li></ul></dd>
     
     
@@ -126,8 +165,25 @@
     
 </dl>
 
+    
+    
+
+    
+
+    
+    
+    
+    
+    
+    
+    
+        <h5>Example</h5>
         
-        
+    <pre class="prettyprint"><code>document.addEventListener('bccoreready', onBCCoreReady, false);function onBCCoreReady(){	var eventName = "org.bcsphere.ibeacon.ready";	var	iBeaconManager = BC.iBeaconManager = new BC.IBeaconManager("org.bcsphere.ibeacon",eventName);	//plugin is ready, fire the event.	BC.bluetooth.dispatchEvent(eventName);}var IBeaconManager = BC.IBeaconManager = BC.Plugin.extend({	pluginInitialize : function(){	 this.ibeacons = {};	 this.regions = [];	},}</code></pre>
+
+    
+</dd>
+
     
     </div>
     

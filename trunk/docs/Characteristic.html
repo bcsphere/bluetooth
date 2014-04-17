@@ -200,7 +200,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="bc.js.html">bc.js</a>, <a href="bc.js.html#line1620">line 1620</a>
+        <a href="bc.js.html">bc.js</a>, <a href="bc.js.html#line1417">line 1417</a>
     </li></ul></dd>
     
     
@@ -380,7 +380,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="bc.js.html">bc.js</a>, <a href="bc.js.html#line1829">line 1829</a>
+        <a href="bc.js.html">bc.js</a>, <a href="bc.js.html#line1626">line 1626</a>
     </li></ul></dd>
     
     
@@ -502,7 +502,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="bc.js.html">bc.js</a>, <a href="bc.js.html#line1861">line 1861</a>
+        <a href="bc.js.html">bc.js</a>, <a href="bc.js.html#line1658">line 1658</a>
     </li></ul></dd>
     
     
@@ -753,7 +753,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="bc.js.html">bc.js</a>, <a href="bc.js.html#line1795">line 1795</a>
+        <a href="bc.js.html">bc.js</a>, <a href="bc.js.html#line1592">line 1592</a>
     </li></ul></dd>
     
     
@@ -918,7 +918,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="bc.js.html">bc.js</a>, <a href="bc.js.html#line1666">line 1666</a>
+        <a href="bc.js.html">bc.js</a>, <a href="bc.js.html#line1463">line 1463</a>
     </li></ul></dd>
     
     
@@ -1040,7 +1040,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="bc.js.html">bc.js</a>, <a href="bc.js.html#line1745">line 1745</a>
+        <a href="bc.js.html">bc.js</a>, <a href="bc.js.html#line1542">line 1542</a>
     </li></ul></dd>
     
     
@@ -1207,7 +1207,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="bc.js.html">bc.js</a>, <a href="bc.js.html#line1770">line 1770</a>
+        <a href="bc.js.html">bc.js</a>, <a href="bc.js.html#line1567">line 1567</a>
     </li></ul></dd>
     
     
@@ -1434,7 +1434,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="bc.js.html">bc.js</a>, <a href="bc.js.html#line1703">line 1703</a>
+        <a href="bc.js.html">bc.js</a>, <a href="bc.js.html#line1500">line 1500</a>
     </li></ul></dd>
     
     
@@ -1470,6 +1470,262 @@
     
     
     
+        <h3 class="subsection-title">Events</h3>
+        
+        <dl>
+            
+<dt>
+    <h4 class="name" id="event:oncharacteristicread">oncharacteristicread</h4>
+    
+    
+</dt>
+<dd>
+    
+    
+    <div class="description">
+        Triggered when service characteristic has been read.
+    </div>
+    
+
+    
+        <h5>Type:</h5>
+        <ul>
+            <li>
+                
+<span class="param-type">object</span>
+
+
+            </li>
+        </ul>
+    
+    
+    
+    
+    
+    
+    
+<dl class="details">
+    
+        
+    
+    
+    
+
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="bc.js.html">bc.js</a>, <a href="bc.js.html#line1389">line 1389</a>
+    </li></ul></dd>
+    
+    
+    
+    
+    
+    
+    
+</dl>
+
+    
+    
+
+    
+
+    
+    
+    
+    
+    
+    
+    
+        <h5>Example</h5>
+        
+    <pre class="prettyprint"><code>var character1 = BC.Bluetooth.CreateCharacteristic("0000ffe1-0000-1000-8000-00805f9b34fb","01","Hex",["read"],["read","write"]);character1.addEventListener("oncharacteristicread",function(s){alert("oncharacteristicread : (" + s.uuid + ")");});</code></pre>
+
+    
+</dd>
+
+        
+            
+<dt>
+    <h4 class="name" id="event:oncharacteristicwrite">oncharacteristicwrite</h4>
+    
+    
+</dt>
+<dd>
+    
+    
+    <div class="description">
+        Triggered when service characteristic has been written.
+    </div>
+    
+
+    
+        <h5>Type:</h5>
+        <ul>
+            <li>
+                
+<span class="param-type">object</span>
+
+
+            </li>
+        </ul>
+    
+    
+    
+    
+    
+    
+    
+<dl class="details">
+    
+        
+    
+    
+    
+
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="bc.js.html">bc.js</a>, <a href="bc.js.html#line1399">line 1399</a>
+    </li></ul></dd>
+    
+    
+    
+    
+    
+    
+    
+</dl>
+
+    
+    
+
+    
+
+    
+    
+    
+    
+    
+    
+    
+        <h5>Example</h5>
+        
+    <pre class="prettyprint"><code>var character1 = BC.Bluetooth.CreateCharacteristic("0000ffe1-0000-1000-8000-00805f9b34fb","01","Hex",["write"],["read","write"]);character1.addEventListener("oncharacteristicwrite",function(s){	alert("oncharacteristicwrite : (" + s.uuid + ") writeValue:" + s.writeValue.getHexString());});</code></pre>
+
+    
+</dd>
+
+        
+            
+<dt>
+    <h4 class="name" id="event:onsubscribestatechange">onsubscribestatechange</h4>
+    
+    
+</dt>
+<dd>
+    
+    
+    <div class="description">
+        Triggered when server's characteristic has been subscribe/unsubscribe.
+    </div>
+    
+
+    
+        <h5>Type:</h5>
+        <ul>
+            <li>
+                
+<span class="param-type">object</span>
+
+
+            </li>
+        </ul>
+    
+    
+    
+    
+    
+    
+    
+<dl class="details">
+    
+        
+    
+    
+    
+
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="bc.js.html">bc.js</a>, <a href="bc.js.html#line1379">line 1379</a>
+    </li></ul></dd>
+    
+    
+    
+    
+    
+    
+    
+</dl>
+
+    
+    
+
+    
+
+    
+    
+    
+    
+    
+    
+    
+        <h5>Example</h5>
+        
+    <pre class="prettyprint"><code>var character1 = BC.Bluetooth.CreateCharacteristic("0000ffe1-0000-1000-8000-00805f9b34fb","01","Hex",["notify"],["read","write"]);character1.addEventListener("onsubscribestatechange",function(s){	alert("onsubscribestatechange : (" + s.uuid + ") state:" + s.isSubscribed);});</code></pre>
+
+    
+</dd>
+
+        </dl>
+    
 </article>
 
 </section>  
@@ -1480,13 +1736,13 @@
 </div>
 
 <nav>
-    <h2><a href="index.html">Index</a></h2><h3>Classes</h3><ul><li><a href="Bluetooth.html">Bluetooth</a></li><li><a href="Characteristic.html">Characteristic</a></li><li><a href="DataValue.html">DataValue</a></li><li><a href="Descriptor.html">Descriptor</a></li><li><a href="Device.html">Device</a></li><li><a href="IBeacon.html">IBeacon</a></li><li><a href="Service.html">Service</a></li></ul><h3>Events</h3><ul><li><a href="global.html#event:bcready">bcready</a></li><li><a href="global.html#event:bluetoothstatechange">bluetoothstatechange</a></li><li><a href="global.html#event:deviceconnected">deviceconnected</a></li><li><a href="global.html#event:devicedisconnect">devicedisconnect</a></li><li><a href="global.html#event:ibeaconaccuracyupdate">ibeaconaccuracyupdate</a></li><li><a href="global.html#event:ibeaconproximityupdate">ibeaconproximityupdate</a></li><li><a href="global.html#event:newdevice">newdevice</a></li><li><a href="global.html#event:newibeacon">newibeacon</a></li><li><a href="global.html#event:oncharacteristicread">oncharacteristicread</a></li><li><a href="global.html#event:oncharacteristicwrite">oncharacteristicwrite</a></li><li><a href="global.html#event:ondescriptorread">ondescriptorread</a></li><li><a href="global.html#event:ondescriptorwrite">ondescriptorwrite</a></li><li><a href="global.html#event:onsubscribestatechange">onsubscribestatechange</a></li></ul><h3>Namespaces</h3><ul><li><a href="BC.html">BC</a></li></ul><h3>Global</h3><ul><li><a href="global.html#DEBUG">DEBUG</a></li></ul>
+    <h2><a href="index.html">Index</a></h2><h3>Classes</h3><ul><li><a href="Bluetooth.html">Bluetooth</a></li><li><a href="Characteristic.html">Characteristic</a></li><li><a href="DataValue.html">DataValue</a></li><li><a href="Descriptor.html">Descriptor</a></li><li><a href="Device.html">Device</a></li><li><a href="Plugin.html">Plugin</a></li><li><a href="Service.html">Service</a></li></ul><h3>Events</h3><ul><li><a href="Bluetooth.html#event:bluetoothstatechange">bluetoothstatechange</a></li><li><a href="Bluetooth.html#event:newdevice">newdevice</a></li><li><a href="Characteristic.html#event:oncharacteristicread">oncharacteristicread</a></li><li><a href="Characteristic.html#event:oncharacteristicwrite">oncharacteristicwrite</a></li><li><a href="Characteristic.html#event:onsubscribestatechange">onsubscribestatechange</a></li><li><a href="Descriptor.html#event:ondescriptorread">ondescriptorread</a></li><li><a href="Descriptor.html#event:ondescriptorwrite">ondescriptorwrite</a></li><li><a href="Device.html#event:deviceconnected">deviceconnected</a></li><li><a href="Device.html#event:devicedisconnected">devicedisconnected</a></li><li><a href="global.html#event:bccoreready">bccoreready</a></li><li><a href="global.html#event:bcready">bcready</a></li></ul><h3>Namespaces</h3><ul><li><a href="BC.html">BC</a></li></ul><h3>Global</h3><ul><li><a href="global.html#DEBUG">DEBUG</a></li></ul>
 </nav>
 
 <br clear="both">
 
 <footer>
-    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.3.0-alpha4</a> on Mon Mar 31 2014 11:17:04 GMT+0800 (中国标准时间)
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.3.0-alpha4</a> on Thu Apr 17 2014 18:21:50 GMT+0800 (中国标准时间)
 </footer>
 
 <script> prettyPrint(); </script>
