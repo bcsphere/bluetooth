@@ -13,7 +13,7 @@
 	See the License for the specific language governing permissions and
 	limitations under the License.
 */
-//(function(){
+(function(){
 	var root = this;
 	/**
 	 * BC namespace includes all kinds of magic things, all the classes is registered on it, enjoy it :).
@@ -1746,4 +1746,4 @@
 		},
     });
   
-//})();
+})();
