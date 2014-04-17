@@ -14,7 +14,6 @@
 	limitations under the License.
 */
 (function(){
-
 	var root = this;
 	/**
 	 * BC namespace includes all kinds of magic things, all the classes is registered on it, enjoy it :).
@@ -42,7 +41,7 @@
 	/**
 	 * BC ready event,this is the "main" function of BLE application.
 	 * @example document.addEventListener('bcready', onBCReady, false);
-	 * function onBluetoothReady(){
+	 * function onBCReady(){
 	 * 	alert("BC is ready now! you can process UI event here");
 	 * }
 	 * @event bcready
@@ -1260,7 +1259,6 @@
 		
 		entityInitialize : function(arg){
 			var chars = arg.chars;
-			this.isMajor = arg.isMajor;
 			var service = this;
 			var device = this.device;
 			this.characteristics = [];
@@ -1271,6 +1269,7 @@
 			}else{
 				isMajor = arg.type;
 			}
+			this.isMajor = isMajor;
 			var timestr = new Date().getTime();
 			var randomnum = Math.floor(Math.random()*10000);
 			this.uniqueID = randomnum.toString();
