@@ -297,6 +297,21 @@
 		return ((s == undefined || s == null || s == "") ? true : false); 
 	}
 	
+	var ChangeTo128UUID = BC.Tools.ChangeTo128UUID = function(uuid){
+		var uuid_128 = "";
+		if(uuid.length == 4){
+			var r = new RegExp("[A-Fa-f0-9]{1,4}");
+			if(r.test(uuid)){
+				uuid_128 = "0000"+ uuid +"-0000-1000-8000-00805f9b34fb";
+			}
+		}else if(uuid.length == 36){
+			var r = new RegExp("^[A-Fa-f0-9]{1,8}-[A-Fa-f0-9]{1,4}-[A-Fa-f0-9]{1,4}-[A-Fa-f0-9]{1,12}");
+			if(r.test(uuid)){
+				uuid_128 = uuid;
+			}
+		}
+		return uuid_128;
+	}
 	
 	var EventDispatcher = BC.EventDispatcher = function(){
 		var s = this;
@@ -586,88 +601,7 @@
 	var OpenBluetooth = BC.Bluetooth.OpenBluetooth = function(success,error){
 		BC.bluetooth.openBluetooth(success,error);
 	};
-	/** 
-	 * @memberof Bluetooth
-	 * @method 
-	 * @example //Generates a service instance.
-	 * var service = BC.Bluetooth.CreateService("0000ffe0-0000-1000-8000-00805f9b34fb");
-	 *
-	 * //Adds a service to smart phone.
-	 * BC.Bluetooth.AddService(service,app.addServiceSusscess,app.addServiceError);
-	 * @param {string} uuid - Service UUID (should be 128bit such as : '0000ffe0-0000-1000-8000-00805f9b34fb')
-	 * @param {Number} [type=0] - Is major service(0) or not(!0)
-	 * @returns {Service} An instance of Service
-	 */
-	var CreateService = BC.Bluetooth.CreateService = function(uuid,type){
-		var isMajor;
-		if(type == null){
-			isMajor = 0;
-		}else{
-			isMajor = type;
-		}
-		var timestr = new Date().getTime();
-		var randomnum = Math.floor(Math.random()*10000);
-		return new Service(null,uuid,null,null,null,null,isMajor,timestr.toString() + randomnum.toString());
-	};
-	/** 
-	 * @memberof Bluetooth
-	 * @method 
-	 * @example //Generates a descriptor instance.
-	 * var permission = ["write"];
-	 * var property = ["write","read"];
-	 * var descriptor1 = BC.Bluetooth.CreateDescriptor("00002901-0000-1000-8000-00805f9b34fb","00","Hex",permission);
-	 *
-	 * //Generates a characteristic instance.
-	 * var character1 = BC.Bluetooth.CreateCharacteristic("0000ffe1-0000-1000-8000-00805f9b34fb","01","Hex",property,permission);
-	 *
-	 * //Adds descriptor to characteristic
-	 * character1.addDescriptor(descriptor1);
-	 *
-	 * //Generates a service instance.
-	 * var service = BC.Bluetooth.CreateService("0000ffe0-0000-1000-8000-00805f9b34fb");
-	 *
-	 * //Adds a characteristic to service.
-	 * service.addCharacteristic(character1);
-	 * 
-	 * //Adds a service to smart phone.
-	 * BC.Bluetooth.AddService(service,app.addServiceSusscess,app.addServiceError);
-	 * @param {string} uuid - Descriptor UUID (should be 128bit such as : '00002901-0000-1000-8000-00805f9b34fb')
-	 * @param {string} value - The default value of this descriptor
-	 * @param {string} type - The type of the value,include 'Hex'/'ASCII'/'unicode'
-	 * @param {object} permission - The permission of this descriptor
-	 * @returns {Descriptor} An instance of Descriptor
-	 */
-	var CreateDescriptor = BC.Bluetooth.CreateDescriptor = function(uuid,value,type,permission){
-		return new BC.Descriptor(null,uuid,null,null,null,value,type,permission);
-	};
-	/** 
-	 * @memberof Bluetooth
-	 * @method 
-	 * @example //Generates a characteristic instance.
-	 * var permission = ["write","writeEncrypted"];			 
-	 * var property = ["read","write"];
-	 * var character1 = BC.Bluetooth.CreateCharacteristic("0000ffe1-0000-1000-8000-00805f9b34fb","01","Hex",property,permission);
-	 *
-	 * //Generates a service instance.
-	 * var service = BC.Bluetooth.CreateService("0000ffe0-0000-1000-8000-00805f9b34fb");
-	 *
-	 * //Adds a characteristic to service.
-	 * service.addCharacteristic(character1);
-	 *
-	 * //Adds a service to smart phone
-	 * BC.Bluetooth.AddService(service,app.addServiceSusscess,app.addServiceError);
-	 * @param {string} uuid - Characteristic UUID (should be 128bit such as : '0000ffe0-0000-1000-8000-00805f9b34fb')
-	 * @param {string} value - The default value of this characteristic
-	 * @param {string} type - The type of the value,include 'Hex'/'ASCII'/'unicode'
-	 * @param {object} property - The property of this characteristic
-	 * @param {object} permission - The permission of this characteristic
-	 * @param {string} [writecallback] - The name of write callback function
-	 * @param {string} [readcallback] - The name of read callback function
-	 * @returns {Characteristic} An instance of Characteristic
-	 */
-	var CreateCharacteristic = BC.Bluetooth.CreateCharacteristic = function(uuid,value,type,property,permission){
-		return new BC.Characteristic(null,uuid,null,null,null,null,property,permission,type,value);
-	};
+
 	/** 
 	 * Adds a BLE service to the smart phone.
 	 * @memberof Bluetooth
@@ -765,7 +699,7 @@
 				isConnected = true;
 			}
 			if(isNewDevice(deviceAddress)){
-				var newdevice = new BC.Device(deviceAddress,deviceName,advertisementData,isConnected,RSSI);
+				var newdevice = new BC.Device({deviceAddress:deviceAddress,deviceName:deviceName,advertisementData:advertisementData,isConnected:isConnected,RSSI:RSSI});
 				BC.bluetooth.devices[deviceAddress] = newdevice;
 				BC.bluetooth.dispatchEvent("newdevice",newdevice);
 			}else{
@@ -998,11 +932,11 @@
 	 */
 	var Device = BC.Device = BC.EventDispatcher.extend({
 		
-		initialize : function(deviceAddress,deviceName,advertisementData,isConnected,RSSI){
-			this.deviceAddress = deviceAddress;
-			this.deviceName = deviceName;
-			this.advertisementData = advertisementData;
-			this.isConnected = isConnected;
+		initialize : function(arg){
+			this.deviceAddress = arg.deviceAddress;
+			this.deviceName = arg.deviceName;
+			this.advertisementData = arg.advertisementData;
+			this.isConnected = arg.isConnected;
 			this.services = [];
 			this.isPrepared = false;
 			this.systemID = null;
@@ -1012,7 +946,7 @@
 			this.hardwareRevision = null;
 			this.softwareRevision = null;
 			this.manufacturerName = null;
-			this.RSSI = RSSI;
+			this.RSSI = arg.RSSI;
 			if(!BC.Tools.IsEmpty(this.deviceInitialize)){
 				this.deviceInitialize.apply(this, arguments);
 			}
@@ -1092,7 +1026,7 @@
                     var sindex = service.serviceIndex;
                     var sname = service.serviceName;
                     var suuid = service.serviceUUID;
-                    device.services.push(new BC.Service(sindex,suuid,sname,device,null));
+                    device.services.push(new BC.Service({index:sindex,uuid:suuid,name:sname,device:device}));
                 }
             );
 
@@ -1114,7 +1048,7 @@
 					var sname = service.serviceName;
 					var suuid = service.serviceUUID;
 					var chars = service.characteristics;
-					device.services.push(new BC.Service(sindex,suuid,sname,device,null,chars));
+					device.services.push(new BC.Service({index:sindex,uuid:suuid,name:sname,device:device,chars:chars}));
 				}
 			);
 			this.isPrepared = true;
@@ -1301,12 +1235,12 @@
 	//GATTEntity 
 	var GATTEntity = BC.GATTEntity = BC.EventDispatcher.extend({
 		
-		initialize : function(index,uuid,name,device,upper){
-			this.index = index;
-			this.uuid = uuid;
-			this.name = name;
-			this.upper = upper;
-			this.device = device;
+		initialize : function(arg){
+			this.index = arg.index;
+			this.uuid = BC.Tools.ChangeTo128UUID(arg.uuid);
+			this.name = arg.name;
+			this.upper = arg.upper;
+			this.device = arg.device;
 			this.entityInitialize.apply(this, arguments);
 		},
 		
@@ -1324,21 +1258,30 @@
   var Service = BC.Service = GATTEntity.extend({
 		characteristics : null,
 		
-		entityInitialize : function(){
-			var chars = arguments[5];
-			this.isMajor = arguments[6];
-			this.uniqueID = arguments[7];
+		entityInitialize : function(arg){
+			var chars = arg.chars;
+			this.isMajor = arg.isMajor;
 			var service = this;
 			var device = this.device;
 			this.characteristics = [];
-			BC.Service.create = this.create;
+
+			var isMajor;
+			if(arg.type == null){
+				isMajor = 0;
+			}else{
+				isMajor = arg.type;
+			}
+			var timestr = new Date().getTime();
+			var randomnum = Math.floor(Math.random()*10000);
+			this.uniqueID = randomnum.toString();
+			
 			_.each(chars, function(characteristic){
 					var cindex = characteristic.characteristicIndex;
 					var cname = characteristic.characteristicName;
 					var cuuid = characteristic.characteristicUUID;
 					var dess = characteristic.descriptors;
 					var property = characteristic.characteristicProperty;
-					service.characteristics.push(new BC.Characteristic(cindex,cuuid,cname,device,service,dess,property));
+					service.characteristics.push(new BC.Characteristic({index:cindex,uuid:cuuid,name:cname,device:device,upper:service,dess:dess,property:property}));
 				}
 			);
 			
@@ -1373,7 +1316,7 @@
                     var cname = characteristic.characteristicName;
                     var cuuid = characteristic.characteristicUUID;
                     var property = characteristic.characteristicProperty;
-                    service.characteristics.push(new BC.Characteristic(cindex,cuuid,cname,device,service,null,property));
+                    service.characteristics.push(new BC.Characteristic({index:cindex,uuid:cuuid,name:cname,device:device,upper:service,property:property}));
                 }
             );
             
@@ -1395,14 +1338,9 @@
 		getCharacteristicByUUID : function(uuid){
 			var uuid = uuid.toLowerCase();
 			var result = [];
-			var uuid_128 = "";
-			if(uuid.length == 4){
-				uuid_128 = "0000"+ uuid +"-0000-1000-8000-00805f9b34fb";
-			}else if(uuid.length == 36){
-				uuid_128 = uuid;
-			}
+			var uuid_128 = BC.Tools.ChangeTo128UUID(arg.uuid);
 			_.each(this.characteristics, function(characteristic){
-					if(characteristic.uuid == uuid_128){
+				if(characteristic.uuid == uuid_128){
 						result.push(characteristic);
 					}
 				}
@@ -1456,12 +1394,12 @@
 		type : null,
 		isSubscribed : false,
 		
-		entityInitialize : function(){
-            var dess = arguments[5];
-            this.property = arguments[6];
-            this.permission = arguments[7];
-            this.type = arguments[8];
-            this.value = arguments[9];
+		entityInitialize : function(arg){
+            var dess = arg.dess;
+            this.property = arg.property;
+            this.permission = arg.permission;
+            this.type = arg.type;
+            this.value = arg.value;
 			
             this.descriptors = [];
             var chara = this;
@@ -1470,7 +1408,7 @@
                 var dindex = des.descriptorIndex;
                 var dname = des.descriptorName;
                 var duuid = des.descriptorUUID;
-                chara.descriptors.push(new BC.Descriptor(dindex,duuid,dname,device,chara));
+                chara.descriptors.push(new BC.Descriptor({index:dindex,uuid:duuid,name:dname,upper:chara,device:device}));
             });
             
             this.addDescriptor = function(des){
@@ -1673,7 +1611,7 @@
                 var dindex = des.descriptorIndex;
                 var dname = des.descriptorName;
                 var duuid = des.descriptorUUID;
-                chara.descriptors.push(new BC.Descriptor(dindex,duuid,dname,device,chara));
+                chara.descriptors.push(new BC.Descriptor({index:dindex,uuid:duuid,name:dname,upper:chara,device:device}));
             });
 			this.success();
 		},
@@ -1740,10 +1678,10 @@
     var Descriptor = BC.Descriptor = GATTEntity.extend({
 		value : null,
 		
-		entityInitialize : function(){
-			this.value = arguments[5];
-			this.type = arguments[6];
-			this.permission = arguments[7];
+		entityInitialize : function(arg){
+			this.value = arg.value;
+			this.type = arg.type;
+			this.permission = arg.permission;
 		},
 		
 		/**
