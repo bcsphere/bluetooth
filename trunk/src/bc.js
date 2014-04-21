@@ -1365,7 +1365,7 @@
 		getCharacteristicByUUID : function(uuid){
 			var uuid = uuid.toLowerCase();
 			var result = [];
-			var uuid_128 = BC.Tools.ChangeTo128UUID(arg.uuid);
+			var uuid_128 = BC.Tools.ChangeTo128UUID(uuid);
 			_.each(this.characteristics, function(characteristic){
 				if(characteristic.uuid == uuid_128){
 						result.push(characteristic);
