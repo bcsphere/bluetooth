@@ -549,13 +549,17 @@ public class BluetoothG43plus implements IBluetooth{
 		}
 
 		@Override
-		public void onConnectionStateChange(BluetoothGatt gatt, int status,
-				int newState) {
+		public void onConnectionStateChange(BluetoothGatt gatt, int status,int newState) {
 			Log.i(TAG, "onConnectionStateChange");
 			super.onConnectionStateChange(gatt, status, newState);
-			conncetManage(gatt,newState );
-			disconnectManage(gatt,newState);
-			addEventListenerManage(gatt ,newState);
+			String deviceAddress = gatt.getDevice().getAddress();
+			if (connectCC.get(deviceAddress) != null) {
+			    conncetManage(gatt,newState);
+			}else if(disconnectCC.get(deviceAddress) != null){
+			    disconnectManage(gatt,newState);
+			}else{
+			    addEventListenerManage(gatt ,newState);
+			}
 		}
 
 		@Override
@@ -630,20 +634,19 @@ public class BluetoothG43plus implements IBluetooth{
 	private void disconnectManage(BluetoothGatt gatt , int newStatus){
 		String deviceAddress = getDeviceAddress(gatt);
 		JSONObject obj = new JSONObject();
-		if (disconnectCC.get(deviceAddress) != null) {
-			if (newStatus ==  BluetoothProfile.STATE_DISCONNECTED) {
-				Tools.addProperty(obj, Tools.DEVICE_ADDRESS, getDeviceAddress(gatt));
-				disconnectCC.get(deviceAddress).success(obj);
-				disconnectCC.remove(deviceAddress);
-				connectedDevice.remove(deviceAddress);
-				if (deviceServices.get(deviceAddress) != null) {
-					deviceServices.remove(deviceAddress);
-				}
-			}else {
-				Tools.addProperty(obj, Tools.DEVICE_ADDRESS, deviceAddress);
-				disconnectCC.get(deviceAddress).error(obj);
-				disconnectCC.remove(deviceAddress);
+		if (newStatus ==  BluetoothProfile.STATE_DISCONNECTED) {
+			Tools.addProperty(obj, Tools.DEVICE_ADDRESS, getDeviceAddress(gatt));
+			disconnectCC.get(deviceAddress).success(obj);
+			disconnectCC.remove(deviceAddress);
+			connectedDevice.remove(deviceAddress);
+			if (deviceServices.get(deviceAddress) != null) {
+				deviceServices.remove(deviceAddress);
 			}
+			mBluetoothGatts.remove(deviceAddress);
+		}else {
+			Tools.addProperty(obj, Tools.DEVICE_ADDRESS, deviceAddress);
+			disconnectCC.get(deviceAddress).error(obj);
+			disconnectCC.remove(deviceAddress);
 		}
 	}
 
@@ -822,6 +825,8 @@ public class BluetoothG43plus implements IBluetooth{
 	private void addEventListenerManage(BluetoothGatt gatt, int newState){
 		String deviceAddress = getDeviceAddress(gatt);
 		if (newState == BluetoothGatt.STATE_DISCONNECTED) {
+		    connectedDevice.remove(deviceAddress);
+		    mBluetoothGatts.remove(deviceAddress);
 			JSONObject obj = new JSONObject();
 			Tools.addProperty(obj, Tools.DEVICE_ADDRESS, deviceAddress);
 			PluginResult pluginResult = new PluginResult(PluginResult.Status.OK , obj);
