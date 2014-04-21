@@ -72,25 +72,27 @@
 	
 	//wait for plugin ready
 	var time = 0;
-	window.setTimeout(function(){
-		var interval = window.setInterval(function() {
-			var isAllReady = true;
-			for(var plugin in BC.plugins){
-				if(time == 5){
-					window.clearInterval(interval);
-					BC.bluetooth.dispatchEvent("pulginTimeout");
-				}else{
-					if(!plugin.isReady){
-						isAllReady = false;
+	document.addEventListener("bccoreready",function(){
+		window.setTimeout(function(){
+			var interval = window.setInterval(function() {
+				var isAllReady = true;
+				for(var plugin in BC.plugins){
+					if(time == 5){
+						window.clearInterval(interval);
+						BC.bluetooth.dispatchEvent("pulginTimeout");
+					}else{
+						if(!plugin.isReady){
+							isAllReady = false;
+						}
 					}
 				}
-			}
-			time++;
-			if(isAllReady){
-				fireDocumentEvent("bcready");
-			}
-		}, 100);
-	},100);
+				time++;
+				if(isAllReady){
+					fireDocumentEvent("bcready");
+				}
+			}, 100);
+		},100);
+	});
 	
 	//class extend function
 	var extend = function(protoProps, staticProps) {
@@ -1365,7 +1367,7 @@
 		getCharacteristicByUUID : function(uuid){
 			var uuid = uuid.toLowerCase();
 			var result = [];
-			var uuid_128 = BC.Tools.ChangeTo128UUID(uuid);
+			var uuid_128 = BC.Tools.ChangeTo128UUID(arg.uuid);
 			_.each(this.characteristics, function(characteristic){
 				if(characteristic.uuid == uuid_128){
 						result.push(characteristic);
