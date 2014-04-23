@@ -24,7 +24,6 @@ import android.content.Context;
 public interface IBluetooth {
 	void setContext(Context context);
 	void startScan(JSONArray json,CallbackContext callbackContext);
-	void getScanData(JSONArray json,CallbackContext callbackContext) ;
 	void stopScan(JSONArray json,CallbackContext callbackContext);
 	void connect(JSONArray json,CallbackContext callbackContext) ;
 	void disconnect(JSONArray json,CallbackContext callbackContext) ;

@@ -16,7 +16,6 @@
 
 package org.bcsphere.bluetooth;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
@@ -62,7 +61,6 @@ public class BluetoothSam42 implements IBluetooth {
     private BluetoothGatt bluetoothGatt;
     private BluetoothAdapter bluetoothAdapter;
     private BluetoothGattServer bluetoothGattServer;
-    private List<BluetoothDevice> bluetoothDevices;
     private CallbackContext addServiceCallBack;
     private Map<String, CallbackContext> mapGetRSSICallBack;
     private Map<String, CallbackContext> mapConnectCallBack;
@@ -73,8 +71,6 @@ public class BluetoothSam42 implements IBluetooth {
     private Map<String, CallbackContext> mapAddListenerCallBack;
     private Map<Object, CallbackContext> mapSetNotificationCallBack;
     private Map<String, CallbackContext> mapGetDeviceAllDataCallBack;
-    private Map<String, Integer> mapRssiData;
-    private Map<String, byte[]> mapDeviceAdvData;
     private Map<String, BluetoothGattService> mapRemoteServices;
     private Map<String, List<BluetoothGattService>> mapDeviceServices;
 
@@ -121,13 +117,6 @@ public class BluetoothSam42 implements IBluetooth {
         if (!isInitialized(callbackContext)) {
             return;
         }
-        if (mapDeviceAdvData == null) {
-            mapDeviceAdvData = new HashMap<String, byte[]>();
-        }
-        if (mapRssiData == null) {
-            mapRssiData = new HashMap<String, Integer>();
-        }
-        bluetoothDevices = new ArrayList<BluetoothDevice>();
         UUID[] uuids = Tools.getUUIDs(json);
         boolean result = false;
         if (uuids == null || uuids.length < 1) {
@@ -141,23 +130,6 @@ public class BluetoothSam42 implements IBluetooth {
         }
         scanning = true;
         Tools.sendSuccessMsg(callbackContext);
-    }
-
-    @Override
-    public void getScanData(JSONArray json, CallbackContext callbackContext) {
-        Log.i(TAG, "getScanData");
-        JSONArray jsonDevices = new JSONArray();
-        for (BluetoothDevice device : bluetoothDevices) {
-            String deviceAddress = device.getAddress();
-            JSONObject jsonDevice = new JSONObject();
-            Tools.addProperty(jsonDevice, Tools.DEVICE_ADDRESS, deviceAddress);
-            Tools.addProperty(jsonDevice, Tools.DEVICE_NAME, device.getName());
-            Tools.addProperty(jsonDevice, Tools.IS_CONNECTED, bluetoothGatt.getConnectedDevices().contains(device));
-            Tools.addProperty(jsonDevice, Tools.RSSI, mapRssiData.get(deviceAddress));
-            Tools.addProperty(jsonDevice, Tools.ADVERTISEMENT_DATA, Tools.decodeAdvData(mapDeviceAdvData.get(deviceAddress)));
-            jsonDevices.put(jsonDevice);
-        }
-        callbackContext.success(jsonDevices);
     }
 
     @Override
@@ -654,9 +626,6 @@ public class BluetoothSam42 implements IBluetooth {
         if (mapGetRSSICallBack == null) {
             mapGetRSSICallBack = new HashMap<String, CallbackContext>();
         }
-        if (mapRssiData == null) {
-            mapRssiData = new HashMap<String, Integer>();
-        }
         mapGetRSSICallBack.put(deviceAddress, callbackContext);
         bluetoothGatt.readRemoteRssi(device);
     }
@@ -1058,11 +1027,15 @@ public class BluetoothSam42 implements IBluetooth {
             super.onScanResult(device, rssi, scanRecord);
             Log.i(TAG, "onScanResult");
             String deviceAddress = device.getAddress();
-            if (!bluetoothDevices.contains(device)) {
-                bluetoothDevices.add(device);
-                mapDeviceAdvData.put(deviceAddress, scanRecord);
-            }
-            mapRssiData.put(deviceAddress, rssi);
+            JSONObject jsonDevice = new JSONObject();
+            Tools.addProperty(jsonDevice, Tools.DEVICE_ADDRESS, deviceAddress);
+            Tools.addProperty(jsonDevice, Tools.DEVICE_NAME, device.getName());
+            Tools.addProperty(jsonDevice, Tools.IS_CONNECTED, bluetoothGatt.getConnectedDevices().contains(device));
+            Tools.addProperty(jsonDevice, Tools.RSSI, rssi);
+            Tools.addProperty(jsonDevice, Tools.ADVERTISEMENT_DATA, Tools.decodeAdvData(scanRecord));
+    		PluginResult pluginResult = new PluginResult(PluginResult.Status.OK , jsonDevice);
+    		pluginResult.setKeepCallback(true);
+            mapAddListenerCallBack.get(Tools.NEW_ADV_PACKET).sendPluginResult(pluginResult);
         }
     };
 

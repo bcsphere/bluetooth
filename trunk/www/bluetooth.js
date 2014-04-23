@@ -17,7 +17,6 @@
 
 var exec = require('cordova/exec');
 var platform = require('cordova/platform');
-var interval_index = null;
 
 /**
  * Provides access to bluetooth on the device.
@@ -27,30 +26,13 @@ var bluetooth = {
 	initialBluetooth: function(){
 
 	},
-	
-	
-    /**
-     * Open a native alert dialog, with a customizable title and button text.
-     *
-     * @param {Function} completeCallback   The callback that is bluetooth stop scan
-     * 
-     */
+
     startScan: function(successFunc,errorFunc,serviceUUIDs) {
         cordova.exec(successFunc,errorFunc, "BCBluetooth", "startScan", serviceUUIDs);
     },
-    
-	getScanData: function(getDevicesSuccess,getDevicesError){
-		interval_index = window.setInterval(function() {
-            cordova.exec(getDevicesSuccess,getDevicesError, "BCBluetooth", "getScanData", []);
-        }, 1000);
-	},
 	
     stopScan: function(successFunc,errorFunc){
-   		//alert("stopScan");
     	cordova.exec(successFunc,errorFunc, "BCBluetooth", "stopScan", []);
-    	if(interval_index !== null){
-			window.clearInterval(interval_index);
-		}
     },
     
     connectDevice: function(successFunc,errorFunc,deviceAddress,appID){

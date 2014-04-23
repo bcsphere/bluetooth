@@ -97,22 +97,6 @@ public class BluetoothHTC41 implements IBluetooth {
     }
 
     @Override
-    public void getScanData(JSONArray json, CallbackContext callbackContext) {
-        Log.i(TAG, "getScanData");
-        JSONArray jsonDevices = new JSONArray();
-        for (BluetoothDevice device : bluetoothDevices) {
-            String deviceAddress = device.getAddress();
-            JSONObject jsonDevice = new JSONObject();
-            Tools.addProperty(jsonDevice, Tools.DEVICE_ADDRESS, deviceAddress);
-            Tools.addProperty(jsonDevice, Tools.DEVICE_NAME, device.getName());
-            Tools.addProperty(jsonDevice, Tools.IS_CONNECTED, "NO");
-            Tools.addProperty(jsonDevice, Tools.RSSI, mapRssiData.get(deviceAddress));
-            jsonDevices.put(jsonDevice);
-        }
-        callbackContext.success(jsonDevices);
-    }
-
-    @Override
     public void stopScan(JSONArray json, CallbackContext callbackContext) {
         Log.i(TAG, "stopScan");
         if (!isInitialized(callbackContext)) {
@@ -741,13 +725,16 @@ public class BluetoothHTC41 implements IBluetooth {
                 BluetoothDevice device = (BluetoothDevice) paramIntent.getParcelableExtra(BluetoothDevice.EXTRA_DEVICE);
                 String deviceAddress = device.getAddress();
                 short RSSI = paramIntent.getShortExtra(BluetoothDevice.EXTRA_RSSI, (short) -32768);
-                if (BleAdapter.getDeviceType(device) == BleAdapter.DEVICE_TYPE_BLE
-                        || BleAdapter.getDeviceType(device) == BleAdapter.DEVICE_TYPE_DUMO) {
-                    if (!bluetoothDevices.contains(device)) {
-                        Log.i(TAG, "deviceAddress " + device + " RSSI " + RSSI);
-                        bluetoothDevices.add(device);
-                        mapRssiData.put(deviceAddress, RSSI);
-                    }
+                if (BleAdapter.getDeviceType(device) == BleAdapter.DEVICE_TYPE_BLE || BleAdapter.getDeviceType(device) == BleAdapter.DEVICE_TYPE_DUMO) {
+                    JSONObject jsonDevice = new JSONObject();
+                    Tools.addProperty(jsonDevice, Tools.DEVICE_ADDRESS, deviceAddress);
+                    Tools.addProperty(jsonDevice, Tools.DEVICE_NAME, device.getName());
+                    Tools.addProperty(jsonDevice, Tools.IS_CONNECTED, "NO");
+                    Tools.addProperty(jsonDevice, Tools.RSSI, RSSI);
+            		PluginResult pluginResult = new PluginResult(PluginResult.Status.OK , jsonDevice);
+            		pluginResult.setKeepCallback(true);
+                    mapAddListenerCallBack.get(Tools.NEW_ADV_PACKET).sendPluginResult(pluginResult);
+                    mapRssiData.put(deviceAddress, RSSI);
                 }
             }
         }
