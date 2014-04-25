@@ -67,7 +67,6 @@
 - (void)startScan:(CDVInvokedUrlCommand*)command;
 - (void)stopScan:(CDVInvokedUrlCommand*)command;
 - (void)addEventListener:(CDVInvokedUrlCommand *)command;
-- (void)getScanData:(CDVInvokedUrlCommand*)command;
 - (void)creatPair:(CDVInvokedUrlCommand*)command;
 - (void)removePair:(CDVInvokedUrlCommand*)command;
 - (void)getPairedDevices:(CDVInvokedUrlCommand*)command;

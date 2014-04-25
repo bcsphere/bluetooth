@@ -108,6 +108,7 @@
 #define EVENT_ONUNSUBSCRIBE @"onunsubscribe"
 #define EVENT_ONCHARACTERISTICREAD @"oncharacteristicread"
 #define EVENT_ONCHARACTERISTICWRITE @"oncharacteristicwrite"
+#define EVENT_NEWADVPACKET @"newadvpacket"
 #define GETBLUETOOTHSTATE @"getBluetoothState"
 #define EVENT_BLUETOOTHOPEN @"bluetoothopen"
 #define EVENT_BLUETOOTHCLOSE @"bluetoothclose"
@@ -267,12 +268,6 @@
     NSMutableDictionary *callbackInfo = [[NSMutableDictionary alloc] init];
     [callbackInfo setValue:SUCCESS forKey:MES];
     CDVPluginResult* result = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK messageAsDictionary:callbackInfo];
-    [self.commandDelegate sendPluginResult:result callbackId:command.callbackId];
-}
-
-- (void)getScanData:(CDVInvokedUrlCommand*)command{
-    NSMutableArray* callbackInfo = [self storePeripheralInfo:_peripherals];
-    CDVPluginResult* result = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK messageAsArray:callbackInfo];
     [self.commandDelegate sendPluginResult:result callbackId:command.callbackId];
 }
 
@@ -1021,6 +1016,12 @@
             [stopScanTimer invalidate];
         }
     }
+    
+    NSMutableDictionary *callbackInfo = [self getScanData:peripheral adv:advertisementData rssi:RSSI];
+    CDVPluginResult* result = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK messageAsDictionary:callbackInfo];
+    [result setKeepCallbackAsBool:TRUE];
+    [self.commandDelegate sendPluginResult:result callbackId:[[NSUserDefaults standardUserDefaults] objectForKey:EVENT_NEWADVPACKET]];
+    
     NSString *peripheralUUID = [self getPeripheralUUID:peripheral];
     if (_peripherals.count == 0){
         _peripherals = [[NSMutableArray alloc] initWithObjects:peripheral,nil];
@@ -1303,6 +1304,36 @@
     [callbackInfo setValue:ERROR forKey:MES];
     CDVPluginResult* result = [CDVPluginResult resultWithStatus:CDVCommandStatus_ERROR messageAsDictionary:callbackInfo];
     [self.commandDelegate sendPluginResult:result callbackId:string];
+}
+
+- (NSMutableDictionary *)getScanData:(CBPeripheral*)peripheralObj adv:(NSDictionary*)advData rssi:(NSNumber*)RSSI{
+    NSMutableDictionary *peripheralInfo = [[NSMutableDictionary alloc] init];
+    NSString *peripheralUUID = [NSString stringWithFormat:@"%@",[self getPeripheralUUID:peripheralObj]];
+    if ([peripheralObj name] != nil) {
+        [peripheralInfo setValue:[peripheralObj name] forKey:DEVICE_NAME];
+    }else {
+        [peripheralInfo setValue:@"null" forKey:DEVICE_NAME];
+    }
+    if (peripheralUUID != nil) {
+        [peripheralInfo setValue:peripheralUUID forKey:DEVICE_ADDRESS];
+        if ([peripheralUUID isEqualToString:@"NULL"]) {
+            [peripheralInfo setValue:@"null" forKey:DEVICE_ADDRESS];
+        }
+    }else {
+        [peripheralInfo setValue:@"null" forKey:DEVICE_ADDRESS];
+    }
+    if ([peripheralObj isConnected]) {
+        [peripheralInfo setValue:IS_TRUE forKey:IS_CONNECTED];
+    }else {
+        [peripheralInfo setValue:IS_FALSE forKey:IS_CONNECTED];
+    }
+    if (advData) {
+        [peripheralInfo setValue:[self getAdvertisementData:advData] forKey:ADVERTISEMENT_DATA];
+    }
+    if (RSSI) {
+        [peripheralInfo setValue:[NSString stringWithFormat:@"%@",RSSI] forKey:PERIPHERAL_RSSI];
+    }
+    return peripheralInfo;
 }
 
 - (NSString*)getDate{
