@@ -12,7 +12,7 @@
 	WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 	See the License for the specific language governing permissions and
 	limitations under the License.
-*/
+ */
 
 package org.bcsphere.bluetooth;
 
@@ -73,7 +73,7 @@ public class BluetoothG43plus implements IBluetooth{
 	private HashMap< String ,Boolean> connectedDevice = new HashMap<String, Boolean>(); 
 	private HashMap<String, BluetoothGatt> mBluetoothGatts = new HashMap<String, BluetoothGatt>();
 	private HashMap<String, List<BluetoothGattService>> deviceServices = new HashMap<String, List<BluetoothGattService>>();
-	
+
 	@Override
 	public void setContext(Context context) {
 		Log.i(TAG, "setContext");
@@ -480,7 +480,7 @@ public class BluetoothG43plus implements IBluetooth{
 
 
 	private BluetoothAdapter.LeScanCallback mLeScanCallback = new LeScanCallback() {
-		
+
 		@Override
 		public void onLeScan(BluetoothDevice device, int rssi, byte[] scanRecord) {
 			//Log.i(TAG, "onLeScan");
@@ -520,11 +520,11 @@ public class BluetoothG43plus implements IBluetooth{
 			super.onConnectionStateChange(gatt, status, newState);
 			String deviceAddress = gatt.getDevice().getAddress();
 			if (connectCC.get(deviceAddress) != null) {
-			    conncetManage(gatt,newState);
+				conncetManage(gatt,newState);
 			}else if(disconnectCC.get(deviceAddress) != null){
-			    disconnectManage(gatt,newState);
+				disconnectManage(gatt,newState);
 			}else{
-			    addEventListenerManage(gatt ,newState);
+				addEventListenerManage(gatt ,newState);
 			}
 		}
 
@@ -623,8 +623,8 @@ public class BluetoothG43plus implements IBluetooth{
 		String deviceAddress = getDeviceAddress(gatt);
 		JSONObject obj = new JSONObject();
 		JSONArray ary = new JSONArray();
-		if (status == BluetoothGatt.GATT_SUCCESS) {
-			if (getServicesCC.get(deviceAddress) !=null) {
+		if (getServicesCC.get(deviceAddress) !=null) {
+			if (status == BluetoothGatt.GATT_SUCCESS) {
 				if (deviceServices.get(deviceAddress)==null) {
 					deviceServices.put(deviceAddress, gatt.getServices());
 				}
@@ -794,8 +794,8 @@ public class BluetoothG43plus implements IBluetooth{
 	private void addEventListenerManage(BluetoothGatt gatt, int newState){
 		String deviceAddress = getDeviceAddress(gatt);
 		if (newState == BluetoothGatt.STATE_DISCONNECTED) {
-		    connectedDevice.remove(deviceAddress);
-		    mBluetoothGatts.remove(deviceAddress);
+			connectedDevice.remove(deviceAddress);
+			mBluetoothGatts.remove(deviceAddress);
 			JSONObject obj = new JSONObject();
 			Tools.addProperty(obj, Tools.DEVICE_ADDRESS, deviceAddress);
 			PluginResult pluginResult = new PluginResult(PluginResult.Status.OK , obj);
