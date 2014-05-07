@@ -620,6 +620,9 @@
 			this.devices = {};
 			this.services = {};
 			this.isopen = false;
+
+			this.UUIDMap = {};
+  			this.UUIDMap["00001802-0000-1000-8000-00805f9b34fb"] = BC.ImmediateAlert;
 		},
 	
 		addSystemListener : function(eventName,callback,arg){
@@ -1057,7 +1060,11 @@
                     var sindex = service.serviceIndex;
                     var sname = service.serviceName;
                     var suuid = service.serviceUUID;
-                    device.services.push(new BC.Service({index:sindex,uuid:suuid,name:sname,device:device}));
+                    if(BC.bluetooth.UUIDMap[suuid]){
+                    	device.services.push(new BC.bluetooth.UUIDMap[suuid]({index:sindex,uuid:suuid,name:sname,device:device}));
+                    }else{
+                    	device.services.push(new BC.Service({index:sindex,uuid:suuid,name:sname,device:device}));
+                    }
                 }
             );
 
@@ -1278,6 +1285,7 @@
 	});
 	GATTEntity.extend = extend;
   
+ 
   /**
    * BLE Service class.
    * @class
@@ -1380,6 +1388,45 @@
 		},
   });
   
+	var ImmediateAlert = BC.ImmediateAlert = BC.Service.extend({
+
+	   characteristicUUID:'2a06',
+
+	   no_alert : function(){
+	      this.write('Hex','0',this.writeSuccess,this.writeError);
+	   },
+	   
+	   mild_alert : function(){
+	      this.write('Hex','1',this.writeSuccess,this.writeError);
+	   },
+	   
+	   high_alert : function(){
+	      this.write('Hex','2',this.writeSuccess,this.writeError);
+	   },
+	   
+	   write:function(writeType,writeValue,successFunc,errorFunc){
+	     if(this.characteristics == undefined || this.characteristics == null || this.characteristics.length == 0){
+	         this.discoverCharacteristics(function(){
+	             this.getCharacteristicByUUID(this.characteristicUUID)[0].write(writeType,writeValue,successFunc,errorFunc);
+	         },function(){
+	             console.log('discoverCharacteristicsFailed');
+	         });
+	     }else{
+	         this.getCharacteristicByUUID(this.characteristicUUID)[0].write(writeType,writeValue,successFunc,errorFunc);
+	     }
+	   },
+	      
+	   writeSuccess : function(){
+	      console.log('writeSuccess');
+	   },
+	   
+	   writeError : function(){
+	      console.log('writeFailed');
+	   },
+
+	});
+
+
     /**
 	 * Triggered when server's characteristic has been subscribe/unsubscribe.
 	 * @example var character1 = BC.Bluetooth.CreateCharacteristic("0000ffe1-0000-1000-8000-00805f9b34fb","01","Hex",["notify"],["read","write"]);
