@@ -623,6 +623,8 @@
 
 			this.UUIDMap = {};
   			this.UUIDMap["00001802-0000-1000-8000-00805f9b34fb"] = BC.ImmediateAlert;
+  			this.UUIDMap["00001803-0000-1000-8000-00805f9b34fb"] = BC.LinkLoss;
+  			this.UUIDMap["00001804-0000-1000-8000-00805f9b34fb"] = BC.TxPower;
 		},
 	
 		addSystemListener : function(eventName,callback,arg){
@@ -1048,8 +1050,11 @@
 		discoverServices : function(success,error){
 			this.success = success;
 			this.error = error;
-			BC.bluetooth.discoverServices(this);
-			
+			if(this.services == undefined || this.services == null || this.services.length==0){
+			    BC.bluetooth.discoverServices(this);
+			}else{
+			    this.success();
+			}
 		},
 		
 		discoverServicesSuccess : function(){
@@ -1342,7 +1347,11 @@
 		discoverCharacteristics : function(success,error){
 			this.success = success;
 			this.error = error;
-			BC.bluetooth.discoverCharacteristics(this);
+			if(this.characteristics == undefined || this.characteristics == null || this.characteristics.length == 0){
+				BC.bluetooth.discoverCharacteristics(this);
+			}else{
+				this.success();
+			}
 		},
 		
 		discoverCharacteristicsSuccess : function(){
@@ -1405,15 +1414,11 @@
 	   },
 	   
 	   write:function(writeType,writeValue,successFunc,errorFunc){
-	     if(this.characteristics == undefined || this.characteristics == null || this.characteristics.length == 0){
-	         this.discoverCharacteristics(function(){
-	             this.getCharacteristicByUUID(this.characteristicUUID)[0].write(writeType,writeValue,successFunc,errorFunc);
-	         },function(){
-	             console.log('discoverCharacteristicsFailed');
-	         });
-	     }else{
-	         this.getCharacteristicByUUID(this.characteristicUUID)[0].write(writeType,writeValue,successFunc,errorFunc);
-	     }
+         this.discoverCharacteristics(function(){
+             this.getCharacteristicByUUID(this.characteristicUUID)[0].write(writeType,writeValue,successFunc,errorFunc);
+         },function(){
+             console.log('discoverCharacteristicsFailed');
+         });
 	   },
 	      
 	   writeSuccess : function(){
@@ -1425,6 +1430,90 @@
 	   },
 
 	});
+
+
+	var LinkLoss = BC.LinkLoss = BC.Service.extend({
+
+		characteristicUUID:'2a06',
+
+		no_alert : function(){
+		  this.write('Hex','0',this.writeSuccess,this.writeError);
+		},
+
+		mild_alert : function(){
+		  this.write('Hex','1',this.writeSuccess,this.writeError);
+		},
+
+		high_alert : function(){
+		  this.write('Hex','2',this.writeSuccess,this.writeError);
+		},
+
+		getValue : function(callback){
+		  	this.discoverCharacteristics(function(){
+			    this.getCharacteristicByUUID(this.characteristicUUID)[0].read(function(data){
+			 		callback(data.value);
+			    },function(){
+			     	callback('error');
+			     	alert("read characteristic failed");
+			    });
+			},function(){
+			     console.log('discoverCharacteristicsFailed');
+			});
+		},
+	   
+	    write:function(writeType,writeValue,successFunc,errorFunc){
+			if(this.characteristics == undefined || this.characteristics == null || this.characteristics.length == 0){
+			     this.discoverCharacteristics(function(){
+			         this.getCharacteristicByUUID(this.characteristicUUID)[0].write(writeType,writeValue,successFunc,errorFunc);
+			     },function(){
+			         console.log('discoverCharacteristicsFailed');
+			     });
+			}else{
+			     this.getCharacteristicByUUID(this.characteristicUUID)[0].write(writeType,writeValue,successFunc,errorFunc);
+			}
+	    },
+	      
+		writeSuccess : function(){
+		  console.log('writeSuccess');
+		},
+
+		writeError : function(){
+		  console.log('writeFailed');
+		},
+
+	});
+
+	var TxPower = BC.TxPower = BC.Service.extend({
+
+	   	characteristicUUID:'2a07',
+
+		getValue : function(callback){
+   	    	this.discoverCharacteristics(function(){
+				this.getCharacteristicByUUID(this.characteristicUUID)[0].read(function(data){
+	         	    callback(data.value);
+	            },function(){
+	             	callback('error');
+	             	alert("read characteristic failed");
+	            });
+	        },function(){
+	        	callback('error');
+	            console.log('discoverCharacteristicsFailed');
+	        });
+		},
+
+	    notify : function(callback){
+	   		this.discoverCharacteristics(function(){
+	   			this.getCharacteristicByUUID(this.characteristicUUID)[0].subscribe(function(data){
+	   				callback(data.value);
+	   			});
+	   		},function(){
+	   			callback('error');
+				console.log('discoverCharacteristicsFailed');
+	   		});
+	    },
+
+	});
+	
 
 
     /**

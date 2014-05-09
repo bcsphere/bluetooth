@@ -35,11 +35,11 @@ import org.bcsphere.bluetooth.tools.Tools;
 
 public class BCBluetooth extends CordovaPlugin {
 
-	public static Context myContext = null;
-	private static SharedPreferences sp;
+	public Context myContext = null;
+	private SharedPreferences sp;
 	private boolean isSetContext = true;
-	private static IBluetooth bluetoothAPI = null;
-	private static String versionOfAPI;
+	private IBluetooth bluetoothAPI = null;
+	private String versionOfAPI;
 
 	public BCBluetooth() {
 	}
