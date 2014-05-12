@@ -1402,23 +1402,24 @@
 	   characteristicUUID:'2a06',
 
 	   no_alert : function(){
-	      this.write('Hex','0',this.writeSuccess,this.writeError);
+	      this.alert('0');
 	   },
 	   
 	   mild_alert : function(){
-	      this.write('Hex','1',this.writeSuccess,this.writeError);
+	      this.alert('1');
 	   },
 	   
 	   high_alert : function(){
-	      this.write('Hex','2',this.writeSuccess,this.writeError);
+	      this.alert('2');
 	   },
 	   
-	   write:function(writeType,writeValue,successFunc,errorFunc){
-         this.discoverCharacteristics(function(){
-             this.getCharacteristicByUUID(this.characteristicUUID)[0].write(writeType,writeValue,successFunc,errorFunc);
-         },function(){
-             console.log('discoverCharacteristicsFailed');
-         });
+	   alert:function(writeType,writeValue,successFunc,errorFunc){
+	   	  successFunc = successFunc || this.writeSuccess;
+	   	  errorFunc = errorFunc || this.writeError;
+	   	  writeType= writeType ||　'Hex';
+       	  this.discoverCharacteristics(function(){
+            	this.getCharacteristicByUUID(this.characteristicUUID)[0].write(writeType,writeValue,successFunc,errorFunc);
+          });
 	   },
 	      
 	   writeSuccess : function(){
@@ -1437,40 +1438,32 @@
 		characteristicUUID:'2a06',
 
 		no_alert : function(){
-		  this.write('Hex','0',this.writeSuccess,this.writeError);
+		  this.alert('0');
 		},
 
 		mild_alert : function(){
-		  this.write('Hex','1',this.writeSuccess,this.writeError);
+		  this.alert('1');
 		},
 
 		high_alert : function(){
-		  this.write('Hex','2',this.writeSuccess,this.writeError);
+		  this.alert('2');
 		},
 
 		getValue : function(callback){
 		  	this.discoverCharacteristics(function(){
 			    this.getCharacteristicByUUID(this.characteristicUUID)[0].read(function(data){
 			 		callback(data.value);
-			    },function(){
-			     	callback('error');
-			     	alert("read characteristic failed");
 			    });
-			},function(){
-			     console.log('discoverCharacteristicsFailed');
 			});
 		},
 	   
-	    write:function(writeType,writeValue,successFunc,errorFunc){
-			if(this.characteristics == undefined || this.characteristics == null || this.characteristics.length == 0){
-			     this.discoverCharacteristics(function(){
-			         this.getCharacteristicByUUID(this.characteristicUUID)[0].write(writeType,writeValue,successFunc,errorFunc);
-			     },function(){
-			         console.log('discoverCharacteristicsFailed');
-			     });
-			}else{
-			     this.getCharacteristicByUUID(this.characteristicUUID)[0].write(writeType,writeValue,successFunc,errorFunc);
-			}
+	    alert:function(writeType,writeValue,successFunc,errorFunc){
+	    	successFunc = successFunc || this.writeSuccess;
+	   	    errorFunc = errorFunc || this.writeError;
+	   	    writeType= writeType ||　'Hex';
+		    this.discoverCharacteristics(function(){
+		        this.getCharacteristicByUUID(this.characteristicUUID)[0].write(writeType,writeValue,successFunc,errorFunc);
+		    });
 	    },
 	      
 		writeSuccess : function(){
@@ -1491,13 +1484,7 @@
    	    	this.discoverCharacteristics(function(){
 				this.getCharacteristicByUUID(this.characteristicUUID)[0].read(function(data){
 	         	    callback(data.value);
-	            },function(){
-	             	callback('error');
-	             	alert("read characteristic failed");
 	            });
-	        },function(){
-	        	callback('error');
-	            console.log('discoverCharacteristicsFailed');
 	        });
 		},
 
@@ -1506,9 +1493,6 @@
 	   			this.getCharacteristicByUUID(this.characteristicUUID)[0].subscribe(function(data){
 	   				callback(data.value);
 	   			});
-	   		},function(){
-	   			callback('error');
-				console.log('discoverCharacteristicsFailed');
 	   		});
 	    },
 
