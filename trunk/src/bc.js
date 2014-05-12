@@ -1413,10 +1413,10 @@
 	      this.alert('2');
 	   },
 	   
-	   alert:function(writeType,writeValue,successFunc,errorFunc){
+	   alert:function(writeValue,writeType,successFunc,errorFunc){
 	   	  successFunc = successFunc || this.writeSuccess;
 	   	  errorFunc = errorFunc || this.writeError;
-	   	  writeType= writeType ||　'Hex';
+	   	  writeType = writeType ||　'hex';
        	  this.discoverCharacteristics(function(){
             	this.getCharacteristicByUUID(this.characteristicUUID)[0].write(writeType,writeValue,successFunc,errorFunc);
           });
@@ -1457,10 +1457,10 @@
 			});
 		},
 	   
-	    alert:function(writeType,writeValue,successFunc,errorFunc){
+	    alert:function(writeValue,writeType,successFunc,errorFunc){
 	    	successFunc = successFunc || this.writeSuccess;
 	   	    errorFunc = errorFunc || this.writeError;
-	   	    writeType= writeType ||　'Hex';
+	   	    writeType= writeType ||　'hex';
 		    this.discoverCharacteristics(function(){
 		        this.getCharacteristicByUUID(this.characteristicUUID)[0].write(writeType,writeValue,successFunc,errorFunc);
 		    });
