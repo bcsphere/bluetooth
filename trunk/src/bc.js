@@ -255,7 +255,7 @@
 			if(DEBUG){
 				alert(JSON.stringify(data));
 			}
-			window.APPID = data.appID;
+			window.APPURL = window.location.href;
 			window.DEVICEADDRESS = data.deviceAddress;
 			window.API = data.api;
 			window.VERSION = data.version;
@@ -446,12 +446,12 @@
 			this.connect = function(device){
 				var connectSuccess = device.connectSuccess.bind(device,device.connectSuccess);
 				var connectError = device.connectError.bind(device,device.connectError);
-				navigator.bluetooth.connectDevice(connectSuccess,connectError,device.deviceAddress,APPID);
+				navigator.bluetooth.connectDevice(connectSuccess,connectError,device.deviceAddress,APPURL);
 			};
 			this.disconnect = function(device){
 				var disconnectSuccess = device.disconnectSuccess.bind(device,device.disconnectSuccess);
 				var disconnectError = device.disconnectSuccess.bind(device,device.disconnectError);
-				navigator.bluetooth.disconnectDevice(disconnectSuccess,disconnectError,device.deviceAddress,APPID);
+				navigator.bluetooth.disconnectDevice(disconnectSuccess,disconnectError,device.deviceAddress,APPURL);
 			};
 			
 			this.writeCharacteristic = function(character,value){
