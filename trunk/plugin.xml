@@ -43,10 +43,6 @@
 		<source-file src="src/android/org/bcsphere/bluetooth/tools/Tools.java" target-dir="src/org/bcsphere/bluetooth/tools" />
 		
 		<source-file src="src/bc.js" target-dir="assets/www" />
-		<source-file src="src/bc-immediate_alert.js" target-dir="assets/www" />
-		<source-file src="src/bc-linkloss.js" target-dir="assets/www" />
-		<source-file src="src/bc-serial_port.js" target-dir="assets/www" />
-		<source-file src="src/bc-txpower.js" target-dir="assets/www" />
 		<source-file src="src/underscore.js" target-dir="assets/www" />
 		
 		<source-file src="libs/samsung_ble_sdk_200.jar" target-dir="libs" />
