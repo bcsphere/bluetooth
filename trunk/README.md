@@ -19,6 +19,10 @@ Features
 * Support Bluetooth 4.0 GATT interface in IOS/Android.
 * Support Bluetooth 2.1 rfcomm interface in Android.
 
+#### Bluetooth Common Services Library 
+* Implement Bluetooth 4.0 Standard GATT services. (extending)
+* Integrate various customermized GATT services to access partners' Bluetooth Smart devices. (extending)
+
 #### Universal Bluetooth Serial Port 
 * Cross-platform implementation of Bluetooth serial port, covering the IOS/Android platform difference when using the [serial port profile](https://github.com/bcsphere/bleprofiles).
 * Automatic Bluetooth 4.0/2.1 routing to establish appropriate connection, considering both phones and peripheral devices modes.
