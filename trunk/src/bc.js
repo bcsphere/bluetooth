@@ -28,7 +28,7 @@
 		BC = root.BC = {};
 	}
 	
-	BC.VERSION = "0.3.0";
+	BC.VERSION = "0.4.0";
 	/** 
 	 * Opens all useful alert.
 	 * @global 
