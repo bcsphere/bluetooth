@@ -212,7 +212,7 @@ public class BCBluetooth extends CordovaPlugin {
 				String securestr = Tools.getData(json, Tools.SECURE);
 				String uuidstr = Tools.getData(json, Tools.UUID);
 				boolean secure = false;
-				if(securestr != null && securestr.equals("true")){
+				if(securestr.equals("true")){
 					secure = true;
 				}
 				Log.i(TAG,"connect to "+deviceAddress);

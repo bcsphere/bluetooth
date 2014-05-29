@@ -166,6 +166,126 @@
 		return (r.test(this.S+this.join(this.S)+this.S));
 	}
 	
+	document.addEventListener('deviceready', onDeviceReady, false);
+	
+	function onDeviceReady(){
+		var bluetooth = BC.bluetooth = new BC.Bluetooth("cordova");
+		BC.bluetooth.addSystemListener('disconnect', function(arg){
+			BC.bluetooth.devices[arg.deviceAddress].isConnected = false;
+			BC.bluetooth.devices[arg.deviceAddress].dispatchEvent("devicedisconnected");
+		});
+		BC.bluetooth.addSystemListener('onsubscribe', function(arg){
+			var service = BC.bluetooth.services[arg.uniqueID];
+			var character = service.characteristics[arg.characteristicIndex];
+			character.isSubscribed = true;
+			character.dispatchEvent("onsubscribestatechange");
+		});
+		BC.bluetooth.addSystemListener('onunsubscribe', function(arg){
+			var service = BC.bluetooth.services[arg.uniqueID];
+			var character = service.characteristics[arg.characteristicIndex];
+			character.isSubscribed = false;
+			character.dispatchEvent("onsubscribestatechange");
+		});
+		BC.bluetooth.addSystemListener("oncharacteristicread", function(arg){
+			var service = BC.bluetooth.services[arg.uniqueID];
+			var character = service.characteristics[arg.characteristicIndex];
+			character.dispatchEvent("oncharacteristicread");
+		});
+		BC.bluetooth.addSystemListener('oncharacteristicwrite', function(arg){
+			var service = BC.bluetooth.services[arg.uniqueID];
+			var character = service.characteristics[arg.characteristicIndex];
+			var dataValue = new BC.DataValue(BC.Tools.Base64ToBuffer(arg.writeRequestValue));
+			character.writeValue = dataValue;
+			character.dispatchEvent("oncharacteristicwrite");
+		});
+		BC.bluetooth.addSystemListener("ondescriptorread", function(arg){
+			var service = BC.bluetooth.services[arg.uniqueID];
+			var character = service.characteristics[arg.characteristicIndex];
+			var descriptor = character.descriptors[arg.descriptorIndex];
+			descriptor.dispatchEvent("ondescriptorread");
+		});
+		BC.bluetooth.addSystemListener('ondescriptorwrite', function(arg){
+			var service = BC.bluetooth.services[arg.uniqueID];
+			var character = service.characteristics[arg.characteristicIndex];
+			var descriptor = character.descriptors[arg.descriptorIndex];
+			var dataValue = new BC.DataValue(BC.Tools.Base64ToBuffer(arg.writeRequestValue));
+			descriptor.writeValue = dataValue;
+			descriptor.dispatchEvent("ondescriptorwrite");
+		});
+		BC.bluetooth.addSystemListener("newadvpacket",function(scanData){
+			var advertisementData,deviceAddress,deviceName,isCon,RSSI,txPower,type;
+			if(scanData['advertisementData']){
+				advertisementData = scanData['advertisementData'];
+				if(advertisementData.manufacturerData){
+					advertisementData.manufacturerData = new BC.DataValue(BC.Tools.Base64ToBuffer(advertisementData.manufacturerData));
+				}
+			}
+			if(scanData['deviceAddress']){
+				deviceAddress = scanData['deviceAddress'];
+			}
+			if(scanData['deviceName']){
+				deviceName = scanData['deviceName'];
+			}
+			if(scanData['isConnected']){
+				isCon = scanData['isConnected'];
+			}
+			if(scanData['RSSI']){
+				RSSI = parseInt(scanData['RSSI']);
+			}
+			if(scanData['type']){
+				type = scanData['type'];
+			}
+			
+			var isConnected = false;
+			if(isCon === "true"){
+				isConnected = true;
+			}
+			if(isNewDevice(deviceAddress)){
+				var newdevice = new BC.Device({deviceAddress:deviceAddress,deviceName:deviceName,advertisementData:advertisementData,isConnected:isConnected,RSSI:RSSI,type:type});
+				BC.bluetooth.devices[deviceAddress] = newdevice;
+				BC.bluetooth.dispatchEvent("newdevice",newdevice);
+			}else{
+				var thedevice = BC.bluetooth.devices[deviceAddress];
+				if(type == "BLE"){
+					thedevice.RSSI = RSSI;
+					//IOS will regard the different advertisement data which broadcast from same bluetooth address as different device
+					//so be careful if you want to develop application based on changing advertisement data
+					thedevice.advertisementData = advertisementData;	
+				}
+				thedevice.advTimestamp = new Date().getTime();
+			}
+			
+		});
+
+		document.addEventListener("bluetoothclose",function(){
+			BC.bluetooth.isopen = false;
+			BC.bluetooth.dispatchEvent("bluetoothstatechange");
+		},false);
+		document.addEventListener("bluetoothopen",function(){
+			BC.bluetooth.isopen = true;
+			BC.bluetooth.dispatchEvent("bluetoothstatechange");
+		},false);
+		
+		BC.bluetooth.getEnvironment(function(data){
+			if(DEBUG){
+				alert(JSON.stringify(data));
+			}
+			window.APPURL = window.location.href;
+			window.DEVICEADDRESS = data.deviceAddress;
+			window.API = data.api;
+			window.VERSION = data.version;
+			
+			BC.bluetooth.getBluetoothState(function(arg){
+				if(arg.state == "false"){
+					BC.bluetooth.isopen = false;
+				}else{
+					BC.bluetooth.isopen = true;
+				}
+				BC.Tools.FireDocumentEvent("bccoreready");
+			},testFunc);
+		},function(mes){alert(JSON.stringify(mes));});
+	}
+	
 	var Tools = BC.Tools = function(){};
 	_.extend(Tools.prototype,{});	
 	var Base64ToBuffer = BC.Tools.Base64ToBuffer = function(rawData){
@@ -1974,126 +2094,5 @@
 			this.error(mes);
 		},
     });
-    
-  	document.addEventListener('deviceready', onDeviceReady, false);
-	
-	function onDeviceReady(){
-		var bluetooth = BC.bluetooth = new BC.Bluetooth("cordova");
-		
-		BC.bluetooth.addSystemListener('disconnect', function(arg){
-			BC.bluetooth.devices[arg.deviceAddress].isConnected = false;
-			BC.bluetooth.devices[arg.deviceAddress].dispatchEvent("devicedisconnected");
-		});
-		BC.bluetooth.addSystemListener('onsubscribe', function(arg){
-			var service = BC.bluetooth.services[arg.uniqueID];
-			var character = service.characteristics[arg.characteristicIndex];
-			character.isSubscribed = true;
-			character.dispatchEvent("onsubscribestatechange");
-		});
-		BC.bluetooth.addSystemListener('onunsubscribe', function(arg){
-			var service = BC.bluetooth.services[arg.uniqueID];
-			var character = service.characteristics[arg.characteristicIndex];
-			character.isSubscribed = false;
-			character.dispatchEvent("onsubscribestatechange");
-		});
-		BC.bluetooth.addSystemListener("oncharacteristicread", function(arg){
-			var service = BC.bluetooth.services[arg.uniqueID];
-			var character = service.characteristics[arg.characteristicIndex];
-			character.dispatchEvent("oncharacteristicread");
-		});
-		BC.bluetooth.addSystemListener('oncharacteristicwrite', function(arg){
-			var service = BC.bluetooth.services[arg.uniqueID];
-			var character = service.characteristics[arg.characteristicIndex];
-			var dataValue = new BC.DataValue(BC.Tools.Base64ToBuffer(arg.writeRequestValue));
-			character.writeValue = dataValue;
-			character.dispatchEvent("oncharacteristicwrite");
-		});
-		BC.bluetooth.addSystemListener("ondescriptorread", function(arg){
-			var service = BC.bluetooth.services[arg.uniqueID];
-			var character = service.characteristics[arg.characteristicIndex];
-			var descriptor = character.descriptors[arg.descriptorIndex];
-			descriptor.dispatchEvent("ondescriptorread");
-		});
-		BC.bluetooth.addSystemListener('ondescriptorwrite', function(arg){
-			var service = BC.bluetooth.services[arg.uniqueID];
-			var character = service.characteristics[arg.characteristicIndex];
-			var descriptor = character.descriptors[arg.descriptorIndex];
-			var dataValue = new BC.DataValue(BC.Tools.Base64ToBuffer(arg.writeRequestValue));
-			descriptor.writeValue = dataValue;
-			descriptor.dispatchEvent("ondescriptorwrite");
-		});
-		BC.bluetooth.addSystemListener("newadvpacket",function(scanData){
-			var advertisementData,deviceAddress,deviceName,isCon,RSSI,txPower,type;
-			if(scanData['advertisementData']){
-				advertisementData = scanData['advertisementData'];
-				if(advertisementData.manufacturerData){
-					advertisementData.manufacturerData = new BC.DataValue(BC.Tools.Base64ToBuffer(advertisementData.manufacturerData));
-				}
-			}
-			if(scanData['deviceAddress']){
-				deviceAddress = scanData['deviceAddress'];
-			}
-			if(scanData['deviceName']){
-				deviceName = scanData['deviceName'];
-			}
-			if(scanData['isConnected']){
-				isCon = scanData['isConnected'];
-			}
-			if(scanData['RSSI']){
-				RSSI = parseInt(scanData['RSSI']);
-			}
-			if(scanData['type']){
-				type = scanData['type'];
-			}
-			
-			var isConnected = false;
-			if(isCon === "true"){
-				isConnected = true;
-			}
-			if(isNewDevice(deviceAddress)){
-				var newdevice = new BC.Device({deviceAddress:deviceAddress,deviceName:deviceName,advertisementData:advertisementData,isConnected:isConnected,RSSI:RSSI,type:type});
-				BC.bluetooth.devices[deviceAddress] = newdevice;
-				BC.bluetooth.dispatchEvent("newdevice",newdevice);
-			}else{
-				var thedevice = BC.bluetooth.devices[deviceAddress];
-				if(type == "BLE"){
-					thedevice.RSSI = RSSI;
-					//IOS will regard the different advertisement data which broadcast from same bluetooth address as different device
-					//so be careful if you want to develop application based on changing advertisement data
-					thedevice.advertisementData = advertisementData;	
-				}
-				thedevice.advTimestamp = new Date().getTime();
-			}
-			
-		});
-
-		document.addEventListener("bluetoothclose",function(){
-			BC.bluetooth.isopen = false;
-			BC.bluetooth.dispatchEvent("bluetoothstatechange");
-		},false);
-		document.addEventListener("bluetoothopen",function(){
-			BC.bluetooth.isopen = true;
-			BC.bluetooth.dispatchEvent("bluetoothstatechange");
-		},false);
-		
-		BC.bluetooth.getEnvironment(function(data){
-			if(DEBUG){
-				alert(JSON.stringify(data));
-			}
-			window.APPURL = window.location.href;
-			window.DEVICEADDRESS = data.deviceAddress;
-			window.API = data.api;
-			window.VERSION = data.version;
-			window.DEVICETYPE = data.deviceType;
-			
-			BC.bluetooth.getBluetoothState(function(arg){
-				if(arg.state == "false"){
-					BC.bluetooth.isopen = false;
-				}else{
-					BC.bluetooth.isopen = true;
-				}
-				BC.Tools.FireDocumentEvent("bccoreready");
-			},testFunc);
-		},function(mes){alert(JSON.stringify(mes));});
-	}
+  
 })();
