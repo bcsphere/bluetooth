@@ -1,0 +1,502 @@
+<html>
+	<head>
+	<meta http-equiv="content-type" content="text/html;charset=utf-8" />
+	<title></title>
+	
+	
+	<style>
+	*.{
+		margin:0px;
+		padding:0px;
+	}
+	
+	table 
+	{
+		border-collapse: collapse;
+		empty-cells: show;
+	}
+	
+	th,td{
+		border:1px solid black;
+		text-align:center;
+	}
+	
+	.first-column{		
+		width:200px;
+		text-align:left;
+		background: #CCCCCC;
+	}
+	
+	.device-column{
+		width:150px;
+	}
+	
+	.green{
+		background:#90EE90;
+	}
+	
+	.pink{
+		background:#FFC0CB;
+	}
+	
+	.yellow{
+		background:yellow;
+	}
+	
+	th{
+		background:#CCCCCC;
+	}
+
+	</style>
+	<head>
+	<body>
+	<div style="margin:50px 50px;">
+		<div>
+			<h1 style="border-bottom:2px solid black;padding:10px 0px;width:80%;">
+				<a >Platform support</a>
+			</h1>
+		</div>
+	
+		<div style="width:80%;">
+			<table>
+				<thead>
+					<tr>
+						<th colspan="5" style="padding:10px 0px;">Bluetooth</th>
+					</tr>
+					<tr>
+						<th class="first-column" rowspan="2">&nbsp;</th>
+						<th class="device-column" colspan = "1">IOS</th>
+						<th class="device-column" colspan = "3">Android</th>
+					</tr>
+					<tr>
+						<th class="device-column">IOS</th>
+						<th class="device-column">Google4.3</th>
+						<th class="device-column">Samsung4.2.2</th>
+						<th class="device-column">HTC4.1.2</th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr>
+						<td class="first-column">AddService</td>
+						<td class="device-column">√</td>
+						<td class="device-column">√</td>
+						<td class="device-column">√</td>
+						<td class="device-column">×</td>
+					</tr>
+					<tr>
+						<td class="first-column">CreateCharacteristic</td>
+						<td class="device-column">√</td>
+						<td class="device-column">√</td>
+						<td class="device-column">√</td>
+						<td class="device-column">×</td>
+					</tr>
+					<tr>
+						<td class="first-column">CreateDescriptor</td>
+						<td class="device-column">√</td>
+						<td class="device-column">√</td>
+						<td class="device-column">√</td>
+						<td class="device-column">×</td>
+					</tr>
+					<tr>
+						<td class="first-column">CreateService</td>
+						<td class="device-column">√</td>
+						<td class="device-column">√</td>
+						<td class="device-column">√</td>
+						<td class="device-column">×</td>
+					</tr>
+					<tr>
+						<td class="first-column">GetConnectedDevices</td>
+						<td class="device-column">√</td>
+						<td class="device-column">√</td>
+						<td class="device-column">√</td>
+						<td class="device-column">×</td>
+					</tr>
+					<tr>
+						<td class="first-column">GetPairedDevices</td>
+						<td class="device-column">×</td>
+						<td class="device-column">√</td>
+						<td class="device-column">√</td>
+						<td class="device-column">√</td>
+					</tr>
+					<tr>
+						<td class="first-column">OpenBluetooth</td>
+						<td class="device-column">×</td>
+						<td class="device-column">√</td>
+						<td class="device-column">√</td>
+						<td class="device-column">√</td>
+					</tr>
+					<tr>
+						<td class="first-column">RemoveService</td>
+						<td class="device-column">√</td>
+						<td class="device-column">√</td>
+						<td class="device-column">√</td>
+						<td class="device-column">×</td>
+					</tr>
+					<tr>
+						<td class="first-column">StartScan</td>
+						<td class="device-column">(partial)</br>only support BLE</td>
+						<td class="device-column">√</td>
+						<td class="device-column">√</td>
+						<td class="device-column">√</td>
+					</tr>
+					<tr>
+						<td class="first-column">StopScan</td>
+						<td class="device-column">(partial)</br>only support BLE</td>
+						<td class="device-column">√</td>
+						<td class="device-column">√</td>
+						<td class="device-column">√</td>
+					</tr>
+				</tbody>
+			</table>
+			<br/>
+			<table>
+				<thead>
+					<tr>
+						<th colspan="5" style="padding:10px 0px;">Device</th>
+					</tr>
+					<tr>
+						<th class="first-column" rowspan="2">&nbsp;</th>
+						<th class="device-column" colspan = "1">IOS</th>
+						<th class="device-column" colspan = "3">Android</th>
+					</tr>
+					<tr>
+						<th class="device-column">IOS</th>
+						<th class="device-column">Google4.3</th>
+						<th class="device-column">Samsung4.2.2</th>
+						<th class="device-column">HTC4.1.2</th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr>
+						<td class="first-column">connect</td>
+						<td class="device-column">(partial)</br>only support BLE</td>
+						<td class="device-column">√</td>
+						<td class="device-column">√</td>
+						<td class="device-column">√</td>
+					</tr>
+					<tr>
+						<td class="first-column">createPair</td>
+						<td class="device-column">×</td>
+						<td class="device-column">√</td>
+						<td class="device-column">√</td>
+						<td class="device-column">√</td>
+					</tr>
+					<tr>
+						<td class="first-column">disconnect</td>
+						<td class="device-column">(partial)</br>only support BLE</td>
+						<td class="device-column">√</td>
+						<td class="device-column">√</td>
+						<td class="device-column">√</td>
+					</tr>
+					<tr>
+						<td class="first-column">discoverServices</td>
+						<td class="device-column">√</td>
+						<td class="device-column">√</td>
+						<td class="device-column">√</td>
+						<td class="device-column">√</td>
+					</tr>
+					<tr>
+						<td class="first-column">getDeviceInfo</td>
+						<td class="device-column">√</td>
+						<td class="device-column">√</td>
+						<td class="device-column">√</td>
+						<td class="device-column">(partial)</br>not very stable</td>
+					</tr>
+					<tr>
+						<td class="first-column">getRSSI</td>
+						<td class="device-column">√</td>
+						<td class="device-column">√</td>
+						<td class="device-column">√</td>
+						<td class="device-column">(partial)</br>the RSSI value </br>will not change </br>with time.</td>
+					</tr>
+					<tr>
+						<td class="first-column">getServiceByUUID</td>
+						<td class="device-column">√</td>
+						<td class="device-column">√</td>
+						<td class="device-column">√</td>
+						<td class="device-column">√</td>
+					</tr>
+					<tr>
+						<td class="first-column">prepare</td>
+						<td class="device-column">√</td>
+						<td class="device-column">√</td>
+						<td class="device-column">√</td>
+						<td class="device-column">√</td>
+					</tr>
+					<tr>
+						<td class="first-column">removePair</td>
+						<td class="device-column">×</td>
+						<td class="device-column">√</td>
+						<td class="device-column">√</td>
+						<td class="device-column">√</td>
+					</tr>
+					<tr>
+						<td class="first-column">rfcommRead</td>
+						<td class="device-column">×</td>
+						<td class="device-column">√</td>
+						<td class="device-column">√</td>
+						<td class="device-column">√</td>
+					</tr>
+					<tr>
+						<td class="first-column">rfcommWrite</td>
+						<td class="device-column">×</td>
+						<td class="device-column">√</td>
+						<td class="device-column">√</td>
+						<td class="device-column">√</td>
+					</tr>
+					<tr>
+						<td class="first-column">rfcommSubscribe</td>
+						<td class="device-column">×</td>
+						<td class="device-column">√</td>
+						<td class="device-column">√</td>
+						<td class="device-column">√</td>
+					</tr>
+					<tr>
+						<td class="first-column">rfcommUnsubscribe</td>
+						<td class="device-column">×</td>
+						<td class="device-column">√</td>
+						<td class="device-column">√</td>
+						<td class="device-column">√</td>
+					</tr>
+				</tbody>
+			</table>
+			<br/>
+			<table>
+				<thead>
+					<tr>
+						<th colspan="5" style="padding:10px 0px;">Service</th>
+					</tr>
+					<tr>
+						<th class="first-column" rowspan="2">&nbsp;</th>
+						<th class="device-column" colspan = "1">IOS</th>
+						<th class="device-column" colspan = "3">Android</th>
+					</tr>
+					<tr>
+						<th class="device-column">IOS</th>
+						<th class="device-column">Google4.3</th>
+						<th class="device-column">Samsung4.2.2</th>
+						<th class="device-column">HTC4.1.2</th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr>
+						<td class="first-column">discoverCharacteristics</td>
+						<td class="device-column">√</td>
+						<td class="device-column">√</td>
+						<td class="device-column">√</td>
+						<td class="device-column">√</td>
+					</tr>
+					<tr>
+						<td class="first-column">getCharacteristicByUUID</td>
+						<td class="device-column">√</td>
+						<td class="device-column">√</td>
+						<td class="device-column">√</td>
+						<td class="device-column">√</td>
+					</tr>
+				</tbody>
+			</table>
+			<br/>
+			<table>
+				<thead>
+					<tr>
+						<th colspan="5" style="padding:10px 0px;">Characteristic</th>
+					</tr>
+					<tr>
+						<th class="first-column" rowspan="2">&nbsp;</th>
+						<th class="device-column" colspan = "1">IOS</th>
+						<th class="device-column" colspan = "3">Android</th>
+					</tr>
+					<tr>
+						<th class="device-column">IOS</th>
+						<th class="device-column">Google4.3</th>
+						<th class="device-column">Samsung4.2.2</th>
+						<th class="device-column">HTC4.1.2</th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr>
+						<td class="first-column">discoverDescriptors</td>
+						<td class="device-column">√</td>
+						<td class="device-column">√</td>
+						<td class="device-column">√</td>
+						<td class="device-column">√</td>
+					</tr>
+					<tr>
+						<td class="first-column">getDescriptorByUUID</td>
+						<td class="device-column">√</td>
+						<td class="device-column">√</td>
+						<td class="device-column">√</td>
+						<td class="device-column">√</td>
+					</tr>
+					<tr>
+						<td class="first-column">read</td>
+						<td class="device-column">√</td>
+						<td class="device-column">√</td>
+						<td class="device-column">√</td>
+						<td class="device-column">(partial)</br>not very stable</td>
+					</tr>
+					<tr>
+						<td class="first-column">subscribe</td>
+						<td class="device-column">√</td>
+						<td class="device-column">√</td>
+						<td class="device-column">√</td>
+						<td class="device-column">√</td>
+					</tr>
+					<tr>
+						<td class="first-column">unsubscribe</td>
+						<td class="device-column">√</td>
+						<td class="device-column">√</td>
+						<td class="device-column">√</td>
+						<td class="device-column">√</td>
+					</tr>
+					<tr>
+						<td class="first-column">write</td>
+						<td class="device-column">√</td>
+						<td class="device-column">√</td>
+						<td class="device-column">√</td>
+						<td class="device-column">√</td>
+					</tr>
+				</tbody>
+			</table>
+			<br/>
+			<table>
+				<thead>
+					<tr>
+						<th colspan="5" style="padding:10px 0px;">Descriptor</th>
+					</tr>
+					<tr>
+						<th class="first-column" rowspan="2">&nbsp;</th>
+						<th class="device-column" colspan = "1">IOS</th>
+						<th class="device-column" colspan = "3">Android</th>
+					</tr>
+					<tr>
+						<th class="device-column">IOS</th>
+						<th class="device-column">Google4.3</th>
+						<th class="device-column">Samsung4.2.2</th>
+						<th class="device-column">HTC4.1.2</th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr>
+						<td class="first-column">read</td>
+						<td class="device-column">√</td>
+						<td class="device-column">√</td>
+						<td class="device-column">√</td>
+						<td class="device-column">(partial)</br>not very stable</td>
+					</tr>
+				</tbody>
+			</table>
+			<br/>
+			<table>
+				<thead>
+					<tr>
+						<th colspan="5" style="padding:10px 0px;">Events</th>
+					</tr>
+					<tr>
+						<th class="first-column" rowspan="2">&nbsp;</th>
+						<th class="device-column" colspan = "1">IOS</th>
+						<th class="device-column" colspan = "3">Android</th>
+					</tr>
+					<tr>
+						<th class="device-column">IOS</th>
+						<th class="device-column">Google4.3</th>
+						<th class="device-column">Samsung4.2.2</th>
+						<th class="device-column">HTC4.1.2</th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr>
+						<td class="first-column">bcready</td>
+						<td class="device-column">√</td>
+						<td class="device-column">√</td>
+						<td class="device-column">√</td>
+						<td class="device-column">√</td>
+					</tr>
+										<tr>
+						<td class="first-column">bluetoothstatechange</td>
+						<td class="device-column">√</td>
+						<td class="device-column">√</td>
+						<td class="device-column">√</td>
+						<td class="device-column">√</td>
+					</tr>
+					<tr>
+						<td class="first-column">deviceconnected</td>
+						<td class="device-column">√</td>
+						<td class="device-column">√</td>
+						<td class="device-column">√</td>
+						<td class="device-column">√</td>
+					</tr>
+					<tr>
+						<td class="first-column">devicedisconnect</td>
+						<td class="device-column">√</td>
+						<td class="device-column">√</td>
+						<td class="device-column">√</td>
+						<td class="device-column">√</td>
+					</tr>
+					<tr>
+						<td class="first-column">newdevice</td>
+						<td class="device-column">√</td>
+						<td class="device-column">√</td>
+						<td class="device-column">√</td>
+						<td class="device-column">√</td>
+					</tr>
+					<tr>
+						<td class="first-column">oncharacteristicread</td>
+						<td class="device-column">√</td>
+						<td class="device-column">×</td>
+						<td class="device-column">×</td>
+						<td class="device-column">×</td>
+					</tr>
+					<tr>
+						<td class="first-column">ondescriptorread</td>
+						<td class="device-column">√</td>
+						<td class="device-column">×</td>
+						<td class="device-column">×</td>
+						<td class="device-column">×</td>
+					</tr>
+					<tr>
+						<td class="first-column">ondescriptorwrite</td>
+						<td class="device-column">√</td>
+						<td class="device-column">×</td>
+						<td class="device-column">×</td>
+						<td class="device-column">×</td>
+					</tr>
+					<tr>
+						<td class="first-column">onsubscribestatechange</td>
+						<td class="device-column">√</td>
+						<td class="device-column">×</td>
+						<td class="device-column">×</td>
+						<td class="device-column">×</td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+	</div>
+	<script type="text/javascript">
+		var tables = document.getElementsByTagName('table');
+		var tablesLength = tables.length;
+		for(var i=0;i<tablesLength;i++){
+			var table = tables[i];
+			var tableRowLength = table.rows.length;
+			for(var j =0;j<tableRowLength;j++){
+				var row = table.rows[j];
+				var tableCellLength = row.cells.length;
+				for(var k=0;k<tableCellLength;k++){
+					var cell = row.cells[k];
+					if(trim(cell.innerHTML).indexOf('√') != -1){
+						cell.setAttribute("class", "green"); 
+					}else if(trim(cell.innerHTML).indexOf('×') != -1){
+						cell.setAttribute("class", "pink"); 
+					}else if(trim(cell.innerHTML).indexOf('(partial)') != -1){
+						cell.setAttribute("class", "yellow"); 
+					}
+				}
+			}
+		}
+			
+		function trim(str){    
+			return str.replace(/(^\s*)|(\s*$)/g, "");    
+		}    
+	</script>
+	</body>
+</html>
