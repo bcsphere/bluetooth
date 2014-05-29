@@ -72,6 +72,7 @@
 	
 	//wait for plugin ready
 	var time = 0;
+	var bcreadyIsFired = false;
 	document.addEventListener("bccoreready",function(){
 		window.setTimeout(function(){
 			var interval = window.setInterval(function() {
@@ -88,9 +89,18 @@
 				}
 				time++;
 				if(isAllReady){
-					BC.Tools.FireDocumentEvent("bcready");
+					window.clearInterval(interval);
+					if(!bcreadyIsFired){
+						BC.Tools.FireDocumentEvent("bcready");
+						bcreadyIsFired = true;
+					}
 				}
 			}, 100);
+			
+			if(!bcreadyIsFired){
+				BC.Tools.FireDocumentEvent("bcready");
+				bcreadyIsFired = true;
+			}
 		},100);
 	});
 	
@@ -203,7 +213,7 @@
 			descriptor.dispatchEvent("ondescriptorwrite");
 		});
 		BC.bluetooth.addSystemListener("newadvpacket",function(scanData){
-			var advertisementData,deviceAddress,deviceName,isCon,RSSI,txPower;
+			var advertisementData,deviceAddress,deviceName,isCon,RSSI,txPower,type;
 			if(scanData['advertisementData']){
 				advertisementData = scanData['advertisementData'];
 				if(advertisementData.manufacturerData){
@@ -222,21 +232,26 @@
 			if(scanData['RSSI']){
 				RSSI = parseInt(scanData['RSSI']);
 			}
+			if(scanData['type']){
+				type = scanData['type'];
+			}
 			
 			var isConnected = false;
 			if(isCon === "true"){
 				isConnected = true;
 			}
 			if(isNewDevice(deviceAddress)){
-				var newdevice = new BC.Device({deviceAddress:deviceAddress,deviceName:deviceName,advertisementData:advertisementData,isConnected:isConnected,RSSI:RSSI});
+				var newdevice = new BC.Device({deviceAddress:deviceAddress,deviceName:deviceName,advertisementData:advertisementData,isConnected:isConnected,RSSI:RSSI,type:type});
 				BC.bluetooth.devices[deviceAddress] = newdevice;
 				BC.bluetooth.dispatchEvent("newdevice",newdevice);
 			}else{
 				var thedevice = BC.bluetooth.devices[deviceAddress];
-				thedevice.RSSI = RSSI;
-				//IOS will regard the different advertisement data which broadcast from same bluetooth address as different device
-				//so be careful if you want to develop application based on changing advertisement data
-				thedevice.advertisementData = advertisementData;	
+				if(type == "BLE"){
+					thedevice.RSSI = RSSI;
+					//IOS will regard the different advertisement data which broadcast from same bluetooth address as different device
+					//so be careful if you want to develop application based on changing advertisement data
+					thedevice.advertisementData = advertisementData;	
+				}
 				thedevice.advTimestamp = new Date().getTime();
 			}
 			
@@ -538,6 +553,45 @@
 				var notifyError = characteristic.notifyError.bind(characteristic,characteristic.notifyError);
 				navigator.bluetooth.notify(notifySuccess,notifyError,characteristic.upper.uniqueID,characteristic.index,data);
 			};
+			this.startClassicalScan = function(){
+				navigator.bluetooth.startClassicalScan(testFunc,testFunc);
+			};
+			this.stopClassicalScan = function(){
+				navigator.bluetooth.stopClassicalScan(testFunc,testFunc);
+			};
+			this.rfcommRead = function(device){
+				var readSuccess = device.readSuccess.bind(device,device.readSuccess);
+				var readError = device.readError.bind(device,device.readError);
+				navigator.bluetooth.rfcommRead(readSuccess,readError,device.deviceAddress);
+			};
+			this.rfcommWrite = function(device,value){
+				var rfcommWriteSuccess = device.rfcommWriteSuccess.bind(device,device.rfcommWriteSuccess);
+				var rfcommWriteError = device.rfcommWriteError.bind(device,device.rfcommWriteError);
+				navigator.bluetooth.rfcommWrite(rfcommWriteSuccess,rfcommWriteError,device.deviceAddress,value);
+			};
+			this.rfcommSubscribe = function(device){
+				var subscribeCallback = device.subscribeCallback.bind(device,device.subscribeCallback);
+				navigator.bluetooth.rfcommSubscribe(subscribeCallback,testFunc,device.deviceAddress);
+			};
+			this.rfcommUnsubscribe = function(device){
+				navigator.bluetooth.rfcommUnsubscribe(testFunc,testFunc,device.deviceAddress);
+			};
+			this.rfcommConnect = function(uuid,secure,device){
+				var connectSuccess = device.connectSuccess.bind(device,device.connectSuccess);
+				var connectError = device.connectError.bind(device,device.connectError);
+				navigator.bluetooth.rfcommConnect(connectSuccess,connectError,device.deviceAddress,APPURL,uuid,secure);
+			};
+			this.rfcommDisconnect = function(device){
+				var disconnectSuccess = device.disconnectSuccess.bind(device,device.disconnectSuccess);
+				var disconnectError = device.disconnectSuccess.bind(device,device.disconnectError);
+				navigator.bluetooth.rfcommDisconnect(disconnectSuccess,disconnectError,device.deviceAddress,APPURL);
+			};
+			this.rfcommListen = function(name,uuid,secure){
+				navigator.bluetooth.rfcommListen(testFunc,testFunc,name,uuid,secure);
+			};
+			this.rfcommUnListen = function(name,uuid){
+				navigator.bluetooth.rfcommUnListen(testFunc,testFunc,name,uuid);
+			};
 			
 		}else{
 			alert(type+" is not support now.");
@@ -616,6 +670,18 @@
 			this.removeService = this.bluetoothFuncs.removeService;
 			this.notify = this.bluetoothFuncs.notify;
 			
+			//classical Bluetooth 2.1 interface
+			this.startClassicalScan = this.bluetoothFuncs.startClassicalScan;
+			this.stopClassicalScan = this.bluetoothFuncs.stopClassicalScan;
+			this.rfcommRead = this.bluetoothFuncs.rfcommRead;
+			this.rfcommWrite = this.bluetoothFuncs.rfcommWrite;
+			this.rfcommSubscribe = this.bluetoothFuncs.rfcommSubscribe;
+			this.rfcommUnsubscribe = this.bluetoothFuncs.rfcommUnsubscribe;
+			this.rfcommConnect = this.bluetoothFuncs.rfcommConnect;
+			this.rfcommDisconnect = this.bluetoothFuncs.rfcommDisconnect;
+			this.rfcommListen = this.bluetoothFuncs.rfcommListen;
+			this.rfcommUnListen = this.bluetoothFuncs.rfcommUnListen;
+			
 			this.bluetoothFuncs.initBluetooth();
 			
 			this.devices = {};
@@ -623,9 +689,11 @@
 			this.isopen = false;
 
 			this.UUIDMap = {};
-  			this.UUIDMap["00001802-0000-1000-8000-00805f9b34fb"] = BC.ImmediateAlert;
-  			this.UUIDMap["00001803-0000-1000-8000-00805f9b34fb"] = BC.LinkLoss;
-  			this.UUIDMap["00001804-0000-1000-8000-00805f9b34fb"] = BC.TxPower;
+			//the uuid should be lower case.
+  			this.UUIDMap["00001802-0000-1000-8000-00805f9b34fb"] = BC.ImmediateAlertService;
+  			this.UUIDMap["00001803-0000-1000-8000-00805f9b34fb"] = BC.LinkLossService;
+  			this.UUIDMap["00001804-0000-1000-8000-00805f9b34fb"] = BC.TxPowerService;
+  			this.UUIDMap["6e400001-b5a3-f393-e0a9-e50e24dcca9e"] = BC.SerialPortService;
 		},
 	
 		addSystemListener : function(eventName,callback,arg){
@@ -711,15 +779,82 @@
 		});
 	};
 	/** 
-	 * Starts a scan for Bluetooth LE devices, looking for devices with given services.
+	 * Starts a scan for Bluetooth LE OR Classical(only in android platform) devices.
 	 * @memberof Bluetooth
 	 * @method 
-	 * @example BC.Bluetooth.StartScan();
-	 * @param {array} [uuids] - Array of services to look for. If null or [], it will scan all devices
+	 * @example BC.Bluetooth.StartScan();//start hybrid scan,in android platform the default scan strategy is scan for BLE device 5s first,
+	 * then scan for classical device 12s,and restart the hybrid scan untill the BC.Bluetooth.StopScan be called. in IOS platform only start the LE scan.
+	 * BC.Bluetooth.StartScan(null,["00000000-0000-0000-0000-000000000000"]);//start hybrid scan with LE service UUID.
+	 * BC.Bluetooth.StartScan("LE"); //just start the LE scan
+	 * BC.Bluetooth.StartScan("Classical"); //just start the classical scan in android platform, if the platform is IOS,call this method will nothing happen.
+	 * @param {array} [type] - Is LE scan or classical scan, please input "LE" OR "Classical", if you want use default scan strategy, just ignore this param.
+	 * @param {array} [uuids] - Array of services to look for. If null or [], it will scan all devices(just support BLE service UUID)
 	 * @fires Bluetooth#newdevice
 	 */
-	var StartScan = BC.Bluetooth.StartScan = function(uuids){
+	var StartScan = BC.Bluetooth.StartScan = function(type,uuids){
+		if(type){
+			var type = type.toLowerCase();
+			if(type == "le"){
+				BC.bluetooth.startScan(uuids);
+			}else if(type == "classical"){
+				if(API !== "ios"){
+					BC.bluetooth.startClassicalScan();
+				}else{
+					alert("classical scan is not support in IOS platform.");
+				}
+			}else{
+				alert("please input 'LE' or 'Classical' string for type.");
+			}
+		}else{
+			startDefaultScan(uuids);
+		}
+	};
+	
+	function startDefaultScan(uuids){
+		if(API == "ios"){
+			BC.bluetooth.startScan(uuids);
+		}else{
+			startDefaultScanImpl(uuids);
+			BC.bluetooth.scanIntervalIndex = setInterval(function(){
+				startDefaultScanImpl(uuids);
+			},17100);
+		}
+	};
+	
+	function startDefaultScanImpl(uuids){
 		BC.bluetooth.startScan(uuids);
+		setTimeout(function(){
+			BC.bluetooth.stopScan(uuids);
+			BC.bluetooth.startClassicalScan();
+		},5000);
+		setTimeout(function(){
+			BC.bluetooth.stopClassicalScan();
+		},17000);
+	};
+	
+	/** 
+	 * Starts a RFCOMM listen.
+	 * @memberof Bluetooth
+	 * @method 
+	 * @example BC.Bluetooth.RFCOMMListen("appName","7A9C3B55-78D0-44A7-A94E-A93E3FE118CE",true);
+	 * @param {string} name - Name for the SDP record when creating server socket
+	 * @param {string} uuid - Unique UUID for your application
+	 * @param {boolean} secure - use secure connect or not
+	 */
+	var RFCOMMListen = BC.Bluetooth.RFCOMMListen = function(name,uuid,secure){
+		BC.bluetooth.rfcommListen(name,uuid,secure);
+	};
+	
+	/** 
+	 * Stops a RFCOMM listen.
+	 * @memberof Bluetooth
+	 * @method 
+	 * @example BC.Bluetooth.RFCOMMUnListen("appname","your listen uuid");
+	 * @param {string} name - Name for the SDP record when creating server socket
+	 * @param {string} uuid - Unique UUID for your application
+	 */
+	var RFCOMMUnListen = BC.Bluetooth.RFCOMMUnListen = function(name,uuid){
+		BC.bluetooth.rfcommUnListen(name,uuid);
 	};
 	
 	function isNewDevice(deviceAddress){
@@ -733,13 +868,20 @@
 	};
 	
 	/** 
-	 * Stops a scanning for BLE Peripherals.
+	 * Stops a scanning.
 	 * @memberof Bluetooth
 	 * @method 
 	 * @example BC.Bluetooth.StopScan();
 	 */
 	var StopScan = BC.Bluetooth.StopScan = function(){
 		BC.bluetooth.stopScan();
+		if(API !== "ios"){
+			BC.bluetooth.stopClassicalScan();
+		}
+		if(BC.bluetooth.scanIntervalIndex){
+
+			clearInterval(BC.bluetooth.scanIntervalIndex);
+		}
 	};
 	
 	/** 
@@ -800,8 +942,8 @@
 	/**
 	 * DataValue provides some useful functions to convert raw byte data.
 	 * @class
-	 * @param {Uint8Array} value - The raw value
-	 * @property {Uint8Array} value - The raw value of DataValue object
+	 * @param {ArrayBuffer} value - The raw value
+	 * @property {ArrayBuffer} value - The raw value of DataValue object
 	 */
 	var DataValue = BC.DataValue = function(value){
 	    this.value = value;
@@ -872,7 +1014,48 @@
 			}
 			return result;
 		},
-	   
+		
+	   	/**
+		 * Appends the dataValue object to the tail.
+		 * @memberof DataValue
+		 * @example //Gets a Device instance.
+		 * 	dataValue.append(otherDataValue);
+		 * @param {DataValue} dataValue - The dataValue to append
+		 * @instance
+		 * @returns {DataValue} return this pointer to support the chain operation
+		 */
+	   	append : function(dataValue){
+             if(!dataValue || !dataValue.value){
+                return this;
+             }
+             var dataView = new DataView(dataValue.value);
+             var totalLength = 0;
+             var thisLength = 0;
+             var thatLength = 0;
+             if(this.value && dataValue.value){
+                thisLength = this.value.byteLength;
+                thatLength = dataValue.value.byteLength;
+                length = thisLength + thatLength;
+             }else if(this.value){
+                thisLength = this.value.byteLength;
+                length = thisLength;
+             }else if(dataValue.value){
+                thatLength = dataValue.value.byteLength;
+                length = thatLength;
+             }
+             var ints = new Uint8Array(length);
+             if(thisLength != 0){
+                var thisDataView = new DataView(this.value);
+                for (var i = 0; i < thisLength; i++) {
+                    ints[i] = thisDataView.getUint8(i);
+                }
+             }
+             for (var j = thisLength,r = 0; j < length; j++,r++) {
+                ints[j] = dataView.getUint8(r);
+             }
+            this.value = ints.buffer;
+	   		return this;
+	   	}
 	});
 	
 	/**
@@ -965,6 +1148,7 @@
 	 * @property {DataValue} hardwareRevision - The hardware revision of this device
 	 * @property {DataValue} softwareRevision - The software revision of this device
 	 * @property {DataValue} manufacturerName - The manufacturer name of this device
+	 * @property {type} type - The type of this device('BLE' or 'Classical')
 	 */
 	var Device = BC.Device = BC.EventDispatcher.extend({
 		
@@ -985,27 +1169,36 @@
 			this.RSSI = arg.RSSI;
 			this.isDiscovering = false;
 			this.advTimestamp = new Date().getTime();
+			this.type = arg.type;
 			if(!BC.Tools.IsEmpty(this.deviceInitialize)){
 				this.deviceInitialize.apply(this, arguments);
 			}
 		},
 		
 		/**
-		 * Initiates a connection to the peripheral.
+		 * Initiates a connection to the peripheral(the connect can be BLE connect OR rfcomm connect(only in android platform) base on the device.type).
 		 * @memberof Device
 		 * @example //Gets a the Device instance.
 		 * var device = window.device = BC.bluetooth.devices["78:C5:E5:99:26:37"];
-		 * device.connect(function(){alert("device is already prepared well!");});
+		 * device.connect(function(){alert("device is already connected well!");});
+		 * //device.connect(function(){alert("device is already connected well!");},null,"7A9C3B55-78D0-44A7-A94E-A93E3FE118CE",ture); //connect if the device is classical
 		 * device.addEventListener("deviceconnected",function(s){alert("device:" + s.deviceAddress + "is connected successfully!")});
+		 * device.addEventListener("devicedisconnected",function(s){alert("device:" + s.deviceAddress + "is connected successfully!")});
 		 * @param {function} successCallback - Success callback
 		 * @param {function} [errorCallback] - Error callback
+		 * @param {string} [uuid] - If connect with classical device,pass the uuid into this param(this param is required when you want to connect a classical device)
+		 * @param {boolean} [secure] - The classical connection is secure or not(this param is required when you want to connect a classical device)
 		 * @fires Device#deviceconnected
 		 * @instance
 		 */
-		connect : function(success,error){
+		connect : function(success,error,uuid,secure){
 			this.success = success;
 			this.error = error;
-			BC.bluetooth.connect(this);
+			if(this.type == "BLE"){
+				BC.bluetooth.connect(this);
+			}else{
+				BC.bluetooth.rfcommConnect(uuid,secure,this);
+			}
 		},
 		
 		connectSuccess : function(){
@@ -1129,7 +1322,11 @@
 		disconnect : function(success,error){
 			this.success = success;
 			this.error = error;
-			BC.bluetooth.disconnect(this);
+			if(this.type == "BLE"){
+				BC.bluetooth.disconnect(this);
+			}else if(this.type == "Classical"){
+				BC.bluetooth.rfcommDisconnect(this);
+			}
 		},
 		
 		disconnectSuccess : function(){
@@ -1283,6 +1480,7 @@
 				uuid_128 = uuid;
 			}
 			_.each(this.services, function(service){
+					service.uuid = service.uuid.toLowerCase();
 					if(service.uuid == uuid_128){
 						result.push(service);
 					}
@@ -1290,6 +1488,116 @@
 			);
 			return result;
 		},
+		
+		/**
+		 * Reads value from classical RFCOMM interface.(only support Bluetooth2.1 device)
+		 * @memberof Device
+		 * @example 
+		 * device.rfcommConnect(function(){
+		 *	device.rfcommRead(readSuccess);
+		 * });
+		 * function readSuccess(data){
+		 *	alert("Data : "+JSON.stringify(data.value)+" \n Time :"+data.date);
+		 * }
+		 * @param {function} successCallback - Success callback
+		 * @param {function} [errorCallback] - Error callback
+		 * @instance
+		 */
+		rfcommRead : function(success,error){
+			this.success = success;
+			this.error = error;
+			BC.bluetooth.rfcommRead(this);
+		},
+		readSuccess : function(){
+			var data = {};
+            data.deviceAddress=this.deviceAddress;
+            data.date = arguments[1].date;
+            data.value = new BC.DataValue(BC.Tools.Base64ToBuffer(arguments[1].value));
+			this.success(data);
+		},
+		readError : function(){
+			this.error("read data error");
+		},
+		
+		/**
+		 * Writes the value into RFCOMM interface.(only support Bluetooth2.1 device)
+		 * @memberof Device
+		 * @example 
+		 * //write after device is well prepared.
+		 * device.rfcommConnect(function(){
+		 *	device.rfcommWrite("Hex","01",writeSuccess);
+		 * });
+		 * function writeSuccess(data){
+		 *	alert("write success!");
+		 * }
+		 * @param {string} type - The type of the value to write ('hex'/'ascii'/'unicode'/'raw')
+		 * @param {string/Uint8Array} value - The value write to the RFCOMM, if the 'type' is 'raw', the value type should be Uint8Array
+		 * @param {function} successCallback - Success callback
+		 * @param {function} [errorCallback] - Error callback
+		 * @instance
+		 */
+		rfcommWrite : function(type,value,success,error){
+			this.success = success;
+			this.error = error;
+			if(type.toLowerCase() == "hex"){
+				value = BC.Tools.HexToBase64(value);
+			}else if(type.toLowerCase() == "ascii"){
+				value = BC.Tools.ASCIIToBase64(value);
+			}else if(type.toLowerCase() == "unicode"){
+				value = BC.Tools.UnicodeToBase64(value);
+			}else if(type.toLowerCase() == "raw"){
+				value = BC.Tools.ConvertToBase64(value);
+			}else{
+				error("Please input 'hex'/'ascii'/'unicode' type.");
+				return;
+			}
+			BC.bluetooth.rfcommWrite(this,value);
+		},
+		rfcommWriteSuccess : function(){
+			this.success(arguments);
+		},
+		rfcommWriteError : function(){
+			this.error(arguments);
+		},
+		
+		/**
+		 * Subscribes the notification of this device RFCOMM.
+		 * @memberof Device
+		 * @example 
+		 * device.rfcommSubscribe(onDataAvaliable);
+		 * function onDataAvaliable(data){
+		 *	$("#notifyValue_hex").html(data.value.getHexString());
+		 *	$("#notifyValue_unicode").html(data.value.getUnicodeString());
+		 *	$("#notifyValue_ascii").html(data.value.getASCIIString());
+		 *	$("#notifyDate").html(data.date);
+		 * }
+		 * @param {function} callback - Called when peripheral sends data to this device.
+		 * @instance
+		 */
+		rfcommSubscribe : function(callback){
+			this.callback = callback;
+			BC.bluetooth.rfcommSubscribe(this);
+		},
+		subscribeCallback : function(){
+			var obj = arguments[1];
+			var data = {};
+			data.value = new BC.DataValue(BC.Tools.Base64ToBuffer(obj.value));
+			data.date = obj.date;
+			data.deviceAddress = obj.deviceAddress;
+			this.callback(data);
+		},
+		
+		/**
+		 * Unsubscribes the notification of this device RFCOMM.
+		 * @memberof Device
+		 * @example 
+		 * device.rfcommUnsubscribe();
+		 * @instance
+		 */
+		rfcommUnsubscribe : function(){
+			BC.bluetooth.rfcommUnsubscribe(this);
+		},
+		
 	});
 	Device.extend = extend;
 	
@@ -1385,7 +1693,6 @@
                     service.characteristics.push(new BC.Characteristic({index:cindex,uuid:cuuid,name:cname,device:device,upper:service,property:property}));
                 }
             );
-            
 			this.success();
 		},
 		
@@ -1405,7 +1712,9 @@
 			var uuid = uuid.toLowerCase();
 			var result = [];
 			var uuid_128 = BC.Tools.ChangeTo128UUID(uuid);
+			
 			_.each(this.characteristics, function(characteristic){
+				characteristic.uuid = characteristic.uuid.toLowerCase();
 				if(characteristic.uuid == uuid_128){
 						result.push(characteristic);
 					}
@@ -1414,108 +1723,6 @@
 			return result;
 		},
   });
-  
-	var ImmediateAlert = BC.ImmediateAlert = BC.Service.extend({
-
-	   characteristicUUID:'2a06',
-
-	   no_alert : function(){
-	      this.alert('0');
-	   },
-	   
-	   mild_alert : function(){
-	      this.alert('1');
-	   },
-	   
-	   high_alert : function(){
-	      this.alert('2');
-	   },
-	   
-	   alert:function(writeValue,writeType,successFunc,errorFunc){
-	   	  successFunc = successFunc || this.writeSuccess;
-	   	  errorFunc = errorFunc || this.writeError;
-	   	  writeType = writeType ||　'hex';
-       	  this.discoverCharacteristics(function(){
-            	this.getCharacteristicByUUID(this.characteristicUUID)[0].write(writeType,writeValue,successFunc,errorFunc);
-          });
-	   },
-	      
-	   writeSuccess : function(){
-	      console.log('writeSuccess');
-	   },
-	   
-	   writeError : function(){
-	      console.log('writeFailed');
-	   },
-
-	});
-
-
-	var LinkLoss = BC.LinkLoss = BC.Service.extend({
-
-		characteristicUUID:'2a06',
-
-		no_alert : function(){
-		  this.alert('0');
-		},
-
-		mild_alert : function(){
-		  this.alert('1');
-		},
-
-		high_alert : function(){
-		  this.alert('2');
-		},
-
-		getValue : function(callback){
-		  	this.discoverCharacteristics(function(){
-			    this.getCharacteristicByUUID(this.characteristicUUID)[0].read(function(data){
-			 		callback(data.value);
-			    });
-			});
-		},
-	   
-	    alert:function(writeValue,writeType,successFunc,errorFunc){
-	    	successFunc = successFunc || this.writeSuccess;
-	   	    errorFunc = errorFunc || this.writeError;
-	   	    writeType= writeType ||　'hex';
-		    this.discoverCharacteristics(function(){
-		        this.getCharacteristicByUUID(this.characteristicUUID)[0].write(writeType,writeValue,successFunc,errorFunc);
-		    });
-	    },
-	      
-		writeSuccess : function(){
-		  console.log('writeSuccess');
-		},
-
-		writeError : function(){
-		  console.log('writeFailed');
-		},
-
-	});
-
-	var TxPower = BC.TxPower = BC.Service.extend({
-
-	   	characteristicUUID:'2a07',
-
-		getValue : function(callback){
-   	    	this.discoverCharacteristics(function(){
-				this.getCharacteristicByUUID(this.characteristicUUID)[0].read(function(data){
-	         	    callback(data.value);
-	            });
-	        });
-		},
-
-	    notify : function(callback){
-	   		this.discoverCharacteristics(function(){
-	   			this.getCharacteristicByUUID(this.characteristicUUID)[0].subscribe(function(data){
-	   				callback(data.value);
-	   			});
-	   		});
-	    },
-
-	});
-	
 
 
     /**

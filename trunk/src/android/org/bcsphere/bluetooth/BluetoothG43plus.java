@@ -578,6 +578,7 @@ public class BluetoothG43plus implements IBluetooth{
 		Tools.addProperty(obj, Tools.IS_CONNECTED, Tools.IS_FALSE);
 		Tools.addProperty(obj, Tools.RSSI, rssi);
 		Tools.addProperty(obj, Tools.ADVERTISEMENT_DATA, Tools.decodeAdvData(scanRecord));
+		Tools.addProperty(obj, Tools.TYPE, "BLE");
 		PluginResult pluginResult = new PluginResult(PluginResult.Status.OK , obj);
 		pluginResult.setKeepCallback(true);
 		addEventListenerCC.get(Tools.NEW_ADV_PACKET).sendPluginResult(pluginResult);
