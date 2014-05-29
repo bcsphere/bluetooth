@@ -1,25 +1,22 @@
 BC.js (v0.4.0)
 ===================================
-The BC.js is implemented as an [Apache Cordova](http://cordova.apache.org) / [PhoneGap](http://phonegap.com) Plugin for smartphones and tablets.
-</br>It supports both Bluetooth Low Energy(BLE) API(in IOS/Android) & Bluetooth 2.1 classical interface(in Android)
-  
-  * Use this command to install our plugin in your Cordova/Phonegap project: <br/>
-    <b>cordova plugin add https://github.com/bcsphere/bluetooth.git </b> <br/>
-  * Online document is here: http://www.bcsphere.org/portal.php?mod=topic&topicid=3 <br/>
-  * [BC Explorer](https://github.com/bcsphere/bcexplorer) is a useful tool to show the BLE services structure in device, we hope it will help you to start your development.
-  * [BC IBeacon](https://github.com/bcsphere/ibeacon) implements as a plugin based on BC.js, provides a sample way to develop your own HW SDK based on BC.js .
-  * [BC BLEprofiles](https://github.com/bcsphere/bleprofiles) implements some of Bluetooth standard profiles based on BC.js such as findme/proximity/serialport etc.
+BC.js is the core implementation of universal Bluetooth JavaScript API.
+It supports both Bluetooth 4.0 GATT interface in IOS/Android and Bluetooth 2.1 Classical interface in Android.
+
+  * Online Bluetooth Javascript API document: http://www.bcsphere.org/portal.php?mod=topic&topicid=3 <br/>
+  * [bleprofiles](https://github.com/bcsphere/bleprofiles) is the BC official open source Bluetooth common profiles library based on BC.js, which can be re-used by applications to accelerate development.
+  * [bcexplorer](https://github.com/bcsphere/bcexplorer) is the open source tool to explore the GATT services/characteristics of Bluetooth Smart devices. It helps debug devices as well as demostrates the Bluetooth Javascript API.
+  * [bciBeacon](https://github.com/bcsphere/ibeacon) implements as a plugin based on BC.js, provides a sample way to develop your own HW SDK based on BC.js.
   
 Features
 -----------------------------------
 #### Multi-platform development and deployment 
-* Your team will not be separated into some smaller teams to develop app for different platforms.
-* With the [Apache Cordova](http://cordova.apache.org) / [PhoneGap](http://phonegap.com) Plugin technique,
-  you can develop BLE enabled cross-platform mobile apps for e.g. iOS and Android using JavaScript, HTML5 and CSS3.
-* If you are a senior Web developer and want to develop a BLE app, BC.js is your best choice, you can use uniform UI code in multi-platform.
+* Develop Bluetooth enabled cross-platform mobile apps for iOS and Android using JavaScript, HTML5 and CSS3.
+* Single team on a single project instead of several teams for different platforms.
+* Uniform UI code in multi-platform.
 
-#### Dual-mode Bluetooth transport just like serial port 
-* BC.js implement both BLE & classical interface in android platform.
+#### Universal Bluetooth Serial Port 
+* BC.js supports implement both BLE & classical interface in android platform.
 * Cross-platform implementation of serial port, you can ignore the IOS/Android platform different when using the [serial port profile](https://github.com/bcsphere/bleprofiles) interface.
 * Don't worry about the different between LE/Classical GAP. BC.js will choose the appropriate way to establish the connection.
 
@@ -31,7 +28,13 @@ Features
 #### Internet of Things
 * Both Bluetooth Low Energy and JavaScript are asynchronous by their DNA,which makes them a good match. 
 * Bluetooth is good enough for wireless short-range communication. But we won't be limited to Bluetooth API.
-  
+
+Usage
+-----------------------------------
+It supports [Apache Cordova](http://cordova.apache.org) / [PhoneGap](http://phonegap.com) Plugin for smartphones and tablets at the time.
+  * Use this command to install our plugin in your Cordova/Phonegap project: <br/>
+    <b>cordova plugin add https://github.com/bcsphere/bluetooth.git </b> <br/>
+
 </br></br>
 Support platforms
 -----------------------------------

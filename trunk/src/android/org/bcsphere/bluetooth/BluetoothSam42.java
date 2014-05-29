@@ -93,6 +93,25 @@ public class BluetoothSam42 implements IBluetooth {
     }
 
     @Override
+    public void openBluetooth(JSONArray json, CallbackContext callbackContext) {
+        Log.i(TAG, "openBluetooth");
+        bluetoothAdapter.enable();
+    }
+
+    @Override
+    public void getBluetoothState(JSONArray json, CallbackContext callbackContext) {
+        Log.i(TAG, "getBluetoothState");
+        boolean state = bluetoothAdapter.isEnabled();
+        JSONObject jsonObject = new JSONObject();
+        if (state) {
+            Tools.addProperty(jsonObject, Tools.BLUETOOTH_STATE, Tools.IS_TRUE);
+        } else {
+            Tools.addProperty(jsonObject, Tools.BLUETOOTH_STATE, Tools.IS_FALSE);
+        }
+        callbackContext.success(jsonObject);
+    }
+
+    @Override
     public void startScan(JSONArray json, CallbackContext callbackContext) {
         Log.i(TAG, "startScan");
         if (!isInitialized(callbackContext)) {
@@ -185,6 +204,89 @@ public class BluetoothSam42 implements IBluetooth {
             jsonDevices.put(jsonDevice);
         }
         callbackContext.success(jsonDevices);
+    }
+
+    @Override
+    public void getPairedDevices(JSONArray json, CallbackContext callbackContext) {
+        Log.i(TAG, "getPairedDevices");
+        if (!isInitialized(callbackContext)) {
+            return;
+        }
+        Set<BluetoothDevice> bondedDevices = bluetoothAdapter.getBondedDevices();
+        JSONArray jsonDevices = new JSONArray();
+        for (BluetoothDevice device : bondedDevices) {
+            JSONObject jsonDevice = new JSONObject();
+            Tools.addProperty(jsonDevice, Tools.DEVICE_ADDRESS, device.getAddress());
+            Tools.addProperty(jsonDevice, Tools.DEVICE_NAME, device.getName());
+            jsonDevices.put(jsonDevice);
+        }
+        callbackContext.success(jsonDevices);
+    }
+
+    @Override
+    public void createPair(JSONArray json, CallbackContext callbackContext) {
+        Log.i(TAG, "createPair");
+        if (!isInitialized(callbackContext)) {
+            return;
+        }
+        String deviceAddress = Tools.getData(json, Tools.DEVICE_ADDRESS);
+        if (deviceAddress == null) {
+            Tools.sendErrorMsg(callbackContext);
+            return;
+        }
+        BluetoothDevice device = bluetoothAdapter.getRemoteDevice(deviceAddress);
+        if (device == null) {
+            Tools.sendErrorMsg(callbackContext);
+            return;
+        }
+        if (bluetoothAdapter.getBondedDevices().contains(device)) {
+            Tools.sendSuccessMsg(callbackContext);
+            return;
+        }
+        JSONObject jsonObject = new JSONObject();
+        Tools.addProperty(jsonObject, Tools.DEVICE_ADDRESS, deviceAddress);
+        try {
+            if (Tools.creatBond(device.getClass(), device)) {
+                Tools.addProperty(jsonObject, Tools.MES, Tools.SUCCESS);
+                callbackContext.success(jsonObject);
+            } else {
+                Tools.addProperty(jsonObject, Tools.MES, Tools.ERROR);
+                callbackContext.success(jsonObject);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    @Override
+    public void removePair(JSONArray json, CallbackContext callbackContext) {
+        Log.i(TAG, "removePair");
+        if (!isInitialized(callbackContext)) {
+            return;
+        }
+        String deviceAddress = Tools.getData(json, Tools.DEVICE_ADDRESS);
+        if (deviceAddress == null) {
+            Tools.sendErrorMsg(callbackContext);
+            return;
+        }
+        BluetoothDevice device = bluetoothAdapter.getRemoteDevice(deviceAddress);
+        if (device == null) {
+            Tools.sendErrorMsg(callbackContext);
+            return;
+        }
+        JSONObject jsonObject = new JSONObject();
+        Tools.addProperty(jsonObject, Tools.DEVICE_ADDRESS, deviceAddress);
+        try {
+            if (Tools.removeBond(device.getClass(), device)) {
+                Tools.addProperty(jsonObject, Tools.MES, Tools.SUCCESS);
+                callbackContext.success(jsonObject);
+            } else {
+                Tools.addProperty(jsonObject, Tools.MES, Tools.ERROR);
+                callbackContext.success(jsonObject);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     @Override

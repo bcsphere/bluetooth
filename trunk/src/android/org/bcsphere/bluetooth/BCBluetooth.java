@@ -16,8 +16,6 @@
 package org.bcsphere.bluetooth;
 
 import java.util.HashMap;
-import java.util.Iterator;
-import java.util.Set;
 
 import org.apache.cordova.CallbackContext;
 import org.apache.cordova.CordovaInterface;
@@ -35,7 +33,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.SharedPreferences;
-import android.util.Log;
 
 import org.bcsphere.bluetooth.tools.BluetoothDetection;
 import org.bcsphere.bluetooth.tools.Tools;
@@ -50,7 +47,6 @@ public class BCBluetooth extends CordovaPlugin {
 	private CallbackContext newadvpacketContext;
 	private CallbackContext disconnectContext;
 	private BluetoothAdapter bluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
-	private static final String TAG = "BCBluetooth";
     
 	//classical interface relative data structure
 	public HashMap<String, BluetoothSerialService> classicalServices = new HashMap<String, BluetoothSerialService>();
@@ -96,273 +92,351 @@ public class BCBluetooth extends CordovaPlugin {
 	public boolean execute(final String action, final JSONArray json,
 			final CallbackContext callbackContext) throws JSONException {
 
-		try {
-			if(bluetoothAPI != null){
-				if (isSetContext) {
-					bluetoothAPI.setContext(myContext);
-					isSetContext = false;
-				}
-				if (action.equals("getCharacteristics")) {
-					bluetoothAPI.getCharacteristics(json, callbackContext);
-				} else if (action.equals("getDescriptors")) {
-					bluetoothAPI.getDescriptors(json, callbackContext);
-				} else if (action.equals("removeServices")) {
-					bluetoothAPI.removeServices(json, callbackContext);
-				}		
-				if (action.equals("stopScan")) {
-					bluetoothAPI.stopScan(json, callbackContext);
-				} else if (action.equals("getConnectedDevices")) {
-					bluetoothAPI.getConnectedDevices(json, callbackContext);
-				} 
-				
-				cordova.getThreadPool().execute(new Runnable() {
-					@Override
-					public void run() {
-						if (action.equals("startScan")) {
-							bluetoothAPI.startScan(json, callbackContext);
-						} else if (action.equals("connect")) {
-							bluetoothAPI.connect(json, callbackContext);
-						} else if (action.equals("disconnect")) {
-							bluetoothAPI.disconnect(json, callbackContext);
-						} else if (action.equals("getServices")) {
-							bluetoothAPI.getServices(json, callbackContext);
-						} else if (action.equals("writeValue")) {
-							bluetoothAPI.writeValue(json, callbackContext);
-						} else if (action.equals("readValue")) {
-							bluetoothAPI.readValue(json, callbackContext);
-						} else if (action.equals("setNotification")) {
-							bluetoothAPI.setNotification(json, callbackContext);
-						} else if (action.equals("getDeviceAllData")) {
-							bluetoothAPI.getDeviceAllData(json, callbackContext);
-						} else if (action.equals("addServices")) {
-							bluetoothAPI.addServices(json, callbackContext);
-						} else if (action.equals("getRSSI")) {
-							bluetoothAPI.getRSSI(json, callbackContext);
-						}
-					}
-				});
+		if (action.equals("addEventListener")) {
+			String eventName = Tools.getData(json, Tools.EVENT_NAME);
+			if (eventName.equals("newadvpacket") ) {
+				newadvpacketContext = callbackContext;
+			}else if(eventName.equals("disconnect")){
+				disconnectContext = callbackContext;
 			}
-			
-			if (action.equals("addEventListener")) {
-				String eventName = Tools.getData(json, Tools.EVENT_NAME);
-				if (eventName.equals("newadvpacket") ) {
-					newadvpacketContext = callbackContext;
-				}else if(eventName.equals("disconnect")){
-					disconnectContext = callbackContext;
-				}
-				if(bluetoothAPI != null){
-					bluetoothAPI.addEventListener(json, callbackContext);
-				}
-				return true;
-			}
-
-			if (action.equals("getEnvironment")) {
-				JSONObject jo = new JSONObject();
-				Tools.addProperty(jo, "appID", "com.test.yourappid");
-				Tools.addProperty(jo, "deviceAddress", "N/A");
-				Tools.addProperty(jo, "api", versionOfAPI);
-				callbackContext.success(jo);
-				return true;
-			}
-			if (action.equals("openBluetooth")) {
-				if(!bluetoothAdapter.isEnabled()){
-					bluetoothAdapter.enable();
-				}
-				Tools.sendSuccessMsg(callbackContext);
-				return true;
-			}
-			if (action.equals("getBluetoothState")) {
-				Log.i(TAG, "getBluetoothState");
-				JSONObject obj = new JSONObject();
-				if (bluetoothAdapter.isEnabled()) {
-					Tools.addProperty(obj, Tools.BLUETOOTH_STATE, Tools.IS_TRUE);
-					callbackContext.success(obj);
-				}else {
-					Tools.addProperty(obj, Tools.BLUETOOTH_STATE, Tools.IS_FALSE);
-					callbackContext.success(obj);
-				}
-				return true;
-			}
-			if(action.equals("startClassicalScan")){
-				Log.i(TAG,"startClassicalScan");
-				if(bluetoothAdapter.isEnabled()){
-					if(bluetoothAdapter.startDiscovery()){
-						callbackContext.success();
-					}else{
-						callbackContext.error("start classical scan error!");
-					}
-				}else{
-					callbackContext.error("your bluetooth is not open!");
-				}
-			}
-			if(action.equals("stopClassicalScan")){
-				Log.i(TAG,"stopClassicalScan");
-				if(bluetoothAdapter.isEnabled()){
-					if(bluetoothAdapter.cancelDiscovery()){
-						callbackContext.success();
-					}else{
-						callbackContext.error("stop classical scan error!");
-					}
-				}else{
-					callbackContext.error("your bluetooth is not open!");
-				}
-			}
-			if(action.equals("rfcommConnect")){
-				String deviceAddress = Tools.getData(json, Tools.DEVICE_ADDRESS);
-				String securestr = Tools.getData(json, Tools.SECURE);
-				String uuidstr = Tools.getData(json, Tools.UUID);
-				boolean secure = false;
-				if(securestr.equals("true")){
-					secure = true;
-				}
-				Log.i(TAG,"connect to "+deviceAddress);
-			    BluetoothDevice device = bluetoothAdapter.getRemoteDevice(deviceAddress);
-			    BluetoothSerialService classicalService = classicalServices.get(deviceAddress);
-			    
-			    if(device != null && classicalService == null){
-			    	classicalService = new BluetoothSerialService();
-			    	classicalService.disconnectCallback = disconnectContext;
-			    	classicalServices.put(deviceAddress, classicalService);
-			    }
-			    
-			    if (device != null) {
-			    	classicalService.connectCallback = callbackContext;
-			    	classicalService.connect(device,uuidstr,secure);
-			    } else {
-			        callbackContext.error("Could not connect to " + deviceAddress);
-			    }
-			}
-			if (action.equals("rfcommDisconnect")) {
-				String deviceAddress = Tools.getData(json, Tools.DEVICE_ADDRESS);
-				BluetoothSerialService service = classicalServices.get(deviceAddress);
-				if(service != null){
-					service.connectCallback = null;
-					service.stop();
-					classicalServices.remove(deviceAddress);
-					callbackContext.success();
-				}else{
-					callbackContext.error("Could not disconnect to " + deviceAddress);
-				}
-			}
-			if(action.equals("rfcommListen")){
-				String name = Tools.getData(json, Tools.NAME);
-				String uuidstr = Tools.getData(json, Tools.UUID);
-				String securestr = Tools.getData(json, Tools.SECURE);
-				boolean secure = false;
-				if(securestr.equals("true")){
-					secure = true;
-				}
-				BluetoothSerialService service = new BluetoothSerialService();
-				service.listen(name, uuidstr, secure, this);
-				acceptServices.put(name+uuidstr, service);
-			}
-			if(action.equals("rfcommUnListen")){
-				String name = Tools.getData(json, Tools.NAME);
-				String uuidstr = Tools.getData(json, Tools.UUID);
-				BluetoothSerialService service = acceptServices.get(name+uuidstr);
-				if(service != null){
-					service.stop();
-				}
-			}
-			if(action.equals("rfcommWrite")){
-				String deviceAddress = Tools.getData(json, Tools.DEVICE_ADDRESS);
-				BluetoothSerialService service = classicalServices.get(deviceAddress);
-				if(service != null){
-					String data = Tools.getData(json, Tools.WRITE_VALUE);
-					service.write(Tools.decodeBase64(data));
-					callbackContext.success();
-				}else{
-					callbackContext.error("there is no connection on device:" + deviceAddress);
-				}
-			}
-			if(action.equals("rfcommRead")){
-				String deviceAddress = Tools.getData(json, Tools.DEVICE_ADDRESS);
-				BluetoothSerialService service = classicalServices.get(deviceAddress);
-				if(service != null){
-					byte[] data = new byte[2048];
-					byte[] predata = service.buffer.array();
-					for(int i = 0;i < service.bufferSize;i++){
-						data[i] = predata[i];
-					}
-					
-			        JSONObject obj = new JSONObject();
-					//Tools.addProperty(obj, Tools.DEVICE_ADDRESS, deviceAddress);
-					Tools.addProperty(obj, Tools.VALUE, Tools.encodeBase64(data));
-					Tools.addProperty(obj, Tools.DATE, Tools.getDateString());
-					callbackContext.success(obj);
-					service.bufferSize = 0;
-					service.buffer.clear();
-				}else{
-					callbackContext.error("there is no connection on device:" + deviceAddress);
-				}
-			}
-			if(action.equals("rfcommSubscribe")){
-				String deviceAddress = Tools.getData(json, Tools.DEVICE_ADDRESS);
-				BluetoothSerialService service = classicalServices.get(deviceAddress);
-				if(service != null){
-					service.dataAvailableCallback = callbackContext;
-				}else{
-					callbackContext.error("there is no connection on device:" + deviceAddress);
-				}
-			}
-			if (action.equals("rfcommUnsubscribe")) {
-				String deviceAddress = Tools.getData(json, Tools.DEVICE_ADDRESS);
-				BluetoothSerialService service = classicalServices.get(deviceAddress);
-				if(service != null){
-					service.dataAvailableCallback = null;
-				}else{
-					callbackContext.error("there is no connection on device:" + deviceAddress);
-				}
-			}
-			if (action.equals("getPairedDevices")) {
-				try {
-					Log.i(TAG, "getPairedDevices");
-					JSONArray ary = new JSONArray();
-					Set<BluetoothDevice> devices = bluetoothAdapter.getBondedDevices();
-					Iterator<BluetoothDevice> it = devices.iterator();
-					while (it.hasNext()) {
-						BluetoothDevice device = (BluetoothDevice) it.next();
-						JSONObject obj = new JSONObject();
-						Tools.addProperty(obj, Tools.DEVICE_ADDRESS, device.getAddress());
-						Tools.addProperty(obj, Tools.DEVICE_NAME, device.getName());
-						ary.put(obj);
-					}
-					callbackContext.success(ary);
-				} catch (Exception e) {
-					Tools.sendErrorMsg(callbackContext);
-				} catch (java.lang.Error e) {
-					Tools.sendErrorMsg(callbackContext);
-				}
-			} else if (action.equals("createPair")) {
-				Log.i(TAG, "createPair");
-				String deviceAddress = Tools.getData(json, Tools.DEVICE_ADDRESS);
-				JSONObject obj = new JSONObject();
-				BluetoothDevice device = bluetoothAdapter.getRemoteDevice(deviceAddress);
-				if (Tools.creatBond(device.getClass(), device)) {
-					Tools.addProperty(obj, Tools.DEVICE_ADDRESS, device.getAddress());
-					callbackContext.success(obj);
-				}else {
-					Tools.addProperty(obj, Tools.DEVICE_ADDRESS, device.getAddress());
-					callbackContext.error(obj);
-				}
-			} else if (action.equals("removePair")) {
-				Log.i(TAG, "removePair");
-				String deviceAddress = Tools.getData(json, Tools.DEVICE_ADDRESS);
-				JSONObject obj = new JSONObject();
-				BluetoothDevice device = bluetoothAdapter.getRemoteDevice(deviceAddress);
-				if (Tools.removeBond(device.getClass(), device)) {
-					Tools.addProperty(obj, Tools.DEVICE_ADDRESS, device.getAddress());
-					callbackContext.success(obj);
-				}else {
-					Tools.addProperty(obj, Tools.DEVICE_ADDRESS, device.getAddress());
-					callbackContext.error(obj);
-				}
-			}
-		} catch (Exception e) {
-			Tools.sendErrorMsg(callbackContext);
-		} catch(Error e){
-			Tools.sendErrorMsg(callbackContext);
+			bluetoothAPI.addEventListener(json, callbackContext);
+			return true;
 		}
+		if (isSetContext) {
+			try {
+				bluetoothAPI.setContext(myContext);
+			} catch (Exception e) {
+				Tools.sendErrorMsg(callbackContext);
+			} catch (java.lang.Error e) {
+				Tools.sendErrorMsg(callbackContext);
+			}
+			isSetContext = false;
+		}
+		if (action.equals("getEnvironment")) {
+			JSONObject jo = new JSONObject();
+			Tools.addProperty(jo, "appID", "com.test.yourappid");
+			Tools.addProperty(jo, "deviceAddress", "N/A");
+			Tools.addProperty(jo, "api", versionOfAPI);
+			callbackContext.success(jo);
+			return true;
+		}
+		if (action.equals("openBluetooth")) {
+			try {
+				bluetoothAPI.openBluetooth(json, callbackContext);
+			} catch (Exception e) {
+				Tools.sendErrorMsg(callbackContext);
+			} catch (java.lang.Error e) {
+				Tools.sendErrorMsg(callbackContext);
+			}
+			return true;
+		}
+		if (action.equals("getBluetoothState")) {
+			try {
+				bluetoothAPI.getBluetoothState(json, callbackContext);
+			} catch (Exception e) {
+				Tools.sendErrorMsg(callbackContext);
+			} catch (java.lang.Error e) {
+				Tools.sendErrorMsg(callbackContext);
+			}
+			return true;
+		}
+		if(action.equals("startClassicalScan")){
+			System.out.println("startClassicalScan");
+			if(bluetoothAdapter.isEnabled()){
+				if(bluetoothAdapter.startDiscovery()){
+					callbackContext.success();
+				}else{
+					callbackContext.error("start classical scan error!");
+				}
+			}else{
+				callbackContext.error("your bluetooth is not open!");
+			}
+		}
+		if(action.equals("stopClassicalScan")){
+			System.out.println("stopClassicalScan");
+			if(bluetoothAdapter.isEnabled()){
+				if(bluetoothAdapter.cancelDiscovery()){
+					callbackContext.success();
+				}else{
+					callbackContext.error("stop classical scan error!");
+				}
+			}else{
+				callbackContext.error("your bluetooth is not open!");
+			}
+		}
+		if(action.equals("rfcommConnect")){
+	    	String deviceAddress = Tools.getData(json, Tools.DEVICE_ADDRESS);
+	    	String securestr = Tools.getData(json, Tools.SECURE);
+	    	String uuidstr = Tools.getData(json, Tools.UUID);
+	    	boolean secure = false;
+	    	if(securestr.equals("true")){
+	    		secure = true;
+	    	}
+	    	System.out.println("connect to "+deviceAddress);
+	        BluetoothDevice device = bluetoothAdapter.getRemoteDevice(deviceAddress);
+	        BluetoothSerialService classicalService = classicalServices.get(deviceAddress);
+	        
+	        if(device != null && classicalService == null){
+	        	classicalService = new BluetoothSerialService();
+	        	classicalService.disconnectCallback = disconnectContext;
+	        	classicalServices.put(deviceAddress, classicalService);
+	        }
+	        
+	        if (device != null) {
+	        	classicalService.connectCallback = callbackContext;
+	        	classicalService.connect(device,uuidstr,secure);
+	        } else {
+	            callbackContext.error("Could not connect to " + deviceAddress);
+	        }
+		}
+		if (action.equals("rfcommDisconnect")) {
+			String deviceAddress = Tools.getData(json, Tools.DEVICE_ADDRESS);
+			BluetoothSerialService service = classicalServices.get(deviceAddress);
+			if(service != null){
+				service.connectCallback = null;
+				service.stop();
+				classicalServices.remove(deviceAddress);
+				callbackContext.success();
+			}else{
+				callbackContext.error("Could not disconnect to " + deviceAddress);
+			}
+        }
+		if(action.equals("rfcommListen")){
+			String name = Tools.getData(json, Tools.NAME);
+			String uuidstr = Tools.getData(json, Tools.UUID);
+	    	String securestr = Tools.getData(json, Tools.SECURE);
+	    	boolean secure = false;
+	    	if(securestr.equals("true")){
+	    		secure = true;
+	    	}
+	    	BluetoothSerialService service = new BluetoothSerialService();
+	    	service.listen(name, uuidstr, secure, this);
+	    	acceptServices.put(name+uuidstr, service);
+		}
+		if(action.equals("rfcommUnListen")){
+			String name = Tools.getData(json, Tools.NAME);
+			String uuidstr = Tools.getData(json, Tools.UUID);
+			BluetoothSerialService service = acceptServices.get(name+uuidstr);
+			if(service != null){
+				service.stop();
+			}
+		}
+		if(action.equals("rfcommWrite")){
+			String deviceAddress = Tools.getData(json, Tools.DEVICE_ADDRESS);
+			BluetoothSerialService service = classicalServices.get(deviceAddress);
+			if(service != null){
+				String data = Tools.getData(json, Tools.WRITE_VALUE);
+				service.write(Tools.decodeBase64(data));
+				callbackContext.success();
+			}else{
+				callbackContext.error("there is no connection on device:" + deviceAddress);
+			}
+		}
+		if(action.equals("rfcommRead")){
+			String deviceAddress = Tools.getData(json, Tools.DEVICE_ADDRESS);
+			BluetoothSerialService service = classicalServices.get(deviceAddress);
+			if(service != null){
+				byte[] data = new byte[2048];
+				byte[] predata = service.buffer.array();
+				for(int i = 0;i < service.bufferSize;i++){
+					data[i] = predata[i];
+				}
+				
+		        JSONObject obj = new JSONObject();
+				//Tools.addProperty(obj, Tools.DEVICE_ADDRESS, deviceAddress);
+				Tools.addProperty(obj, Tools.VALUE, Tools.encodeBase64(data));
+				Tools.addProperty(obj, Tools.DATE, Tools.getDateString());
+				callbackContext.success(obj);
+				service.bufferSize = 0;
+				service.buffer.clear();
+			}else{
+				callbackContext.error("there is no connection on device:" + deviceAddress);
+			}
+		}
+		if(action.equals("rfcommSubscribe")){
+			String deviceAddress = Tools.getData(json, Tools.DEVICE_ADDRESS);
+			BluetoothSerialService service = classicalServices.get(deviceAddress);
+			if(service != null){
+				service.dataAvailableCallback = callbackContext;
+			}else{
+				callbackContext.error("there is no connection on device:" + deviceAddress);
+			}
+		}
+		if (action.equals("rfcommUnsubscribe")) {
+			String deviceAddress = Tools.getData(json, Tools.DEVICE_ADDRESS);
+			BluetoothSerialService service = classicalServices.get(deviceAddress);
+			if(service != null){
+				service.dataAvailableCallback = null;
+			}else{
+				callbackContext.error("there is no connection on device:" + deviceAddress);
+			}
+        }
+		if (!Tools.isOpenBluetooth()) {
+			Tools.sendErrorMsg(callbackContext);
+			return false;
+		}
+		if (action.equals("stopScan")) {
+			try {
+				bluetoothAPI.stopScan(json, callbackContext);
+			} catch (Exception e) {
+				Tools.sendErrorMsg(callbackContext);
+			} catch (java.lang.Error e) {
+				Tools.sendErrorMsg(callbackContext);
+			}
+		} else if (action.equals("getConnectedDevices")) {
+			try {
+				bluetoothAPI.getConnectedDevices(json, callbackContext);
+			} catch (Exception e) {
+				Tools.sendErrorMsg(callbackContext);
+			} catch (java.lang.Error e) {
+				Tools.sendErrorMsg(callbackContext);
+			}
+		} else if (action.equals("getPairedDevices")) {
+			try {
+				bluetoothAPI.getPairedDevices(json, callbackContext);
+			} catch (Exception e) {
+				Tools.sendErrorMsg(callbackContext);
+			} catch (java.lang.Error e) {
+				Tools.sendErrorMsg(callbackContext);
+			}
+		} else if (action.equals("createPair")) {
+			try {
+				bluetoothAPI.createPair(json, callbackContext);
+			} catch (Exception e) {
+				Tools.sendErrorMsg(callbackContext);
+			} catch (java.lang.Error e) {
+				Tools.sendErrorMsg(callbackContext);
+			}
+		} else if (action.equals("removePair")) {
+			try {
+				bluetoothAPI.removePair(json, callbackContext);
+			} catch (Exception e) {
+				Tools.sendErrorMsg(callbackContext);
+			} catch (java.lang.Error e) {
+				Tools.sendErrorMsg(callbackContext);
+			}
+		} else if (action.equals("getCharacteristics")) {
+			try {
+				bluetoothAPI.getCharacteristics(json, callbackContext);
+			} catch (Exception e) {
+				Tools.sendErrorMsg(callbackContext);
+			} catch (java.lang.Error e) {
+				Tools.sendErrorMsg(callbackContext);
+			}
+		} else if (action.equals("getDescriptors")) {
+			try {
+				bluetoothAPI.getDescriptors(json, callbackContext);
+			} catch (Exception e) {
+				Tools.sendErrorMsg(callbackContext);
+			} catch (java.lang.Error e) {
+				Tools.sendErrorMsg(callbackContext);
+			}
+		} else if (action.equals("removeServices")) {
+			try {
+				bluetoothAPI.removeServices(json, callbackContext);
+			} catch (Exception e) {
+				Tools.sendErrorMsg(callbackContext);
+			} catch (java.lang.Error e) {
+				Tools.sendErrorMsg(callbackContext);
+			}
+		}
+		
+		cordova.getThreadPool().execute(new Runnable() {
+			@Override
+			public void run() {
+				if (action.equals("startScan")) {
+					try {
+						bluetoothAPI.startScan(json, callbackContext);
+					} catch (Exception e) {
+						Tools.sendErrorMsg(callbackContext);
+					} catch (java.lang.Error e) {
+						Tools.sendErrorMsg(callbackContext);
+					}
+				} else if (action.equals("connect")) {
+
+					try {
+						bluetoothAPI.connect(json, callbackContext);
+					} catch (Exception e) {
+						Tools.sendErrorMsg(callbackContext);
+					} catch (java.lang.Error e) {
+						Tools.sendErrorMsg(callbackContext);
+					}
+
+				} else if (action.equals("disconnect")) {
+
+					try {
+						bluetoothAPI.disconnect(json, callbackContext);
+					} catch (Exception e) {
+						Tools.sendErrorMsg(callbackContext);
+					} catch (java.lang.Error e) {
+						Tools.sendErrorMsg(callbackContext);
+					}
+
+				} else if (action.equals("getServices")) {
+
+					try {
+						bluetoothAPI.getServices(json, callbackContext);
+					} catch (Exception e) {
+						Tools.sendErrorMsg(callbackContext);
+					} catch (java.lang.Error e) {
+						Tools.sendErrorMsg(callbackContext);
+					}
+
+				} else if (action.equals("writeValue")) {
+
+					try {
+						bluetoothAPI.writeValue(json, callbackContext);
+					} catch (Exception e) {
+						Tools.sendErrorMsg(callbackContext);
+					} catch (java.lang.Error e) {
+						Tools.sendErrorMsg(callbackContext);
+					}
+
+				} else if (action.equals("readValue")) {
+
+					try {
+						bluetoothAPI.readValue(json, callbackContext);
+					} catch (Exception e) {
+						Tools.sendErrorMsg(callbackContext);
+					} catch (java.lang.Error e) {
+						Tools.sendErrorMsg(callbackContext);
+					}
+
+				} else if (action.equals("setNotification")) {
+					try {
+						bluetoothAPI.setNotification(json, callbackContext);
+					} catch (Exception e) {
+						Tools.sendErrorMsg(callbackContext);
+					} catch (java.lang.Error e) {
+						Tools.sendErrorMsg(callbackContext);
+					}
+				} else if (action.equals("getDeviceAllData")) {
+					try {
+						bluetoothAPI.getDeviceAllData(json, callbackContext);
+					} catch (Exception e) {
+						Tools.sendErrorMsg(callbackContext);
+					} catch (java.lang.Error e) {
+						Tools.sendErrorMsg(callbackContext);
+					}
+				} else if (action.equals("addServices")) {
+					try {
+						bluetoothAPI.addServices(json, callbackContext);
+					} catch (Exception e) {
+						Tools.sendErrorMsg(callbackContext);
+					} catch (java.lang.Error e) {
+						Tools.sendErrorMsg(callbackContext);
+					}
+				} else if (action.equals("getRSSI")) {
+					try {
+						bluetoothAPI.getRSSI(json, callbackContext);
+					} catch (Exception e) {
+						Tools.sendErrorMsg(callbackContext);
+					} catch (java.lang.Error e) {
+						Tools.sendErrorMsg(callbackContext);
+					}
+				}
+			}
+		});
 		return true;
 	}
 

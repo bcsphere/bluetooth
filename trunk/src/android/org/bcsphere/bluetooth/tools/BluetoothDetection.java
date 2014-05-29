@@ -42,13 +42,13 @@ public class BluetoothDetection {
 			}else if (Tools.isSupportSpecificAPI("motorola")) {
 				editor.putString("API", "motorola").commit();
 			}else {
-				/*if (Tools.getSupportBasebandVersionBrand() != null) {
+				if (Tools.getSupportBasebandVersionBrand() != null) {
 					if (Tools.getSupportBasebandVersionBrand().equals("xiaomi")) {
 						
 					}
-				}else {*/
-					editor.putString("API", "classical").commit();
-				//}
+				}else {
+					editor.putString("API", "").commit();
+				}
 			}
 		}
 	}

@@ -163,6 +163,60 @@ public class BluetoothG43plus implements IBluetooth{
 	}
 
 	@Override
+	public void getPairedDevices(JSONArray json, CallbackContext callbackContext) {
+		Log.i(TAG, "getPairedDevices");
+		JSONArray ary = new JSONArray();
+		Set<BluetoothDevice> devices = mBluetoothAdapter.getBondedDevices();
+		Iterator<BluetoothDevice> it = devices.iterator();
+		while (it.hasNext()) {
+			BluetoothDevice device = (BluetoothDevice) it.next();
+			JSONObject obj = new JSONObject();
+			Tools.addProperty(obj, Tools.DEVICE_ADDRESS, device.getAddress());
+			Tools.addProperty(obj, Tools.DEVICE_NAME, device.getName());
+			ary.put(obj);
+		}
+		callbackContext.success(ary);
+	}
+
+	@Override
+	public void createPair(JSONArray json, CallbackContext callbackContext) {
+		Log.i(TAG, "createPair");
+		String deviceAddress = Tools.getData(json, Tools.DEVICE_ADDRESS);
+		JSONObject obj = new JSONObject();
+		BluetoothDevice device = mBluetoothAdapter.getRemoteDevice(deviceAddress);
+		try {
+			if (Tools.creatBond(device.getClass(), device)) {
+				Tools.addProperty(obj, Tools.DEVICE_ADDRESS, device.getAddress());
+				callbackContext.success(obj);
+			}else {
+				Tools.addProperty(obj, Tools.DEVICE_ADDRESS, device.getAddress());
+				callbackContext.error(obj);
+			}
+		} catch (Exception e) {
+
+		}
+	}
+
+	@Override
+	public void removePair(JSONArray json, CallbackContext callbackContext) {
+		Log.i(TAG, "removePair");
+		String deviceAddress = Tools.getData(json, Tools.DEVICE_ADDRESS);
+		JSONObject obj = new JSONObject();
+		BluetoothDevice device = mBluetoothAdapter.getRemoteDevice(deviceAddress);
+		try {
+			if (Tools.removeBond(device.getClass(), device)) {
+				Tools.addProperty(obj, Tools.DEVICE_ADDRESS, device.getAddress());
+				callbackContext.success(obj);
+			}else {
+				Tools.addProperty(obj, Tools.DEVICE_ADDRESS, device.getAddress());
+				callbackContext.error(obj);
+			}
+		} catch (Exception e) {
+
+		}
+	}
+
+	@Override
 	public void writeValue(JSONArray json, CallbackContext callbackContext) {
 		Log.i(TAG, "writeValue");
 		String deviceAddress = Tools.getData(json, Tools.DEVICE_ADDRESS);
@@ -345,6 +399,27 @@ public class BluetoothG43plus implements IBluetooth{
 		Tools.addProperty(obj, Tools.DEVICE_ADDRESS, deviceAddress);
 		Tools.addProperty(obj, Tools.DESCRIPTORS, ary);
 		callbackContext.success(obj);
+	}
+
+	@Override
+	public void openBluetooth(JSONArray json, CallbackContext callbackContext) {
+		Log.i(TAG, "openBluetooth");
+		mBluetoothAdapter.enable();
+		Tools.sendSuccessMsg(callbackContext);
+	}
+
+	@Override
+	public void getBluetoothState(JSONArray json,
+			CallbackContext callbackContext) {
+		Log.i(TAG, "getBluetoothState");
+		JSONObject obj = new JSONObject();
+		if (mBluetoothAdapter.isEnabled()) {
+			Tools.addProperty(obj, Tools.BLUETOOTH_STATE, Tools.IS_TRUE);
+			callbackContext.success(obj);
+		}else {
+			Tools.addProperty(obj, Tools.BLUETOOTH_STATE, Tools.IS_FALSE);
+			callbackContext.success(obj);
+		}
 	}
 
 	@Override
