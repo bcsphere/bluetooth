@@ -1333,6 +1333,7 @@
     if (RSSI) {
         [peripheralInfo setValue:[NSString stringWithFormat:@"%@",RSSI] forKey:PERIPHERAL_RSSI];
     }
+	[peripheralInfo setValue:@"BLE" forKey:@"type"];
     return peripheralInfo;
 }
 
