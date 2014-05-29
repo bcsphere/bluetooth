@@ -1,6 +1,6 @@
 BC.js (v0.4.0)
 ===================================
-BC.js is the core implementation of universal Bluetooth JavaScript API.
+BC.js is the core implementation of universal Bluetooth JavaScript API.<br/>
 It supports both Bluetooth 4.0 GATT interface in IOS/Android and Bluetooth 2.1 Classical interface in Android.
 
   * Online Bluetooth Javascript API document: http://www.bcsphere.org/portal.php?mod=topic&topicid=3 <br/>
@@ -34,12 +34,12 @@ Features
 
 Usage
 -----------------------------------
-1. To use in BCSphere official APP
-(1) Include bc.js and other profiles .js files in your own javascript file directly.
-(2) Access the API.
+1. To use in BCSphere official APP <br/>
+(1) Include bc.js and other profiles .js files in your own javascript file directly. <br/>
+(2) Access the API. <br/>
 
-2. To incorporate into your own APP
-(1) Integrate [Apache Cordova](http://cordova.apache.org) / [PhoneGap](http://phonegap.com) into your Android/iOS project.
+2. To incorporate into your own APP<br/>
+(1) Integrate [Apache Cordova](http://cordova.apache.org) / [PhoneGap](http://phonegap.com) into your Android/iOS project.<br/>
 (2) Use this command to install bc.js as a plugin in your project: <br/>
     <b>cordova plugin add https://github.com/bcsphere/bluetooth.git </b> <br/>
 
@@ -49,7 +49,7 @@ Support platforms
 For Bluetooth GATT
   * Android API 18+, All devices with Bluetooth 4.0 Low Energy HW
   * Android API 17+, Sumsung devices with Bluetooth 4.0 Low Energy HW
-  * Android API 16+, HTC devices with Bluetooth Low Energy HW, <b>Please note:</b> HTC use shared library to operate BLE device, you should add the 'com.htc.android.bluetooth.le.jar' in the build path manually to support HTC devices, the files is in /others/HTC for optional use.
+  * Android API 16+, HTC devices with Bluetooth Low Energy HW, <br/><b>note:</b> HTC use shared library to operate BLE device, you should add the 'com.htc.android.bluetooth.le.jar' in the build path manually to support HTC devices, the files is in /others/HTC for optional use.
   * IOS 6.0.1+,  iPhone4S+/iTouch5+/iPad3+/iPad-mini+/iPadAir
 
 For Bluetooth 2.1 Classic
