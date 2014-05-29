@@ -177,7 +177,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="bc.js.html">bc.js</a>, <a href="bc.js.html#line543">line 543</a>
+        <a href="bc.js.html">bc.js</a>, <a href="bc.js.html#line637">line 637</a>
     </li></ul></dd>
     
     
@@ -388,7 +388,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="bc.js.html">bc.js</a>, <a href="bc.js.html#line635">line 635</a>
+        <a href="bc.js.html">bc.js</a>, <a href="bc.js.html#line748">line 748</a>
     </li></ul></dd>
     
     
@@ -553,7 +553,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="bc.js.html">bc.js</a>, <a href="bc.js.html#line755">line 755</a>
+        <a href="bc.js.html">bc.js</a>, <a href="bc.js.html#line906">line 906</a>
     </li></ul></dd>
     
     
@@ -718,7 +718,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="bc.js.html">bc.js</a>, <a href="bc.js.html#line744">line 744</a>
+        <a href="bc.js.html">bc.js</a>, <a href="bc.js.html#line895">line 895</a>
     </li></ul></dd>
     
     
@@ -881,7 +881,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="bc.js.html">bc.js</a>, <a href="bc.js.html#line603">line 603</a>
+        <a href="bc.js.html">bc.js</a>, <a href="bc.js.html#line716">line 716</a>
     </li></ul></dd>
     
     
@@ -1084,7 +1084,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="bc.js.html">bc.js</a>, <a href="bc.js.html#line660">line 660</a>
+        <a href="bc.js.html">bc.js</a>, <a href="bc.js.html#line773">line 773</a>
     </li></ul></dd>
     
     
@@ -1117,7 +1117,7 @@
         
             
 <dt>
-    <h4 class="name" id="StartScan"><span class="type-signature">&lt;static> </span>StartScan<span class="signature">(<span class="optional">uuids</span>)</span><span class="type-signature"></span></h4>
+    <h4 class="name" id="RFCOMMListen"><span class="type-signature">&lt;static> </span>RFCOMMListen<span class="signature">(name, uuid, secure)</span><span class="type-signature"></span></h4>
     
     
 </dt>
@@ -1125,7 +1125,320 @@
     
     
     <div class="description">
-        Starts a scan for Bluetooth LE devices, looking for devices with given services.
+        Starts a RFCOMM listen.
+    </div>
+    
+
+    
+    
+    
+    
+    
+        <h5>Parameters:</h5>
+        
+
+<table class="params">
+    <thead>
+	<tr>
+		
+		<th>Name</th>
+		
+		
+		<th>Type</th>
+		
+		
+		
+		
+		
+		<th class="last">Description</th>
+	</tr>
+	</thead>
+	
+	<tbody>
+	
+	
+        <tr>
+            
+                <td class="name"><code>name</code></td>
+            
+            
+            <td class="type">
+            
+                
+<span class="param-type">string</span>
+
+
+            
+            </td>
+            
+            
+            
+            
+            
+            <td class="description last">Name for the SDP record when creating server socket</td>
+        </tr>
+	
+	
+	
+        <tr>
+            
+                <td class="name"><code>uuid</code></td>
+            
+            
+            <td class="type">
+            
+                
+<span class="param-type">string</span>
+
+
+            
+            </td>
+            
+            
+            
+            
+            
+            <td class="description last">Unique UUID for your application</td>
+        </tr>
+	
+	
+	
+        <tr>
+            
+                <td class="name"><code>secure</code></td>
+            
+            
+            <td class="type">
+            
+                
+<span class="param-type">boolean</span>
+
+
+            
+            </td>
+            
+            
+            
+            
+            
+            <td class="description last">use secure connect or not</td>
+        </tr>
+	
+	
+	</tbody>
+</table>
+    
+    
+    
+<dl class="details">
+    
+        
+    
+    
+    
+
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="bc.js.html">bc.js</a>, <a href="bc.js.html#line844">line 844</a>
+    </li></ul></dd>
+    
+    
+    
+    
+    
+    
+    
+</dl>
+
+    
+    
+
+    
+
+    
+    
+    
+    
+    
+    
+    
+        <h5>Example</h5>
+        
+    <pre class="prettyprint"><code>BC.Bluetooth.RFCOMMListen("appName","7A9C3B55-78D0-44A7-A94E-A93E3FE118CE",true);</code></pre>
+
+    
+</dd>
+
+        
+            
+<dt>
+    <h4 class="name" id="RFCOMMUnListen"><span class="type-signature">&lt;static> </span>RFCOMMUnListen<span class="signature">(name, uuid)</span><span class="type-signature"></span></h4>
+    
+    
+</dt>
+<dd>
+    
+    
+    <div class="description">
+        Stops a RFCOMM listen.
+    </div>
+    
+
+    
+    
+    
+    
+    
+        <h5>Parameters:</h5>
+        
+
+<table class="params">
+    <thead>
+	<tr>
+		
+		<th>Name</th>
+		
+		
+		<th>Type</th>
+		
+		
+		
+		
+		
+		<th class="last">Description</th>
+	</tr>
+	</thead>
+	
+	<tbody>
+	
+	
+        <tr>
+            
+                <td class="name"><code>name</code></td>
+            
+            
+            <td class="type">
+            
+                
+<span class="param-type">string</span>
+
+
+            
+            </td>
+            
+            
+            
+            
+            
+            <td class="description last">Name for the SDP record when creating server socket</td>
+        </tr>
+	
+	
+	
+        <tr>
+            
+                <td class="name"><code>uuid</code></td>
+            
+            
+            <td class="type">
+            
+                
+<span class="param-type">string</span>
+
+
+            
+            </td>
+            
+            
+            
+            
+            
+            <td class="description last">Unique UUID for your application</td>
+        </tr>
+	
+	
+	</tbody>
+</table>
+    
+    
+    
+<dl class="details">
+    
+        
+    
+    
+    
+
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="bc.js.html">bc.js</a>, <a href="bc.js.html#line856">line 856</a>
+    </li></ul></dd>
+    
+    
+    
+    
+    
+    
+    
+</dl>
+
+    
+    
+
+    
+
+    
+    
+    
+    
+    
+    
+    
+        <h5>Example</h5>
+        
+    <pre class="prettyprint"><code>BC.Bluetooth.RFCOMMUnListen("appname","your listen uuid");</code></pre>
+
+    
+</dd>
+
+        
+            
+<dt>
+    <h4 class="name" id="StartScan"><span class="type-signature">&lt;static> </span>StartScan<span class="signature">(<span class="optional">type</span>, <span class="optional">uuids</span>)</span><span class="type-signature"></span></h4>
+    
+    
+</dt>
+<dd>
+    
+    
+    <div class="description">
+        Starts a scan for Bluetooth LE OR Classical(only in android platform) devices.
     </div>
     
 
@@ -1161,6 +1474,39 @@
 	
         <tr>
             
+                <td class="name"><code>type</code></td>
+            
+            
+            <td class="type">
+            
+                
+<span class="param-type">array</span>
+
+
+            
+            </td>
+            
+            
+                <td class="attributes">
+                
+                    &lt;optional><br>
+                
+                    
+                
+                    
+                
+                </td>
+            
+            
+            
+            
+            <td class="description last">Is LE scan or classical scan, please input "LE" OR "Classical", if you want use default scan strategy, just ignore this param.</td>
+        </tr>
+	
+	
+	
+        <tr>
+            
                 <td class="name"><code>uuids</code></td>
             
             
@@ -1187,7 +1533,7 @@
             
             
             
-            <td class="description last">Array of services to look for. If null or [], it will scan all devices</td>
+            <td class="description last">Array of services to look for. If null or [], it will scan all devices(just support BLE service UUID)</td>
         </tr>
 	
 	
@@ -1218,7 +1564,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="bc.js.html">bc.js</a>, <a href="bc.js.html#line676">line 676</a>
+        <a href="bc.js.html">bc.js</a>, <a href="bc.js.html#line794">line 794</a>
     </li></ul></dd>
     
     
@@ -1248,7 +1594,7 @@
     
         <h5>Example</h5>
         
-    <pre class="prettyprint"><code>BC.Bluetooth.StartScan();</code></pre>
+    <pre class="prettyprint"><code>BC.Bluetooth.StartScan();//start hybrid scan,in android platform the default scan strategy is scan for BLE device 5s first,then scan for classical device 12s,and restart the hybrid scan untill the BC.Bluetooth.StopScan be called. in IOS platform only start the LE scan.BC.Bluetooth.StartScan(null,["00000000-0000-0000-0000-000000000000"]);//start hybrid scan with LE service UUID.BC.Bluetooth.StartScan("LE"); //just start the LE scanBC.Bluetooth.StartScan("Classical"); //just start the classical scan in android platform, if the platform is IOS,call this method will nothing happen.</code></pre>
 
     
 </dd>
@@ -1264,7 +1610,7 @@
     
     
     <div class="description">
-        Stops a scanning for BLE Peripherals.
+        Stops a scanning.
     </div>
     
 
@@ -1297,7 +1643,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="bc.js.html">bc.js</a>, <a href="bc.js.html#line732">line 732</a>
+        <a href="bc.js.html">bc.js</a>, <a href="bc.js.html#line876">line 876</a>
     </li></ul></dd>
     
     
@@ -1389,7 +1735,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="bc.js.html">bc.js</a>, <a href="bc.js.html#line509">line 509</a>
+        <a href="bc.js.html">bc.js</a>, <a href="bc.js.html#line603">line 603</a>
     </li></ul></dd>
     
     
@@ -1473,7 +1819,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="bc.js.html">bc.js</a>, <a href="bc.js.html#line523">line 523</a>
+        <a href="bc.js.html">bc.js</a>, <a href="bc.js.html#line617">line 617</a>
     </li></ul></dd>
     
     
@@ -1521,7 +1867,7 @@
 <br clear="both">
 
 <footer>
-    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.3.0-alpha4</a> on Thu Apr 17 2014 18:21:50 GMT+0800 (中国标准时间)
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.3.0-alpha4</a> on Thu May 29 2014 14:39:30 GMT+0800 (中国标准时间)
 </footer>
 
 <script> prettyPrint(); </script>

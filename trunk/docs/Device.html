@@ -546,6 +546,29 @@
         </tr>
 	
 	
+	
+        <tr>
+            
+                <td class="name"><code>type</code></td>
+            
+            
+            <td class="type">
+            
+                
+<span class="param-type">type</span>
+
+
+            
+            </td>
+            
+            
+            
+            
+            
+            <td class="description last">The type of this device('BLE' or 'Classical')</td>
+        </tr>
+	
+	
 	</tbody>
 </table></dl>
         
@@ -570,7 +593,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="bc.js.html">bc.js</a>, <a href="bc.js.html#line960">line 960</a>
+        <a href="bc.js.html">bc.js</a>, <a href="bc.js.html#line1153">line 1153</a>
     </li></ul></dd>
     
     
@@ -621,7 +644,7 @@
         <dl>
             
 <dt>
-    <h4 class="name" id="connect"><span class="type-signature"></span>connect<span class="signature">(successCallback, <span class="optional">errorCallback</span>)</span><span class="type-signature"></span></h4>
+    <h4 class="name" id="connect"><span class="type-signature"></span>connect<span class="signature">(successCallback, <span class="optional">errorCallback</span>, <span class="optional">uuid</span>, <span class="optional">secure</span>)</span><span class="type-signature"></span></h4>
     
     
 </dt>
@@ -629,7 +652,7 @@
     
     
     <div class="description">
-        Initiates a connection to the peripheral.
+        Initiates a connection to the peripheral(the connect can be BLE connect OR rfcomm connect(only in android platform) base on the device.type).
     </div>
     
 
@@ -726,6 +749,72 @@
         </tr>
 	
 	
+	
+        <tr>
+            
+                <td class="name"><code>uuid</code></td>
+            
+            
+            <td class="type">
+            
+                
+<span class="param-type">string</span>
+
+
+            
+            </td>
+            
+            
+                <td class="attributes">
+                
+                    &lt;optional><br>
+                
+                    
+                
+                    
+                
+                </td>
+            
+            
+            
+            
+            <td class="description last">If connect with classical device,pass the uuid into this param(this param is required when you want to connect a classical device)</td>
+        </tr>
+	
+	
+	
+        <tr>
+            
+                <td class="name"><code>secure</code></td>
+            
+            
+            <td class="type">
+            
+                
+<span class="param-type">boolean</span>
+
+
+            
+            </td>
+            
+            
+                <td class="attributes">
+                
+                    &lt;optional><br>
+                
+                    
+                
+                    
+                
+                </td>
+            
+            
+            
+            
+            <td class="description last">The classical connection is secure or not(this param is required when you want to connect a classical device)</td>
+        </tr>
+	
+	
 	</tbody>
 </table>
     
@@ -753,7 +842,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="bc.js.html">bc.js</a>, <a href="bc.js.html#line994">line 994</a>
+        <a href="bc.js.html">bc.js</a>, <a href="bc.js.html#line1194">line 1194</a>
     </li></ul></dd>
     
     
@@ -783,7 +872,7 @@
     
         <h5>Example</h5>
         
-    <pre class="prettyprint"><code>//Gets a the Device instance.var device = window.device = BC.bluetooth.devices["78:C5:E5:99:26:37"];device.connect(function(){alert("device is already prepared well!");});device.addEventListener("deviceconnected",function(s){alert("device:" + s.deviceAddress + "is connected successfully!")});</code></pre>
+    <pre class="prettyprint"><code>//Gets a the Device instance.var device = window.device = BC.bluetooth.devices["78:C5:E5:99:26:37"];device.connect(function(){alert("device is already connected well!");});//device.connect(function(){alert("device is already connected well!");},null,"7A9C3B55-78D0-44A7-A94E-A93E3FE118CE",ture); //connect if the device is classicaldevice.addEventListener("deviceconnected",function(s){alert("device:" + s.deviceAddress + "is connected successfully!")});device.addEventListener("devicedisconnected",function(s){alert("device:" + s.deviceAddress + "is connected successfully!")});</code></pre>
 
     
 </dd>
@@ -923,7 +1012,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="bc.js.html">bc.js</a>, <a href="bc.js.html#line1193">line 1193</a>
+        <a href="bc.js.html">bc.js</a>, <a href="bc.js.html#line1424">line 1424</a>
     </li></ul></dd>
     
     
@@ -1090,7 +1179,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="bc.js.html">bc.js</a>, <a href="bc.js.html#line1095">line 1095</a>
+        <a href="bc.js.html">bc.js</a>, <a href="bc.js.html#line1322">line 1322</a>
     </li></ul></dd>
     
     
@@ -1257,7 +1346,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="bc.js.html">bc.js</a>, <a href="bc.js.html#line1041">line 1041</a>
+        <a href="bc.js.html">bc.js</a>, <a href="bc.js.html#line1248">line 1248</a>
     </li></ul></dd>
     
     
@@ -1422,7 +1511,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="bc.js.html">bc.js</a>, <a href="bc.js.html#line1148">line 1148</a>
+        <a href="bc.js.html">bc.js</a>, <a href="bc.js.html#line1379">line 1379</a>
     </li></ul></dd>
     
     
@@ -1587,7 +1676,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="bc.js.html">bc.js</a>, <a href="bc.js.html#line1118">line 1118</a>
+        <a href="bc.js.html">bc.js</a>, <a href="bc.js.html#line1349">line 1349</a>
     </li></ul></dd>
     
     
@@ -1709,7 +1798,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="bc.js.html">bc.js</a>, <a href="bc.js.html#line1242">line 1242</a>
+        <a href="bc.js.html">bc.js</a>, <a href="bc.js.html#line1473">line 1473</a>
     </li></ul></dd>
     
     
@@ -1896,7 +1985,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="bc.js.html">bc.js</a>, <a href="bc.js.html#line1023">line 1023</a>
+        <a href="bc.js.html">bc.js</a>, <a href="bc.js.html#line1227">line 1227</a>
     </li></ul></dd>
     
     
@@ -2061,7 +2150,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="bc.js.html">bc.js</a>, <a href="bc.js.html#line1217">line 1217</a>
+        <a href="bc.js.html">bc.js</a>, <a href="bc.js.html#line1448">line 1448</a>
     </li></ul></dd>
     
     
@@ -2087,6 +2176,594 @@
         <h5>Example</h5>
         
     <pre class="prettyprint"><code>device.removePair(function(mes){alert("remove pair with device success!")});</code></pre>
+
+    
+</dd>
+
+        
+            
+<dt>
+    <h4 class="name" id="rfcommRead"><span class="type-signature"></span>rfcommRead<span class="signature">(successCallback, <span class="optional">errorCallback</span>)</span><span class="type-signature"></span></h4>
+    
+    
+</dt>
+<dd>
+    
+    
+    <div class="description">
+        Reads value from classical RFCOMM interface.(only support Bluetooth2.1 device)
+    </div>
+    
+
+    
+    
+    
+    
+    
+        <h5>Parameters:</h5>
+        
+
+<table class="params">
+    <thead>
+	<tr>
+		
+		<th>Name</th>
+		
+		
+		<th>Type</th>
+		
+		
+		<th>Argument</th>
+		
+		
+		
+		
+		<th class="last">Description</th>
+	</tr>
+	</thead>
+	
+	<tbody>
+	
+	
+        <tr>
+            
+                <td class="name"><code>successCallback</code></td>
+            
+            
+            <td class="type">
+            
+                
+<span class="param-type">function</span>
+
+
+            
+            </td>
+            
+            
+                <td class="attributes">
+                
+                    
+                
+                    
+                
+                </td>
+            
+            
+            
+            
+            <td class="description last">Success callback</td>
+        </tr>
+	
+	
+	
+        <tr>
+            
+                <td class="name"><code>errorCallback</code></td>
+            
+            
+            <td class="type">
+            
+                
+<span class="param-type">function</span>
+
+
+            
+            </td>
+            
+            
+                <td class="attributes">
+                
+                    &lt;optional><br>
+                
+                    
+                
+                    
+                
+                </td>
+            
+            
+            
+            
+            <td class="description last">Error callback</td>
+        </tr>
+	
+	
+	</tbody>
+</table>
+    
+    
+    
+<dl class="details">
+    
+        
+    
+    
+    
+
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="bc.js.html">bc.js</a>, <a href="bc.js.html#line1506">line 1506</a>
+    </li></ul></dd>
+    
+    
+    
+    
+    
+    
+    
+</dl>
+
+    
+    
+
+    
+
+    
+    
+    
+    
+    
+    
+    
+        <h5>Example</h5>
+        
+    <pre class="prettyprint"><code>device.rfcommConnect(function(){	device.rfcommRead(readSuccess);});function readSuccess(data){	alert("Data : "+JSON.stringify(data.value)+" \n Time :"+data.date);}</code></pre>
+
+    
+</dd>
+
+        
+            
+<dt>
+    <h4 class="name" id="rfcommSubscribe"><span class="type-signature"></span>rfcommSubscribe<span class="signature">(callback)</span><span class="type-signature"></span></h4>
+    
+    
+</dt>
+<dd>
+    
+    
+    <div class="description">
+        Subscribes the notification of this device RFCOMM.
+    </div>
+    
+
+    
+    
+    
+    
+    
+        <h5>Parameters:</h5>
+        
+
+<table class="params">
+    <thead>
+	<tr>
+		
+		<th>Name</th>
+		
+		
+		<th>Type</th>
+		
+		
+		
+		
+		
+		<th class="last">Description</th>
+	</tr>
+	</thead>
+	
+	<tbody>
+	
+	
+        <tr>
+            
+                <td class="name"><code>callback</code></td>
+            
+            
+            <td class="type">
+            
+                
+<span class="param-type">function</span>
+
+
+            
+            </td>
+            
+            
+            
+            
+            
+            <td class="description last">Called when peripheral sends data to this device.</td>
+        </tr>
+	
+	
+	</tbody>
+</table>
+    
+    
+    
+<dl class="details">
+    
+        
+    
+    
+    
+
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="bc.js.html">bc.js</a>, <a href="bc.js.html#line1577">line 1577</a>
+    </li></ul></dd>
+    
+    
+    
+    
+    
+    
+    
+</dl>
+
+    
+    
+
+    
+
+    
+    
+    
+    
+    
+    
+    
+        <h5>Example</h5>
+        
+    <pre class="prettyprint"><code>device.rfcommSubscribe(onDataAvaliable);function onDataAvaliable(data){	$("#notifyValue_hex").html(data.value.getHexString());	$("#notifyValue_unicode").html(data.value.getUnicodeString());	$("#notifyValue_ascii").html(data.value.getASCIIString());	$("#notifyDate").html(data.date);}</code></pre>
+
+    
+</dd>
+
+        
+            
+<dt>
+    <h4 class="name" id="rfcommUnsubscribe"><span class="type-signature"></span>rfcommUnsubscribe<span class="signature">()</span><span class="type-signature"></span></h4>
+    
+    
+</dt>
+<dd>
+    
+    
+    <div class="description">
+        Unsubscribes the notification of this device RFCOMM.
+    </div>
+    
+
+    
+    
+    
+    
+    
+    
+    
+<dl class="details">
+    
+        
+    
+    
+    
+
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="bc.js.html">bc.js</a>, <a href="bc.js.html#line1597">line 1597</a>
+    </li></ul></dd>
+    
+    
+    
+    
+    
+    
+    
+</dl>
+
+    
+    
+
+    
+
+    
+    
+    
+    
+    
+    
+    
+        <h5>Example</h5>
+        
+    <pre class="prettyprint"><code>device.rfcommUnsubscribe();</code></pre>
+
+    
+</dd>
+
+        
+            
+<dt>
+    <h4 class="name" id="rfcommWrite"><span class="type-signature"></span>rfcommWrite<span class="signature">(type, value, successCallback, <span class="optional">errorCallback</span>)</span><span class="type-signature"></span></h4>
+    
+    
+</dt>
+<dd>
+    
+    
+    <div class="description">
+        Writes the value into RFCOMM interface.(only support Bluetooth2.1 device)
+    </div>
+    
+
+    
+    
+    
+    
+    
+        <h5>Parameters:</h5>
+        
+
+<table class="params">
+    <thead>
+	<tr>
+		
+		<th>Name</th>
+		
+		
+		<th>Type</th>
+		
+		
+		<th>Argument</th>
+		
+		
+		
+		
+		<th class="last">Description</th>
+	</tr>
+	</thead>
+	
+	<tbody>
+	
+	
+        <tr>
+            
+                <td class="name"><code>type</code></td>
+            
+            
+            <td class="type">
+            
+                
+<span class="param-type">string</span>
+
+
+            
+            </td>
+            
+            
+                <td class="attributes">
+                
+                    
+                
+                    
+                
+                </td>
+            
+            
+            
+            
+            <td class="description last">The type of the value to write ('hex'/'ascii'/'unicode'/'raw')</td>
+        </tr>
+	
+	
+	
+        <tr>
+            
+                <td class="name"><code>value</code></td>
+            
+            
+            <td class="type">
+            
+                
+<span class="param-type">string/Uint8Array</span>
+
+
+            
+            </td>
+            
+            
+                <td class="attributes">
+                
+                    
+                
+                    
+                
+                </td>
+            
+            
+            
+            
+            <td class="description last">The value write to the RFCOMM, if the 'type' is 'raw', the value type should be Uint8Array</td>
+        </tr>
+	
+	
+	
+        <tr>
+            
+                <td class="name"><code>successCallback</code></td>
+            
+            
+            <td class="type">
+            
+                
+<span class="param-type">function</span>
+
+
+            
+            </td>
+            
+            
+                <td class="attributes">
+                
+                    
+                
+                    
+                
+                </td>
+            
+            
+            
+            
+            <td class="description last">Success callback</td>
+        </tr>
+	
+	
+	
+        <tr>
+            
+                <td class="name"><code>errorCallback</code></td>
+            
+            
+            <td class="type">
+            
+                
+<span class="param-type">function</span>
+
+
+            
+            </td>
+            
+            
+                <td class="attributes">
+                
+                    &lt;optional><br>
+                
+                    
+                
+                    
+                
+                </td>
+            
+            
+            
+            
+            <td class="description last">Error callback</td>
+        </tr>
+	
+	
+	</tbody>
+</table>
+    
+    
+    
+<dl class="details">
+    
+        
+    
+    
+    
+
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="bc.js.html">bc.js</a>, <a href="bc.js.html#line1539">line 1539</a>
+    </li></ul></dd>
+    
+    
+    
+    
+    
+    
+    
+</dl>
+
+    
+    
+
+    
+
+    
+    
+    
+    
+    
+    
+    
+        <h5>Example</h5>
+        
+    <pre class="prettyprint"><code>//write after device is well prepared.device.rfcommConnect(function(){	device.rfcommWrite("Hex","01",writeSuccess);});function writeSuccess(data){	alert("write success!");}</code></pre>
 
     
 </dd>
@@ -2153,7 +2830,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="bc.js.html">bc.js</a>, <a href="bc.js.html#line915">line 915</a>
+        <a href="bc.js.html">bc.js</a>, <a href="bc.js.html#line1107">line 1107</a>
     </li></ul></dd>
     
     
@@ -2237,7 +2914,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="bc.js.html">bc.js</a>, <a href="bc.js.html#line903">line 903</a>
+        <a href="bc.js.html">bc.js</a>, <a href="bc.js.html#line1095">line 1095</a>
     </li></ul></dd>
     
     
@@ -2285,7 +2962,7 @@
 <br clear="both">
 
 <footer>
-    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.3.0-alpha4</a> on Thu Apr 17 2014 18:21:50 GMT+0800 (中国标准时间)
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.3.0-alpha4</a> on Thu May 29 2014 14:39:30 GMT+0800 (中国标准时间)
 </footer>
 
 <script> prettyPrint(); </script>
