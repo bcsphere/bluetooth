@@ -931,7 +931,6 @@ public class BluetoothSam42 implements IBluetooth {
             Tools.addProperty(jsonDevice, Tools.IS_CONNECTED, bluetoothGatt.getConnectedDevices().contains(device));
             Tools.addProperty(jsonDevice, Tools.RSSI, rssi);
             Tools.addProperty(jsonDevice, Tools.ADVERTISEMENT_DATA, Tools.decodeAdvData(scanRecord));
-			Tools.addProperty(jsonDevice, Tools.TYPE, "BLE");
     		PluginResult pluginResult = new PluginResult(PluginResult.Status.OK , jsonDevice);
     		pluginResult.setKeepCallback(true);
             mapAddListenerCallBack.get(Tools.NEW_ADV_PACKET).sendPluginResult(pluginResult);
