@@ -1974,11 +1974,12 @@
 			this.error(mes);
 		},
     });
-  
+    
   	document.addEventListener('deviceready', onDeviceReady, false);
 	
 	function onDeviceReady(){
 		var bluetooth = BC.bluetooth = new BC.Bluetooth("cordova");
+		
 		BC.bluetooth.addSystemListener('disconnect', function(arg){
 			BC.bluetooth.devices[arg.deviceAddress].isConnected = false;
 			BC.bluetooth.devices[arg.deviceAddress].dispatchEvent("devicedisconnected");
@@ -2083,6 +2084,7 @@
 			window.DEVICEADDRESS = data.deviceAddress;
 			window.API = data.api;
 			window.VERSION = data.version;
+			window.DEVICETYPE = data.deviceType;
 			
 			BC.bluetooth.getBluetoothState(function(arg){
 				if(arg.state == "false"){
@@ -2094,5 +2096,4 @@
 			},testFunc);
 		},function(mes){alert(JSON.stringify(mes));});
 	}
-  
 })();
