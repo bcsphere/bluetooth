@@ -703,11 +703,11 @@
 	
 	function startDefaultScanImpl(uuids){
 		BC.bluetooth.startScan(uuids);
-		BC.bluetooth.bleScanIndex = setTimeout(function(){
+		setTimeout(function(){
 			BC.bluetooth.stopScan(uuids);
 			BC.bluetooth.startClassicalScan();
 		},5000);
-		BC.bluetooth.ClassicalScanIndex = setTimeout(function(){
+		setTimeout(function(){
 			BC.bluetooth.stopClassicalScan();
 		},17000);
 	};
@@ -759,8 +759,7 @@
 			BC.bluetooth.stopClassicalScan();
 		}
 		if(BC.bluetooth.scanIntervalIndex){
-			clearTimeout(BC.bluetooth.classicalScanIndex);
-			clearTimeout(BC.bluetooth.bleScanIndex);
+
 			clearInterval(BC.bluetooth.scanIntervalIndex);
 		}
 	};
@@ -1771,9 +1770,9 @@
 		 */
 		subscribe : function(callback){
 			this.callback = callback;
-			//if(this.property.contains("notify")){
+			if(this.property.contains("notify")){
 				BC.bluetooth.subscribe(this);
-			//}
+			}
 		},
 		subscribeCallback : function(){
 			var obj = arguments[1];
@@ -2084,7 +2083,6 @@
 			window.DEVICEADDRESS = data.deviceAddress;
 			window.API = data.api;
 			window.VERSION = data.version;
-			window.DEVICETYPE = data.deviceType;
 			
 			BC.bluetooth.getBluetoothState(function(arg){
 				if(arg.state == "false"){
