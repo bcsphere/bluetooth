@@ -703,11 +703,11 @@
 	
 	function startDefaultScanImpl(uuids){
 		BC.bluetooth.startScan(uuids);
-		setTimeout(function(){
+		BC.bluetooth.bleScanIndex = setTimeout(function(){
 			BC.bluetooth.stopScan(uuids);
 			BC.bluetooth.startClassicalScan();
 		},5000);
-		setTimeout(function(){
+		BC.bluetooth.ClassicalScanIndex = setTimeout(function(){
 			BC.bluetooth.stopClassicalScan();
 		},17000);
 	};
@@ -759,7 +759,8 @@
 			BC.bluetooth.stopClassicalScan();
 		}
 		if(BC.bluetooth.scanIntervalIndex){
-
+			clearTimeout(BC.bluetooth.classicalScanIndex);
+			clearTimeout(BC.bluetooth.bleScanIndex);
 			clearInterval(BC.bluetooth.scanIntervalIndex);
 		}
 	};
@@ -1770,9 +1771,9 @@
 		 */
 		subscribe : function(callback){
 			this.callback = callback;
-			if(this.property.contains("notify")){
+			//if(this.property.contains("notify")){
 				BC.bluetooth.subscribe(this);
-			}
+			//}
 		},
 		subscribeCallback : function(){
 			var obj = arguments[1];
@@ -1974,12 +1975,11 @@
 			this.error(mes);
 		},
     });
-    
+  
   	document.addEventListener('deviceready', onDeviceReady, false);
 	
 	function onDeviceReady(){
 		var bluetooth = BC.bluetooth = new BC.Bluetooth("cordova");
-		
 		BC.bluetooth.addSystemListener('disconnect', function(arg){
 			BC.bluetooth.devices[arg.deviceAddress].isConnected = false;
 			BC.bluetooth.devices[arg.deviceAddress].dispatchEvent("devicedisconnected");
@@ -2096,4 +2096,5 @@
 			},testFunc);
 		},function(mes){alert(JSON.stringify(mes));});
 	}
+  
 })();
