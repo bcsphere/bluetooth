@@ -21,11 +21,11 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
-import java.util.Set;
 import java.util.UUID;
 
 import org.apache.cordova.CallbackContext;
 import org.apache.cordova.PluginResult;
+import org.bcsphere.bluetooth.tools.Tools;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -38,7 +38,6 @@ import android.bluetooth.BluetoothProfile.ServiceListener;
 import android.content.Context;
 import android.util.Log;
 
-import org.bcsphere.bluetooth.tools.Tools;
 import com.samsung.android.sdk.bt.gatt.BluetoothGatt;
 import com.samsung.android.sdk.bt.gatt.BluetoothGattAdapter;
 import com.samsung.android.sdk.bt.gatt.BluetoothGattCallback;
@@ -381,7 +380,11 @@ public class BluetoothSam42 implements IBluetooth {
         BluetoothGattDescriptor bluetoothGattDescriptor = bluetoothGattCharacteristic.getDescriptor(Tools.NOTIFICATION_UUID);
         if ("true".equalsIgnoreCase(enable)) {
             bluetoothGatt.setCharacteristicNotification(bluetoothGattCharacteristic, true);
-            bluetoothGattDescriptor.setValue(BluetoothGattDescriptor.ENABLE_NOTIFICATION_VALUE);
+            if(Tools.lookup(bluetoothGattCharacteristic.getProperties(),BluetoothGattCharacteristic.PROPERTY_NOTIFY)!=null){
+			    bluetoothGattDescriptor.setValue(BluetoothGattDescriptor.ENABLE_NOTIFICATION_VALUE);
+			}else{
+			    bluetoothGattDescriptor.setValue(BluetoothGattDescriptor.ENABLE_INDICATION_VALUE);
+			}
         } else {
             bluetoothGatt.setCharacteristicNotification(bluetoothGattCharacteristic, false);
             bluetoothGattDescriptor.setValue(BluetoothGattDescriptor.DISABLE_NOTIFICATION_VALUE);
@@ -931,7 +934,7 @@ public class BluetoothSam42 implements IBluetooth {
             Tools.addProperty(jsonDevice, Tools.IS_CONNECTED, bluetoothGatt.getConnectedDevices().contains(device));
             Tools.addProperty(jsonDevice, Tools.RSSI, rssi);
             Tools.addProperty(jsonDevice, Tools.ADVERTISEMENT_DATA, Tools.decodeAdvData(scanRecord));
-			Tools.addProperty(jsonDevice, Tools.TYPE, "BLE");
+            Tools.addProperty(jsonDevice, Tools.TYPE, "BLE");
     		PluginResult pluginResult = new PluginResult(PluginResult.Status.OK , jsonDevice);
     		pluginResult.setKeepCallback(true);
             mapAddListenerCallBack.get(Tools.NEW_ADV_PACKET).sendPluginResult(pluginResult);
