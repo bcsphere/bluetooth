@@ -1018,10 +1018,11 @@
     }
     
     NSMutableDictionary *callbackInfo = [self getScanData:peripheral adv:advertisementData rssi:RSSI];
-    CDVPluginResult* result = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK messageAsDictionary:callbackInfo];
-    [result setKeepCallbackAsBool:TRUE];
-    [self.commandDelegate sendPluginResult:result callbackId:[[NSUserDefaults standardUserDefaults] objectForKey:EVENT_NEWADVPACKET]];
-    
+    if ([[callbackInfo valueForKey:ADVERTISEMENT_DATA] valueForKey:LOCAL_NAME]) {
+        CDVPluginResult* result = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK messageAsDictionary:callbackInfo];
+        [result setKeepCallbackAsBool:TRUE];
+        [self.commandDelegate sendPluginResult:result callbackId:[self.urlAndCallback valueForKey:EVENT_NEWADVPACKET]];
+    }
     NSString *peripheralUUID = [self getPeripheralUUID:peripheral];
     if (_peripherals.count == 0){
         _peripherals = [[NSMutableArray alloc] initWithObjects:peripheral,nil];
