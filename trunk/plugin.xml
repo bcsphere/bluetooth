@@ -44,11 +44,12 @@
 		<source-file src="src/android/org/bcsphere/bluetooth/tools/Tools.java" target-dir="src/org/bcsphere/bluetooth/tools" />
 		
 		<source-file src="src/bc.js" target-dir="assets/www" />
+		<source-file src="src/underscore.js" target-dir="assets/www" />
 		<source-file src="src/bc-immediate_alert.js" target-dir="assets/www" />
 		<source-file src="src/bc-linkloss.js" target-dir="assets/www" />
 		<source-file src="src/bc-serial_port.js" target-dir="assets/www" />
 		<source-file src="src/bc-txpower.js" target-dir="assets/www" />
-		<source-file src="src/underscore.js" target-dir="assets/www" />
+		
 		
 		<source-file src="libs/samsung_ble_sdk_200.jar" target-dir="libs" />
 		<!--source-file src="libs/com.htc.android.bluetooth.le.jar" target-dir="com.htc.android.bluetooth.le" / -->
@@ -67,6 +68,10 @@
         
         <asset src="src/bc.js" target ="bc.js"/>
         <asset src="src/underscore.js" target ="underscore.js"/>
+		<asset src="src/bc-immediate_alert.js" target="assets/www" />
+		<asset src="src/bc-linkloss.js" target="assets/www" />
+		<asset src="src/bc-serial_port.js" target="assets/www" />
+		<asset src="src/bc-txpower.js" target="assets/www" />
         
 		<framework src="CoreBluetooth.framework" weak="true" />
     </platform>
