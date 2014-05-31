@@ -33,7 +33,7 @@ var ImmediateAlertService = BC.ImmediateAlertService = BC.Service.extend({
 	   alert:function(writeValue,writeType,successFunc,errorFunc){
 	   	  successFunc = successFunc || this.writeSuccess;
 	   	  errorFunc = errorFunc || this.writeError;
-	   	  writeType = writeType ||　'hex';
+	   	  writeType = writeType || 'hex';
        	  this.discoverCharacteristics(function(){
             	this.getCharacteristicByUUID(this.characteristicUUID)[0].write(writeType,writeValue,successFunc,errorFunc);
           });
