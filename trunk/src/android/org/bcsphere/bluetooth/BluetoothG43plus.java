@@ -18,14 +18,17 @@ package org.bcsphere.bluetooth;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
+import java.util.Set;
 import java.util.UUID;
 
 import org.apache.cordova.CallbackContext;
 import org.apache.cordova.PluginResult;
-import org.bcsphere.bluetooth.tools.Tools;
 import org.json.JSONArray;
 import org.json.JSONObject;
+
+import org.bcsphere.bluetooth.tools.Tools;
 
 import android.annotation.SuppressLint;
 import android.bluetooth.BluetoothAdapter;
@@ -222,11 +225,7 @@ public class BluetoothG43plus implements IBluetooth{
 		BluetoothGattDescriptor descriptor = characteristic.getDescriptor(Tools.NOTIFICATION_UUID);
 		if (enable.equals("true")) {
 			setNotificationCC.put(characteristic, callbackContext);
-			if(Tools.lookup(characteristic.getProperties(),BluetoothGattCharacteristic.PROPERTY_NOTIFY)!=null){
-			    descriptor.setValue(BluetoothGattDescriptor.ENABLE_NOTIFICATION_VALUE);
-			}else{
-			    descriptor.setValue(BluetoothGattDescriptor.ENABLE_INDICATION_VALUE);
-			}
+			descriptor.setValue(BluetoothGattDescriptor.ENABLE_NOTIFICATION_VALUE);
 			mBluetoothGatts.get(deviceAddress).writeDescriptor(descriptor);
 			mBluetoothGatts.get(deviceAddress).setCharacteristicNotification(characteristic, true);
 			recordServiceIndex.put(characteristic, serviceIndex);

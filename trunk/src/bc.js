@@ -21,13 +21,13 @@
 	 * @namespace
 	 */
 	var BC;
-	
+
 	if (typeof exports !== 'undefined') {
 		BC = exports;
 	} else {
 		BC = root.BC = {};
 	}
-
+	
 	BC.VERSION = "0.4.0";
 	/** 
 	 * Opens all useful alert.
@@ -703,11 +703,11 @@
 	
 	function startDefaultScanImpl(uuids){
 		BC.bluetooth.startScan(uuids);
-		BC.bluetooth.bleScanIndex = setTimeout(function(){
+		setTimeout(function(){
 			BC.bluetooth.stopScan(uuids);
 			BC.bluetooth.startClassicalScan();
 		},5000);
-		BC.bluetooth.ClassicalScanIndex = setTimeout(function(){
+		setTimeout(function(){
 			BC.bluetooth.stopClassicalScan();
 		},17000);
 	};
@@ -759,8 +759,7 @@
 			BC.bluetooth.stopClassicalScan();
 		}
 		if(BC.bluetooth.scanIntervalIndex){
-			clearTimeout(BC.bluetooth.classicalScanIndex);
-			clearTimeout(BC.bluetooth.bleScanIndex);
+
 			clearInterval(BC.bluetooth.scanIntervalIndex);
 		}
 	};
@@ -1771,7 +1770,7 @@
 		 */
 		subscribe : function(callback){
 			this.callback = callback;
-			if(this.property.contains("notify") || this.property.contains("indicate")){
+			if(this.property.contains("notify")){
 				BC.bluetooth.subscribe(this);
 			}
 		},
@@ -1975,11 +1974,12 @@
 			this.error(mes);
 		},
     });
-  
+    
   	document.addEventListener('deviceready', onDeviceReady, false);
 	
 	function onDeviceReady(){
 		var bluetooth = BC.bluetooth = new BC.Bluetooth("cordova");
+		
 		BC.bluetooth.addSystemListener('disconnect', function(arg){
 			BC.bluetooth.devices[arg.deviceAddress].isConnected = false;
 			BC.bluetooth.devices[arg.deviceAddress].dispatchEvent("devicedisconnected");
@@ -2096,5 +2096,4 @@
 			},testFunc);
 		},function(mes){alert(JSON.stringify(mes));});
 	}
-  
 })();
