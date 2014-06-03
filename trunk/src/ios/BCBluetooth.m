@@ -1021,7 +1021,7 @@
     if ([[callbackInfo valueForKey:ADVERTISEMENT_DATA] valueForKey:LOCAL_NAME]) {
         CDVPluginResult* result = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK messageAsDictionary:callbackInfo];
         [result setKeepCallbackAsBool:TRUE];
-        [self.commandDelegate sendPluginResult:result callbackId:[self.urlAndCallback valueForKey:EVENT_NEWADVPACKET]];
+        [self.commandDelegate sendPluginResult:result callbackId:[[NSUserDefaults standardUserDefaults] valueForKey:EVENT_NEWADVPACKET]];
     }
     NSString *peripheralUUID = [self getPeripheralUUID:peripheral];
     if (_peripherals.count == 0){
