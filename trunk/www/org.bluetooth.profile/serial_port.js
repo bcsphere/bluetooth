@@ -23,7 +23,7 @@
 		var MASTER = "Master";
 		var SLAVE = "Slave";
 		var role = "Master";
-		var service : {};
+		var service = {};
 		
 		var SerialPortProfile = BC.SerialPortProfile = BC.Profile.extend({
 
