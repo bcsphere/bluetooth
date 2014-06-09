@@ -14,9 +14,6 @@
 	limitations under the License.
 */
 
-	navigator.bluetooth = cordova.require("org.bcsphere.bluetooth.bluetoothapi");
-	cordova.define("org.bcsphere.bcjs", function(require, exports, module) {
-
 		var root = this;
 		/**
 		 * BC namespace includes all kinds of magic things, all the classes is registered on it, enjoy it :).
@@ -65,7 +62,7 @@
 		 */
 		
 		var _ = root._;                                          
-		if (!_ && (typeof require !== 'undefined')) _ = require('org.underscorejs.underscore');
+		if (!_ && (typeof require !== 'undefined')) _ = require('org.bcsphere.bluetooth.underscorejs.underscore');
 		
 		var testFunc = function(message){
 			if(DEBUG){
@@ -2115,7 +2112,6 @@
 		
 		module.exports = BC;
 		
-	});
 	
 
 
