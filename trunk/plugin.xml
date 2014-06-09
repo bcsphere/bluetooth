@@ -82,18 +82,6 @@
 		<source-file src="src/android/org/bcsphere/bluetooth/tools/BluetoothDetection.java" target-dir="src/org/bcsphere/bluetooth/tools" />
 		<source-file src="src/android/org/bcsphere/bluetooth/tools/Tools.java" target-dir="src/org/bcsphere/bluetooth/tools" />
 		
-		<source-file src="src/bc.js" target-dir="assets/www" />
-		<source-file src="src/underscore.js" target-dir="assets/www" />
-		<source-file src="src/bc-immediatealert.js" target-dir="assets/www" />
-		<source-file src="src/bc-linkloss.js" target-dir="assets/www" />
-		<source-file src="src/bc-serialport.js" target-dir="assets/www" />
-		<source-file src="src/bc-txpower.js" target-dir="assets/www" />
-		<source-file src="src/bc-batterylevel.js" target-dir="assets/www" />
-		<source-file src="src/bc-bloodpressure.js" target-dir="assets/www" />
-		<source-file src="src/bc-deviceinformation.js" target-dir="assets/www" />
-		<source-file src="src/bc-healththermometer.js" target-dir="assets/www" />
-		
-		
 		<source-file src="libs/samsung_ble_sdk_200.jar" target-dir="libs" />
 		<!--source-file src="libs/com.htc.android.bluetooth.le.jar" target-dir="com.htc.android.bluetooth.le" / -->
     </platform>
@@ -108,17 +96,6 @@
         </config-file>
         <header-file src="src/ios/BCBluetooth.h" />
 	    <source-file src="src/ios/BCBluetooth.m" />
-        
-        <asset src="src/bc.js" target ="bc.js"/>
-        <asset src="src/underscore.js" target ="underscore.js"/>
-		<asset src="src/bc-immediatealert.js" target="assets/www" />
-		<asset src="src/bc-linkloss.js" target="assets/www" />
-		<asset src="src/bc-serialport.js" target="assets/www" />
-		<asset src="src/bc-txpower.js" target="assets/www" />
-		<asset src="src/bc-batterylevel.js" target="assets/www" />
-		<asset src="src/bc-bloodpressure.js" target="assets/www" />
-		<asset src="src/bc-deviceinformation.js" target="assets/www" />
-		<asset src="src/bc-healththermometer.js" target="assets/www" />
         
 		<framework src="CoreBluetooth.framework" weak="true" />
     </platform>
