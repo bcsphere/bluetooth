@@ -2,7 +2,7 @@
 
 <plugin xmlns="http://apache.org/cordova/ns/plugins/1.0"
         xmlns:android="http://schemas.android.com/apk/res/android"
-		id="org.bcsphere.bluetooth"
+		id="org"
         version="0.4.0">
 
     <name>Bluetooth</name>
@@ -13,10 +13,49 @@
         <engine name="cordova" version=">=3.0.0" />
     </engines>
 	
-    <js-module src="www/bluetooth.js" name="bluetooth">
+	<js-module src="www/org.underscorejs.underscore/underscore.js" name="underscorejs.underscore">
+        <clobber target="_" />
+    </js-module>
+    <js-module src="www/org.bcsphere/bc.js" name="bc">
+        <clobber target="BC" />
+    </js-module>
+	<js-module src="www/org.bcsphere.bluetooth/bluetoothapi.js" name="bcsphere.bluetooth.bluetoothapi">
         <merges target="navigator.bluetooth" />
     </js-module>
-
+	<js-module src="www/org.bluetooth.profile/proximity.js" name="bluetooth.profile.proximity">
+        <merges target="BC" />
+    </js-module>
+	<js-module src="www/org.bluetooth.profile/find_me.js" name="bluetooth.profile.find_me">
+        <merges target="BC" />
+    </js-module>
+	<js-module src="www/org.bluetooth.profile/serial_port.js" name="bluetooth.profile.serial_port">
+        <merges target="BC" />
+    </js-module>
+	<js-module src="www/org.bluetooth.service/battery_service.js" name="bluetooth.service.battery_service">
+        <merges target="BC" />
+    </js-module>
+	<js-module src="www/org.bluetooth.service/blood_pressure.js" name="bluetooth.service.blood_pressure">
+        <merges target="BC" />
+    </js-module>
+	<js-module src="www/org.bluetooth.service/device_information.js" name="bluetooth.service.device_information">
+        <merges target="BC" />
+    </js-module>
+	<js-module src="www/org.bluetooth.service/health_thermometer.js" name="bluetooth.service.health_thermometer">
+        <merges target="BC" />
+    </js-module>
+	<js-module src="www/org.bluetooth.service/immediate_alert.js" name="bluetooth.service.immediate_alert">
+        <merges target="BC" />
+    </js-module>
+	<js-module src="www/org.bluetooth.service/link_loss.js" name="bluetooth.service.link_loss">
+        <merges target="BC" />
+    </js-module>
+	<js-module src="www/org.bluetooth.service/serial_port.js" name="bluetooth.service.serial_port">
+        <merges target="BC" />
+    </js-module>
+	<js-module src="www/org.bluetooth.service/tx_power.js" name="bluetooth.service.tx_power">
+        <merges target="BC" />
+    </js-module>	
+	
     <!-- android -->
     <platform name="android">
         <config-file target="res/xml/config.xml" parent="/*">
