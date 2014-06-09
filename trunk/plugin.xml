@@ -16,7 +16,7 @@
 	<js-module src="www/org.underscorejs.underscore/underscore.js" name="underscorejs.underscore">
         <clobber target="_" />
     </js-module>
-    <js-module src="www/org.bcsphere/bc.js" name="bc">
+    <js-module src="www/org.bcsphere/bc.js" name="bcjs">
         <clobber target="BC" />
     </js-module>
 	<js-module src="www/org.bcsphere.bluetooth/bluetoothapi.js" name="bcsphere.bluetooth.bluetoothapi">
