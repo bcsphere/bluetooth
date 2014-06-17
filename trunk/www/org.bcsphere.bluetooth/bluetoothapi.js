@@ -122,6 +122,9 @@
 		openBluetooth : function(successFunc,errorFunc){
 			cordova.exec(successFunc,errorFunc,"BCBluetooth","openBluetooth",[]);
 		},
+		closeBluetooth : function(successFunc,errorFunc){
+			cordova.exec(successFunc,errorFunc,"BCBluetooth","closeBluetooth",[]);
+		},
 		
 		addEventListener : function(callback,errorFunc,arg){
 			cordova.exec(callback,errorFunc,"BCBluetooth","addEventListener",[{"eventName":arg.eventName,"arg":arg.arg}]);

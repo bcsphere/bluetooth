@@ -425,6 +425,9 @@
 				this.openBluetooth = function(success,error){
 					navigator.bluetooth.openBluetooth(success,error);
 				};
+				this.closeBluetooth = function(success,error){
+					navigator.bluetooth.closeBluetooth(success,error);
+				};
 				this.addSystemListener = function(success,error,arg){
 					navigator.bluetooth.addEventListener(success,error,arg);
 				};
@@ -539,6 +542,7 @@
 				this.getEnvironment = this.bluetoothFuncs.getEnvironment;
 				this.getBluetoothState = this.bluetoothFuncs.getBluetoothState;
 				this.openBluetooth = this.bluetoothFuncs.openBluetooth;
+				this.closeBluetooth = this.bluetoothFuncs.closeBluetooth;
 				
 				//character operation
 				this.writeCharacteristic = this.bluetoothFuncs.writeCharacteristic;
@@ -591,6 +595,19 @@
 		 */
 		var OpenBluetooth = BC.Bluetooth.OpenBluetooth = function(success,error){
 			BC.bluetooth.openBluetooth(success,error);
+		};
+
+		/** 
+		 * @memberof Bluetooth
+		 * @method 
+		 * @example 
+		 * //Close Bluetooth.
+		 * BC.Bluetooth.CloseBluetooth(function(){alert("bluetooth closed!");},function(){alert("bluetooth close error!");});
+		 * @param {function} [successCallback] - Success callback
+		 * @param {function} [errorCallback] - Error callback
+		 */
+		var CloseBluetooth = BC.Bluetooth.CloseBluetooth = function(success,error){
+			BC.bluetooth.closeBluetooth(success,error);
 		};
 
 		/** 

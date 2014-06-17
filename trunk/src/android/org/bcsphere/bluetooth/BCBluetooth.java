@@ -171,6 +171,13 @@ public class BCBluetooth extends CordovaPlugin {
 				Tools.sendSuccessMsg(callbackContext);
 				return true;
 			}
+			if (action.equals("closeBluetooth")) {
+				if(bluetoothAdapter.isEnabled()){
+					bluetoothAdapter.disable();
+				}
+				Tools.sendSuccessMsg(callbackContext);
+				return true;
+			}
 			if (action.equals("getBluetoothState")) {
 				Log.i(TAG, "getBluetoothState");
 				JSONObject obj = new JSONObject();
