@@ -716,8 +716,10 @@ public class BluetoothG43plus implements IBluetooth{
 	private void addEventListenerManage(BluetoothGatt gatt, int newState){
 		String deviceAddress = getDeviceAddress(gatt);
 		if (newState == BluetoothGatt.STATE_DISCONNECTED) {
-		    connectedDevice.remove(deviceAddress);
-		    mBluetoothGatts.remove(deviceAddress);
+			mBluetoothGatts.get(deviceAddress).disconnect();
+			mBluetoothGatts.get(deviceAddress).close();
+			connectedDevice.remove(deviceAddress);
+			mBluetoothGatts.remove(deviceAddress);
 			JSONObject obj = new JSONObject();
 			Tools.addProperty(obj, Tools.DEVICE_ADDRESS, deviceAddress);
 			PluginResult pluginResult = new PluginResult(PluginResult.Status.OK , obj);
