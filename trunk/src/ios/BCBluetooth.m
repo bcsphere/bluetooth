@@ -608,7 +608,7 @@
 
 - (void)setNotification:(CDVInvokedUrlCommand*)command{
     if ([self existCommandArguments:command.arguments]){
-        [self.urlAndCallback setValue:command.callbackId forKey:SETNOTIFICATION];
+        [self.urlAndCallback setValue:command.callbackId forKey:[NSString stringWithFormat:@"%@%@%@",serviceIndex,characteristicIndex,SETNOTIFICATION]];
         NSString *deviceAddress = [self parseStringFromJS:command.arguments keyFromJS:DEVICE_ADDRESS];
         if ([self isNormalString:deviceAddress]){
             CBPeripheral *peripheral = [self getPeripheral:deviceAddress];
@@ -1179,7 +1179,7 @@
             [callbackInfo setValue:characteristicIndex forKey:CHARACTERISTIC_INDEX];
             CDVPluginResult* result = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK messageAsDictionary:callbackInfo];
             [result setKeepCallbackAsBool:TRUE];
-            [self.commandDelegate sendPluginResult:result callbackId:[self.urlAndCallback valueForKey:SETNOTIFICATION]];
+            [self.commandDelegate sendPluginResult:result callbackId:[self.urlAndCallback valueForKey:[NSString stringWithFormat:@"%@%@%@",serviceIndex,characteristicIndex,SETNOTIFICATION]]];
         }
         if (isRead){
             NSMutableDictionary *callbackInfo = [[NSMutableDictionary alloc] init];
@@ -1242,15 +1242,18 @@
 
 - (void)peripheral:(CBPeripheral *)peripheral didUpdateNotificationStateForCharacteristic:(CBCharacteristic *)characteristic error:(NSError *)error {
     NSString *enable = [NSString stringWithFormat:@"%@",[self.urlAndCallback valueForKey:ISON]];
+    CBService *service = characteristic.service;
+    NSString *serviceIndex = [NSString stringWithFormat:@"%d",[self getServiceIndex:peripheral service:service]];
+    NSString *characteristicIndex = [NSString stringWithFormat:@"%d",[self getCharacterIndex:service character:characteristic]];
     if (!error) {
         if ([enable boolValue]) {
             [peripheral readValueForCharacteristic:characteristic];
         }else{
             CDVPluginResult* result = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK];
-            [self.commandDelegate sendPluginResult:result callbackId:[self.urlAndCallback valueForKey:SETNOTIFICATION]];
+            [self.commandDelegate sendPluginResult:result callbackId:[self.urlAndCallback valueForKey:[NSString stringWithFormat:@"%@%@%@",serviceIndex,characteristicIndex,SETNOTIFICATION]]];
         }
     }else{
-        [self error:[self.urlAndCallback valueForKey: SETNOTIFICATION]];
+        [self error:[self.urlAndCallback valueForKey:[NSString stringWithFormat:@"%@%@%@",serviceIndex,characteristicIndex,SETNOTIFICATION]]];
     }
 }
 
