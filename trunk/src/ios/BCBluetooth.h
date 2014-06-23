@@ -60,6 +60,7 @@
 @property (strong, nonatomic) NSMutableDictionary *RSSIDic;
 
 @property (strong, nonatomic) NSString *bluetoothState;
+@property (strong, nonatomic) NSMutableDictionary  *urlAndCallback;
 
 - (void)getEnvironment:(CDVInvokedUrlCommand *)command;
 - (void)getBluetoothState:(CDVInvokedUrlCommand*)command;
