@@ -4,7 +4,7 @@ BC.js is the core implementation of universal Bluetooth JavaScript API.<br/>
 It supports both Bluetooth 4.0 GATT interface in IOS/Android and Bluetooth 2.1 Classical interface in Android.
 
   * Online Bluetooth Javascript API document: http://www.bcsphere.org/portal.php?mod=topic&topicid=3 <br/>
-  * [bleprofiles](https://github.com/bcsphere/bleprofiles) is the BC official open source Bluetooth common profiles library based on BC.js, which can be re-used by applications to accelerate development.
+  * library based on BC.js, which can be re-used by applications to accelerate development.
   * [bcexplorer](https://github.com/bcsphere/bcexplorer) is the open source tool to explore the GATT services/characteristics of Bluetooth Smart devices. It helps debug devices as well as demostrates the Bluetooth Javascript API.
   * [bciBeacon](https://github.com/bcsphere/ibeacon) implements a demo iBeacon as a plugin based on BC.js.
   
