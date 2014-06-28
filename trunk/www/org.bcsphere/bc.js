@@ -1734,8 +1734,8 @@
 				data.serviceIndex = this.upper.index;
 				data.characteristicIndex = this.index;
 				data.date = arguments[1].date;
-				//data.value = new BC.DataValue(BC.Tools.Base64ToBuffer(arguments[1].value));
-				data.value = new BC.DataValue(arguments[1].value);
+				data.value = new BC.DataValue(BC.Tools.Base64ToBuffer(arguments[1].value));
+				//data.value = new BC.DataValue(arguments[1].value);
 				this.success(data);
 			},
 			readError : function(){
