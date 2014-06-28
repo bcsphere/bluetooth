@@ -1734,7 +1734,8 @@
 				data.serviceIndex = this.upper.index;
 				data.characteristicIndex = this.index;
 				data.date = arguments[1].date;
-				data.value = new BC.DataValue(BC.Tools.Base64ToBuffer(arguments[1].value));
+				//data.value = new BC.DataValue(BC.Tools.Base64ToBuffer(arguments[1].value));
+				data.value = new BC.DataValue(arguments[1].value);
 				this.success(data);
 			},
 			readError : function(){
@@ -1752,7 +1753,7 @@
 			 * function writeSuccess(data){
 			 *	alert("write success!");
 			 * }
-			 * @param {string} type - The type of the value to write ('hex'/'ascii'/'unicode'/'raw')
+			 * @param {string} type - The type of the value to write ('hex'/'ascii'/'unicode'/'raw'/'base64')
 			 * @param {string/Uint8Array} value - The value write to this characteristic, if the 'type' is 'raw', the value type should be Uint8Array
 			 * @param {function} successCallback - Success callback
 			 * @param {function} [errorCallback] - Error callback
@@ -1769,8 +1770,10 @@
 					value = BC.Tools.UnicodeToBase64(value);
 				}else if(type.toLowerCase() == "raw"){
 					value = BC.Tools.ConvertToBase64(value);
+				}else if(type.toLowerCase() == "base64"){
+					value = value;
 				}else{
-					error("Please input 'hex'/'ascii'/'unicode' type.");
+					error("Please input 'hex'/'ascii'/'unicode'/'raw'/'base64' type.");
 					return;
 				}
 				if(this.property.contains("write") || this.property.contains("writeWithoutResponse")){
@@ -1810,6 +1813,7 @@
 				var obj = arguments[1];
 				var data = {};
 				data.value = new BC.DataValue(BC.Tools.Base64ToBuffer(obj.value));
+				//data.value = new BC.DataValue(obj.value);
 				data.serviceIndex = obj.serviceIndex;
 				data.characteristicIndex = obj.characteristicIndex;
 				data.date = obj.date;
@@ -2128,7 +2132,4 @@
 		}
 		
 		module.exports = BC;
-		
-	
-
 
