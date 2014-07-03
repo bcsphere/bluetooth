@@ -20,7 +20,7 @@
 #import <Cordova/NSDictionary+Extensions.h>
 #import <Cordova/NSArray+Comparisons.h>
 #import "sys/sysctl.h"
-
+#define BASE_LONG_UUID @"00000000-0000-1000-8000-00805f9b34fb"
 #define BLUETOOTH_STATE @"state"
 #define BLUETOOTH_OPEN @"bluetoothopen"
 #define BLUETOOTH_CLOSE @"bluetoothclose"
@@ -608,7 +608,9 @@
 
 - (void)setNotification:(CDVInvokedUrlCommand*)command{
     if ([self existCommandArguments:command.arguments]){
-        [self.urlAndCallback setValue:command.callbackId forKey:[NSString stringWithFormat:@"%@%@%@",serviceIndex,characteristicIndex,SETNOTIFICATION]];
+        NSString *characteristicIndex = [self parseStringFromJS:command.arguments keyFromJS:CHARACTERISTIC_INDEX];
+        NSString *serviceIndex = [self parseStringFromJS:command.arguments keyFromJS:SERVICE_INDEX];
+        [self.urlAndCallback setValue:command.callbackId forKey:[NSString stringWithFormat:@"%@%@%@", serviceIndex, characteristicIndex, SETNOTIFICATION]];
         NSString *deviceAddress = [self parseStringFromJS:command.arguments keyFromJS:DEVICE_ADDRESS];
         if ([self isNormalString:deviceAddress]){
             CBPeripheral *peripheral = [self getPeripheral:deviceAddress];
@@ -1557,15 +1559,43 @@
 }
 
 - (NSString *)CBUUIDFiltrToString:(CBUUID *)UUID{
-    NSString *results = [UUID.data description];
-    if (results.length<16) {
-        results = [results stringByReplacingOccurrencesOfString:@"<" withString:@"0000"];
-        results = [results stringByReplacingOccurrencesOfString:@">" withString:@"-0000-1000-8000-00805f9b34fb"];
-    }else{
-        results = [results stringByReplacingOccurrencesOfString:@"<" withString:@""];
-        results = [results stringByReplacingOccurrencesOfString:@">" withString:@""];
+    NSData *data = [UUID data];
+    
+    NSUInteger bytesToConvert = [data length];
+    const unsigned char *uuidBytes = [data bytes];
+    NSMutableString *outputString = [NSMutableString stringWithCapacity:16];
+    
+    for (NSUInteger currentByteIndex = 0; currentByteIndex < bytesToConvert; currentByteIndex++)
+    {
+        switch (currentByteIndex)
+        {
+            case 3:
+            case 5:
+            case 7:
+            case 9:[outputString appendFormat:@"%02x-", uuidBytes[currentByteIndex]]; break;
+            default:[outputString appendFormat:@"%02x", uuidBytes[currentByteIndex]];
+        }
+    }
+    
+    NSString *results = outputString;
+    if(results.length == 4){
+        //uuid_128 = "0000"+ uuid +"-0000-1000-8000-00805f9b34fb";
+        //128-Bit UUID = 16-bit Attribute UUID * pow(2,96) + Bluetooth_Base_UUID
+        results = [[[self expandToTIUUID:[CBUUID UUIDWithString:outputString]] UUIDString] lowercaseString];
     }
     return results;
+}
+
+-(CBUUID *) expandToTIUUID:(CBUUID *)sourceUUID {
+    CBUUID *expandedUUID = [CBUUID UUIDWithString:BASE_LONG_UUID];
+    unsigned char expandedUUIDBytes[16];
+    unsigned char sourceUUIDBytes[2];
+    [expandedUUID.data getBytes:expandedUUIDBytes];
+    [sourceUUID.data getBytes:sourceUUIDBytes];
+    expandedUUIDBytes[2] = sourceUUIDBytes[0];
+    expandedUUIDBytes[3] = sourceUUIDBytes[1];
+    expandedUUID = [CBUUID UUIDWithData:[NSData dataWithBytes:expandedUUIDBytes length:16]];
+    return expandedUUID;
 }
 
 - (NSString *)UUIDFiltrToString:(CBUUID *)UUID{

@@ -1416,12 +1416,7 @@
 			getServiceByUUID : function(uuid){
 				var uuid = uuid.toLowerCase();
 				var result = [];
-				var uuid_128 = "";
-				if(uuid.length == 4){
-					uuid_128 = "0000"+ uuid +"-0000-1000-8000-00805f9b34fb";
-				}else if(uuid.length == 36){
-					uuid_128 = uuid;
-				}
+				var uuid_128 = BC.Tools.ChangeTo128UUID(uuid);
 				_.each(this.services, function(service){
 						service.uuid = service.uuid.toLowerCase();
 						if(service.uuid == uuid_128){
@@ -1954,12 +1949,7 @@
 			getDescriptorByUUID : function(uuid){
 				var uuid = uuid.toLowerCase();
 				var result = [];
-				var uuid_128 = "";
-				if(uuid.length == 4){
-					uuid_128 = "0000"+ uuid +"-0000-1000-8000-00805f9b34fb";
-				}else if(uuid.length == 36){
-					uuid_128 = uuid;
-				}
+				var uuid_128 = BC.Tools.ChangeTo128UUID(uuid);
 				_.each(this.descriptors, function(descriptor){
 						if(descriptor.uuid == uuid_128){
 							result.push(descriptor);
