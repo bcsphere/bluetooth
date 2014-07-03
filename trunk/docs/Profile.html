@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>JSDoc: Namespace: BC</title>
+    <title>JSDoc: Class: Profile</title>
     
     <script src="scripts/prettify/prettify.js"> </script>
     <script src="scripts/prettify/lang-css.js"> </script>
@@ -17,7 +17,7 @@
 
 <div id="main">
     
-    <h1 class="page-title">Namespace: BC</h1>
+    <h1 class="page-title">Class: Profile</h1>
     
     
 
@@ -27,7 +27,7 @@
     
 <header>
     <h2>
-    BC
+    Profile
     </h2>
     
 </header>  
@@ -38,62 +38,27 @@
     
     
         
-            <div class="description">BC namespace includes all kinds of magic things, all the classes is registered on it, enjoy it :).</div>
-        
-        
-        
-<dl class="details">
+<dt>
+    <h4 class="name" id="Profile"><span class="type-signature"></span>new Profile<span class="signature">()</span><span class="type-signature"></span></h4>
     
-        
-        <h5 class="subsection-title">Properties:</h5>
-        
-        <dl>
+    
+</dt>
+<dd>
+    
+    
+    <div class="description">
+        Profile is a bundle of functions to operate the devices, our implements are based on bluetooth specification(www.bluetooth.org).
+    </div>
+    
 
-<table class="props">
-    <thead>
-	<tr>
-		
-		<th>Name</th>
-		
-		
-		<th>Type</th>
-		
-		
-		
-		
-		
-		<th class="last">Description</th>
-	</tr>
-	</thead>
-	
-	<tbody>
-	
-	
-        <tr>
-            
-                <td class="name"><code>VERSION</code></td>
-            
-            
-            <td class="type">
-            
-                
-<span class="param-type">string</span>
-
-
-            
-            </td>
-            
-            
-            
-            
-            
-            <td class="description last">The version of BC</td>
-        </tr>
-	
-	
-	</tbody>
-</table></dl>
-        
+    
+    
+    
+    
+    
+    
+    
+<dl class="details">
     
         
     
@@ -115,7 +80,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="bc.js.html">org.bcsphere/bc.js</a>, <a href="bc.js.html#line23">line 23</a>
+        <a href="bc.js.html">org.bcsphere/bc.js</a>, <a href="bc.js.html#line1022">line 1022</a>
     </li></ul></dd>
     
     
@@ -126,8 +91,25 @@
     
 </dl>
 
+    
+    
+
+    
+
+    
+    
+    
+    
+    
+    
+    
+        <h5>Example</h5>
         
-        
+    <pre class="prettyprint"><code>//define a custom profilevar FindMeProfile = BC.FindMeProfile = BC.Profile.extend({		no_alert : function(device){	  this.alert(device,'0');	},	mild_alert : function(device){	  this.alert(device,'1');	}, 	high_alert : function(device){	  this.alert(device,'2');	},	alert : function(device,level){		device.discoverServices(function(){			var service = device.getServiceByUUID(serviceUUID)[0];			service.alert(level);		});	},	});//use profilevar findmeProfile = new BC.FindMeProfile();findmeProfile.high_alert(device);</code></pre>
+
+    
+</dd>
+
     
     </div>
     
@@ -137,16 +119,6 @@
     
     
     
-    
-        <h3 class="subsection-title">Classes</h3>
-        
-        <dl>
-            <dt><a href="BC.SerialPortProfile.html">SerialPortProfile</a></dt>
-            <dd></dd>
-        
-            <dt><a href="BC.SerialPortService.html">SerialPortService</a></dt>
-            <dd></dd>
-        </dl>
     
     
     
