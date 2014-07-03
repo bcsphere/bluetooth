@@ -988,37 +988,6 @@
 			},
 		});
 		
-		/**
-		 * Profile is a bundle of functions to operate the devices, our implements are based on bluetooth specification(www.bluetooth.org).
-		 * @example //define a custom profile
-		 * var FindMeProfile = BC.FindMeProfile = BC.Profile.extend({
-		 *	
-		 *	no_alert : function(device){
-		 *	  this.alert(device,'0');
-		 *	},
-		 *  
-		 *	mild_alert : function(device){
-		 *	  this.alert(device,'1');
-		 *	},
-		 *   
-		 *	high_alert : function(device){
-		 *	  this.alert(device,'2');
-		 *	},
-		 *
-		 *	alert : function(device,level){
-		 *		device.discoverServices(function(){
-		 *			var service = device.getServiceByUUID(serviceUUID)[0];
-		 *			service.alert(level);
-		 *		});
-		 *	},
-		 *	
-		 *});
-		 *
-		 * //use profile
-		 * var findmeProfile = new BC.FindMeProfile();
-		 * findmeProfile.high_alert(device);
-		 * @class
-		 */
 		var Profile = BC.Profile = BC.EventDispatcher.extend({
 		
 		});
