@@ -19,30 +19,8 @@
 		var LinkLossUUID = "1803";
 		var TxPowerUUID = "1804";
 	
-		/**
-		 * BC.ProximityProfile is an implementation of proximity profile.
-		 * <b>Please Note:</b> JSDoc can't generate part of the javascript file, please check the detail interface usage in the source file code comments.
-		 * @memberof BC
-		 * @class
-		 * @property {string} LinkLossUUID - The link loss service uuid for BLE
-		 * @property {string} TxPowerUUID - The tx power service uuid for BLE
-		 */
 		var ProximityProfile = BC.ProximityProfile = BC.Profile.extend({
-		
-			/**
-			 * Define a rssi space and start proximity listen.
-			 * @memberof ProximityProfile
-			 * @example 
-			 *  var BC = window.BC = cordova.require("org.bluetooth.profile.find_me");
-			 *  var proximityProfile = new BC.ProximityProfile();
-			 *	proximityProfile.onPathLoss(device,-60,-80,app.farAwayFunc,app.safetyZone_func,app.closeToFunc);
-			 * @param {Device} device - the device to operate
-			 * @param {int} closeTo_spacing - the bottom of proximity
-			 * @param {int} farAway_spacing - the top of proximity
-			 * @param {function} farAwayFunc - the function will be fired when the device go away from the central
-			 * @param {function} safetyZone_func - the function will be fired when the device in the space
-			 * @param {function} closeToFunc - the function will be fired when the device move into the space
-			 */	
+
 			onPathLoss : function(device,closeTo_spacing,farAway_spacing,farAwayFunc,safetyZone_func,closeToFunc){
 				var txPowerValue = 0;
 				device.discoverServices(function(){
@@ -70,34 +48,17 @@
 					});
 				},1500);
 			},
-			
-			/**
-			 * Stops an proximity listen.
-			 * @memberof ProximityProfile
-			 * @example 
-			 *  var BC = window.BC = cordova.require("org.bluetooth.profile.find_me");
-			 *  var proximityProfile = new BC.ProximityProfile();
-			 *	proximityProfile.clearPathLoss();
-			 */	
+
 			clearPathLoss : function(){
 				if(this.pathLoss_interval){
 					window.clearInterval(this.pathLoss_interval);
 				}
 			},
-			
-			/**
-			 * When connection lost the device will alert.
-			 * @memberof ProximityProfile
-			 * @example 
-			 *  var BC = window.BC = cordova.require("org.bluetooth.profile.find_me");
-			 *  var proximityProfile = new BC.ProximityProfile();
-			 *	proximityProfile.clearPathLoss();
-			 * @param {Device} device - the device to operate
-			 */
+
 			onLinkLoss : function(device){
 				this.alert(device,LinkLossUUID,'2');
 			},
-			
+
 			alert : function(device,serviceUUID,level){
 				device.discoverServices(function(){
 					var service = device.getServiceByUUID(serviceUUID)[0];

@@ -18,64 +18,20 @@
 		
 		var serviceUUID = "1802";
 		
-		/**
-		 * BC.FindMeProfile is an implementation of find me profile.
-		 * <b>Please Note:</b> JSDoc can't generate part of the javascript file, please check the detail interface usage in the source file code comments.
-		 * @memberof BC
-		 * @class
-		 * @property {string} serviceUUID - The find me service uuid for BLE
-		 */
 		var FindMeProfile = BC.FindMeProfile = BC.Profile.extend({
 			
-			/**
-			 * Stops an alert on specification device.
-			 * @memberof FindMeProfile
-			 * @example 
-			 *  var BC = window.BC = cordova.require("org.bluetooth.profile.find_me");
-			 *  var findmeProfile = new BC.FindMeProfile();
-			 *	findmeProfile.no_alert(device);
-			 * @param {Device} device - the device to operate
-			 */		
 			no_alert : function(device){
 			  this.alert(device,'0');
 			},
 		   
-			/**
-			 * Start a middle alert on specification device.
-			 * @memberof FindMeProfile
-			 * @example 
-			 *  var BC = window.BC = cordova.require("org.bluetooth.profile.find_me");
-			 *  var findmeProfile = new BC.FindMeProfile();
-			 *	findmeProfile.mild_alert(device);
-			 * @param {Device} device - the device to operate
-			 */	
 			mild_alert : function(device){
 			  this.alert(device,'1');
 			},
-			
-			/**
-			 * Start a high alert on specification device.
-			 * @memberof FindMeProfile
-			 * @example 
-			 *  var BC = window.BC = cordova.require("org.bluetooth.profile.find_me");
-			 *  var findmeProfile = new BC.FindMeProfile();
-			 *	findmeProfile.high_alert(device);
-			 * @param {Device} device - the device to operate
-			 */		   
+		   
 			high_alert : function(device){
 			  this.alert(device,'2');
 			},
-			
-			/**
-			 * Start a alert on specification device.
-			 * @memberof FindMeProfile
-			 * @example 
-			 *  var BC = window.BC = cordova.require("org.bluetooth.profile.find_me");
-			 *  var findmeProfile = new BC.FindMeProfile();
-			 *	findmeProfile.high_alert(device);
-			 * @param {Device} device - the device to operate
-			 * @param {int} level - the alert level from 0 to 8, 0 stand for no alert, 8 stand for the top alert level
-			 */	
+
 			alert : function(device,level){
 				device.discoverServices(function(){
 					var service = device.getServiceByUUID(serviceUUID)[0];

@@ -24,43 +24,35 @@
 #import <Cordova/NSData+Base64.h>
 #import <Cordova/CDVJSON.h>
 #import <CoreLocation/CoreLocation.h>
+
 @interface BCBluetooth : CDVPlugin <CBCentralManagerDelegate, CBPeripheralDelegate,CBPeripheralManagerDelegate,CLLocationManagerDelegate>
 {
     NSTimer *stopScanTimer;
     NSInteger serviceNum;
     NSInteger characteristicNum;
-    NSInteger stateChangeCount;
-    BOOL isAddAllData;
-    BOOL isEndOfAddService;
-    BOOL isConnectedByManager;
-    BOOL isVariableInit;
-    BOOL isRead;
-    BOOL isFindingPeripheral;
 }
 
-@property (retain, nonatomic) CBPeripheralManager *myPeripheralManager;
-@property (retain, nonatomic) NSMutableDictionary *serviceAndKeyDic;
+@property (strong, nonatomic) CBPeripheralManager *myPeripheralManager;
+@property (strong, nonatomic) CBCentralManager *myCentralManager;
+@property (strong, nonatomic) NSTimer *stopScanTimer;
+@property (assign, nonatomic) BOOL isAddAllData;
+@property (assign, nonatomic) BOOL isEndOfAddService;
+@property (assign, nonatomic) BOOL isFindingPeripheral;
+
+@property (strong, nonatomic) NSString *bluetoothState;
+@property (strong, nonatomic) NSMutableArray *_peripherals;
+@property (strong, nonatomic) NSMutableArray *peripheralsInfo;
+@property (strong, nonatomic) NSMutableDictionary *urlAndCallback;
+@property (strong, nonatomic) NSMutableDictionary *advDataDic;
+@property (strong, nonatomic) NSMutableDictionary *RSSIDic;
+@property (strong, nonatomic) NSMutableDictionary *serviceAndKeyDic;
 @property (strong, nonatomic) NSMutableDictionary *eventNameAndCallbackIdDic;
 @property (strong, nonatomic) NSMutableDictionary *writeReqAndCharacteristicDic;
 @property (strong, nonatomic) NSMutableDictionary *readReqAndCharacteristicDic;
 @property (strong, nonatomic) NSMutableDictionary *valueAndCharacteristicDic;
 
-@property (strong, nonatomic) CBCentralManager *myCentralManager;
-@property (strong, nonatomic) NSMutableArray *_peripherals;
-@property (strong, nonatomic) NSMutableArray *_allPeripherals;
-@property (strong, nonatomic) NSMutableArray *_services;
-@property (strong, nonatomic) NSMutableArray *_characteristics;
-@property (strong, nonatomic) NSMutableArray *_descriptors;
+@property (strong, nonatomic) NSMutableDictionary *rssisInfo;
 
-@property (strong, nonatomic) NSMutableArray *servicesInfo;
-@property (strong, nonatomic) NSMutableArray *characteristicsInfo;
-@property (strong, nonatomic) NSMutableArray *descriptorsInfo;
-@property (strong, nonatomic) NSMutableArray *peripheralsInfo;
-@property (strong, nonatomic) NSMutableDictionary *advDataDic;
-@property (strong, nonatomic) NSMutableDictionary *RSSIDic;
-
-@property (strong, nonatomic) NSString *bluetoothState;
-@property (strong, nonatomic) NSMutableDictionary  *urlAndCallback;
 
 - (void)getEnvironment:(CDVInvokedUrlCommand *)command;
 - (void)getBluetoothState:(CDVInvokedUrlCommand*)command;
@@ -84,5 +76,4 @@
 - (void)getDeviceAllData:(CDVInvokedUrlCommand*)command;
 - (void)addServices:(CDVInvokedUrlCommand*)command;
 - (void)removeServices:(CDVInvokedUrlCommand*)command;
-
 @end

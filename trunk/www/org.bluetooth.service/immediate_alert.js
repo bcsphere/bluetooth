@@ -16,61 +16,22 @@
 		
 		var BC = require("org.bcsphere.bcjs");
 		
-		/**
-		 * BC.ImmediateAlertService is an implementation about immediate alert based on BLE
-		 * @memberof BC
-		 * @class
-		 * @property {string} characteristicUUID - The alert characteristic uuid
-		 */
 		var ImmediateAlertService = BC.ImmediateAlertService = BC.Service.extend({
 
 			   characteristicUUID:'2a06',
-			   
-			/**
-			 * Stops an alert.
-			 * @memberof ImmediateAlertService
-			 * @example 
-			 * 	function no_alert(device){
-			 *		device.discoverServices(function(){
-			 *			var service = device.getServiceByUUID("1802")[0];
-			 *			service.no_alert();
-			 *		});
-			 *  }
-			 */	
+
 			   no_alert : function(){
 				  this.alert('0');
 			   },
 			   
-			/**
-			 * Starts an middle alert.
-			 * @memberof ImmediateAlertService
-			 * @example 
-			 * 	function mild_alert(device){
-			 *		device.discoverServices(function(){
-			 *			var service = device.getServiceByUUID("1802")[0];
-			 *			service.mild_alert();
-			 *		});
-			 *  }
-			 */				   
 			   mild_alert : function(){
 				  this.alert('1');
 			   },
-			 
-			/**
-			 * Starts an high alert.
-			 * @memberof ImmediateAlertService
-			 * @example 
-			 * 	function high_alert(device){
-			 *		device.discoverServices(function(){
-			 *			var service = device.getServiceByUUID("1802")[0];
-			 *			service.high_alert();
-			 *		});
-			 *  }
-			 */				 
+			   
 			   high_alert : function(){
 				  this.alert('2');
 			   },
-		   
+			   
 			   alert:function(writeValue,writeType,successFunc,errorFunc){
 				  successFunc = successFunc || this.writeSuccess;
 				  errorFunc = errorFunc || this.writeError;
