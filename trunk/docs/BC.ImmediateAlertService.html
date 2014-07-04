@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>JSDoc: Class: Profile</title>
+    <title>JSDoc: Class: ImmediateAlertService</title>
     
     <script src="scripts/prettify/prettify.js"> </script>
     <script src="scripts/prettify/lang-css.js"> </script>
@@ -17,7 +17,7 @@
 
 <div id="main">
     
-    <h1 class="page-title">Class: Profile</h1>
+    <h1 class="page-title">Class: ImmediateAlertService</h1>
     
     
 
@@ -27,7 +27,9 @@
     
 <header>
     <h2>
-    Profile
+        <span class="ancestors"><a href="BC.html">BC</a>.</span>
+    
+    ImmediateAlertService
     </h2>
     
 </header>  
@@ -39,7 +41,7 @@
     
         
 <dt>
-    <h4 class="name" id="Profile"><span class="type-signature"></span>new Profile<span class="signature">()</span><span class="type-signature"></span></h4>
+    <h4 class="name" id="ImmediateAlertService"><span class="type-signature"></span>new ImmediateAlertService<span class="signature">()</span><span class="type-signature"></span></h4>
     
     
 </dt>
@@ -47,7 +49,7 @@
     
     
     <div class="description">
-        Profile is a bundle of functions to operate the devices, our implements are based on bluetooth specification(www.bluetooth.org).
+        BC.ImmediateAlertService is an implementation about immediate alert based on BLE
     </div>
     
 
@@ -59,6 +61,57 @@
     
     
 <dl class="details">
+    
+        
+        <h5 class="subsection-title">Properties:</h5>
+        
+        <dl>
+
+<table class="props">
+    <thead>
+	<tr>
+		
+		<th>Name</th>
+		
+		
+		<th>Type</th>
+		
+		
+		
+		
+		
+		<th class="last">Description</th>
+	</tr>
+	</thead>
+	
+	<tbody>
+	
+	
+        <tr>
+            
+                <td class="name"><code>characteristicUUID</code></td>
+            
+            
+            <td class="type">
+            
+                
+<span class="param-type">string</span>
+
+
+            
+            </td>
+            
+            
+            
+            
+            
+            <td class="description last">The alert characteristic uuid</td>
+        </tr>
+	
+	
+	</tbody>
+</table></dl>
+        
     
         
     
@@ -80,7 +133,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="bc.js.html">org.bcsphere/bc.js</a>, <a href="bc.js.html#line1022">line 1022</a>
+        <a href="immediate_alert.js.html">org.bluetooth.service/immediate_alert.js</a>, <a href="immediate_alert.js.html#line25">line 25</a>
     </li></ul></dd>
     
     
@@ -102,11 +155,6 @@
     
     
     
-    
-        <h5>Example</h5>
-        
-    <pre class="prettyprint"><code>//define a custom profilevar FindMeProfile = BC.FindMeProfile = BC.Profile.extend({		no_alert : function(device){	  this.alert(device,'0');	},	mild_alert : function(device){	  this.alert(device,'1');	}, 	high_alert : function(device){	  this.alert(device,'2');	},	alert : function(device,level){		device.discoverServices(function(){			var service = device.getServiceByUUID(serviceUUID)[0];			service.alert(level);		});	},	});//use profilevar findmeProfile = new BC.FindMeProfile();findmeProfile.high_alert(device);</code></pre>
-
     
 </dd>
 

@@ -15,11 +15,30 @@
 */
 		
 		var BC = require("org.bcsphere.bcjs");
-		
+		/**
+		 * BC.TxPowerService is an implementation about tx power based on BLE
+		 * @memberof BC
+		 * @class
+		 * @property {string} characteristicUUID - The alert characteristic uuid
+		 */
 		var TxPowerService = BC.TxPowerService = BC.Service.extend({
 
 			characteristicUUID:'2a07',
 
+			/**
+			 * Gets TX power value.
+			 * @memberof TxPowerService
+			 * @example 
+			 * 	function getValue(device){
+			 *		device.discoverServices(function(){
+			 *			var service = device.getServiceByUUID("1804")[0];
+			 *			service.getValue(function(data){
+			 *				alert(data.getHexString());
+			 *			});
+			 *		});
+			 *  }
+			 * @param {function} callback - get tx power callback
+			 */	
 			getValue : function(callback){
 				this.discoverCharacteristics(function(){
 					this.getCharacteristicByUUID(this.characteristicUUID)[0].read(function(data){
@@ -28,6 +47,20 @@
 				});
 			},
 
+			/**
+			 * Gets TX power when the tx power level changed.
+			 * @memberof TxPowerService
+			 * @example 
+			 * 	function notify(device){
+			 *		device.discoverServices(function(){
+			 *			var service = device.getServiceByUUID("1804")[0];
+			 *			service.notify(function(data){
+			 *				alert(data.getHexString());
+			 *			});
+			 *		});
+			 *  }
+			 * @param {function} callback - when the tx power is changed the callback will be called.
+			 */
 			notify : function(callback){
 				this.discoverCharacteristics(function(){
 					this.getCharacteristicByUUID(this.characteristicUUID)[0].subscribe(function(data){

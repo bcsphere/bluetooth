@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>JSDoc: Class: Profile</title>
+    <title>JSDoc: Source: org.bluetooth.service/tx_power.js</title>
     
     <script src="scripts/prettify/prettify.js"> </script>
     <script src="scripts/prettify/lang-css.js"> </script>
@@ -17,122 +17,95 @@
 
 <div id="main">
     
-    <h1 class="page-title">Class: Profile</h1>
+    <h1 class="page-title">Source: org.bluetooth.service/tx_power.js</h1>
     
     
 
 
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code> /*
+    Copyright 2013-2014, JUMA Technology
 
-<section>
-    
-<header>
-    <h2>
-    Profile
-    </h2>
-    
-</header>  
+    Licensed under the Apache License, Version 2.0 (the "License");
+    you may not use this file except in compliance with the License.
+    You may obtain a copy of the License at
 
-<article>
-    <div class="container-overview">
-    
-    
-    
-        
-<dt>
-    <h4 class="name" id="Profile"><span class="type-signature"></span>new Profile<span class="signature">()</span><span class="type-signature"></span></h4>
-    
-    
-</dt>
-<dd>
-    
-    
-    <div class="description">
-        Profile is a bundle of functions to operate the devices, our implements are based on bluetooth specification(www.bluetooth.org).
-    </div>
-    
+        http://www.apache.org/licenses/LICENSE-2.0
 
-    
-    
-    
-    
-    
-    
-    
-<dl class="details">
-    
-        
-    
-    
-    
+    Unless required by applicable law or agreed to in writing, software
+    distributed under the License is distributed on an "AS IS" BASIS,
+    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+    See the License for the specific language governing permissions and
+    limitations under the License.
+*/
+		
+		var BC = require("org.bcsphere.bcjs");
+		/**
+		 * BC.TxPowerService is an implementation about tx power based on BLE
+		 * @memberof BC
+		 * @class
+		 * @property {string} characteristicUUID - The alert characteristic uuid
+		 */
+		var TxPowerService = BC.TxPowerService = BC.Service.extend({
 
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    <dt class="tag-source">Source:</dt>
-    <dd class="tag-source"><ul class="dummy"><li>
-        <a href="bc.js.html">org.bcsphere/bc.js</a>, <a href="bc.js.html#line1022">line 1022</a>
-    </li></ul></dd>
-    
-    
-    
-    
-    
-    
-    
-</dl>
+			characteristicUUID:'2a07',
 
-    
-    
+			/**
+			 * Gets TX power value.
+			 * @memberof TxPowerService
+			 * @example 
+			 * 	function getValue(device){
+			 *		device.discoverServices(function(){
+			 *			var service = device.getServiceByUUID("1804")[0];
+			 *			service.getValue(function(data){
+			 *				alert(data.getHexString());
+			 *			});
+			 *		});
+			 *  }
+			 * @param {function} callback - get tx power callback
+			 */	
+			getValue : function(callback){
+				this.discoverCharacteristics(function(){
+					this.getCharacteristicByUUID(this.characteristicUUID)[0].read(function(data){
+						 callback(data.value);
+					});
+				});
+			},
 
-    
+			/**
+			 * Gets TX power when the tx power level changed.
+			 * @memberof TxPowerService
+			 * @example 
+			 * 	function notify(device){
+			 *		device.discoverServices(function(){
+			 *			var service = device.getServiceByUUID("1804")[0];
+			 *			service.notify(function(data){
+			 *				alert(data.getHexString());
+			 *			});
+			 *		});
+			 *  }
+			 * @param {function} callback - when the tx power is changed the callback will be called.
+			 */
+			notify : function(callback){
+				this.discoverCharacteristics(function(){
+					this.getCharacteristicByUUID(this.characteristicUUID)[0].subscribe(function(data){
+						callback(data.value);
+					});
+				});
+			},
 
-    
-    
-    
-    
-    
-    
-    
-        <h5>Example</h5>
-        
-    <pre class="prettyprint"><code>//define a custom profilevar FindMeProfile = BC.FindMeProfile = BC.Profile.extend({		no_alert : function(device){	  this.alert(device,'0');	},	mild_alert : function(device){	  this.alert(device,'1');	}, 	high_alert : function(device){	  this.alert(device,'2');	},	alert : function(device,level){		device.discoverServices(function(){			var service = device.getServiceByUUID(serviceUUID)[0];			service.alert(level);		});	},	});//use profilevar findmeProfile = new BC.FindMeProfile();findmeProfile.high_alert(device);</code></pre>
-
-    
-</dd>
-
-    
-    </div>
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-</article>
-
-</section>  
+		});
+		
+		document.addEventListener('bccoreready',function(){
+			BC.bluetooth.UUIDMap["00001804-0000-1000-8000-00805f9b34fb"] = BC.TxPowerService;
+		});
+		
+		module.exports = BC;
+</code></pre>
+        </article>
+    </section>
 
 
 
