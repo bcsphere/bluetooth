@@ -608,7 +608,6 @@
 
 - (void)setNotification:(CDVInvokedUrlCommand*)command{
     if ([self existCommandArguments:command.arguments]){
-        [self.urlAndCallback setValue:command.callbackId forKey:[NSString stringWithFormat:@"%@%@%@",serviceIndex,characteristicIndex,SETNOTIFICATION]];
         NSString *deviceAddress = [self parseStringFromJS:command.arguments keyFromJS:DEVICE_ADDRESS];
         if ([self isNormalString:deviceAddress]){
             CBPeripheral *peripheral = [self getPeripheral:deviceAddress];
@@ -616,6 +615,7 @@
                 NSString *characteristicIndex = [self parseStringFromJS:command.arguments keyFromJS:CHARACTERISTIC_INDEX];
                 NSString *serviceIndex = [self parseStringFromJS:command.arguments keyFromJS:SERVICE_INDEX];
                 NSString *enable = [self parseStringFromJS:command.arguments keyFromJS:ENABLE];
+                [self.urlAndCallback setValue:command.callbackId forKey:[NSString stringWithFormat:@"%@%@%@",serviceIndex,characteristicIndex,SETNOTIFICATION]];
                 if ([self isNormalString:serviceIndex]){
                     if (peripheral.services.count > [serviceIndex intValue]) {
                         CBService *service = [peripheral.services objectAtIndex:[serviceIndex intValue]];
