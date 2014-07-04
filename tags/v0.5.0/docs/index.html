@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>JSDoc: Index</title>
+    
+    <script src="scripts/prettify/prettify.js"> </script>
+    <script src="scripts/prettify/lang-css.js"> </script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+</head>
+
+<body>
+
+<div id="main">
+    
+    <h1 class="page-title">Index</h1>
+    
+    
+
+
+    
+
+
+    <h3> </h3>
+
+
+
+
+
+
+
+
+
+    
+
+
+
+
+    <section>
+        <article><h1 id="bc-js-v0-5-0-">BC.js (v0.5.0)</h1>
+<p>BC.js is the core implementation of universal Bluetooth JavaScript API.<br/>
+It supports both Bluetooth 4.0 GATT interface in IOS/Android and Bluetooth 2.1 Classical interface in Android.</p>
+<ul>
+<li>Online Bluetooth Javascript API document: http://www.bcsphere.org/portal.php?mod=topic&amp;topicid=3 <br/></li>
+<li>library based on BC.js, which can be re-used by applications to accelerate development.</li>
+<li><a href="https://github.com/bcsphere/bcexplorer">bcexplorer</a> is the open source tool to explore the GATT services/characteristics of Bluetooth Smart devices. It helps debug devices as well as demostrates the Bluetooth Javascript API.</li>
+<li><a href="https://github.com/bcsphere/ibeacon">bciBeacon</a> implements a demo iBeacon as a plugin based on BC.js.</li>
+</ul>
+<h2 id="features">Features</h2>
+<h4 id="multi-platform-development-and-deployment">Multi-platform development and deployment</h4>
+<ul>
+<li>Develop Bluetooth enabled cross-platform mobile Apps for iOS and Android using JavaScript, HTML5 and CSS3.</li>
+<li>Single team on a single project instead of several teams for different platforms.</li>
+<li>Uniform UI code in multi-platform.</li>
+</ul>
+<h4 id="bluetooth-dual-mode">Bluetooth Dual Mode</h4>
+<ul>
+<li>Support Bluetooth 4.0 GATT interface in IOS/Android.</li>
+<li>Support Bluetooth 2.1 rfcomm interface in Android.</li>
+</ul>
+<h4 id="bluetooth-common-services-library">Bluetooth Common Services Library</h4>
+<ul>
+<li>Implement Bluetooth 4.0 Standard GATT services. (extending)</li>
+<li>Integrate various customermized GATT services to access partners' Bluetooth Smart devices. (extending)</li>
+</ul>
+<h4 id="offical-profile-services-implements">Offical profile &amp; services implements</h4>
+<ul>
+<li>BC.js implements some of offical profiles and services which defined in Bluetooth Specification(www.bluetooth.org)</li>
+<li>Profiles include <a href="https://github.com/bcsphere/bluetooth/blob/master/www/org.bluetooth.profile/find_me.js">Find Me</a>/
+<a href="https://github.com/bcsphere/bluetooth/blob/master/www/org.bluetooth.profile/proximity.js">Proximity</a></li>
+<li>Services include <a href="https://github.com/bcsphere/bluetooth/blob/master/www/org.bluetooth.service/tx_power.js">TX Power</a>/
+<a href="https://github.com/bcsphere/bluetooth/blob/master/www/org.bluetooth.service/link_loss.js">Link Loss</a>/
+<a href="https://github.com/bcsphere/bluetooth/blob/master/www/org.bluetooth.service/immediate_alert.js">Immediate Alert</a>...</li>
+<li>Find Me example is <a href="https://github.com/bcsphere/apps/tree/master/findme">here</a>, it shows how to use the profiles.</li>
+</ul>
+<h4 id="universal-bluetooth-serial-port">Universal Bluetooth Serial Port</h4>
+<ul>
+<li>Cross-platform implementation of Bluetooth serial port, covering the IOS/Android platform difference when using the <a href="https://https://github.com/bcsphere/bluetooth/blob/master/www/org.bluetooth.profile/serial_port.js">serial port profile</a>.</li>
+<li>Automatic Bluetooth 4.0/2.1 routing to establish appropriate connection, considering both phones and peripheral devices modes.</li>
+</ul>
+<h4 id="reuse-rich-apache-cordova-phonegap-ecosystem">Reuse rich Apache Cordova/PhoneGap Ecosystem</h4>
+<ul>
+<li>PhoneGap enables the implementation of many useful plugins such as  <a href="http://docs.phonegap.com/en/edge/cordova_camera_camera.md.html#Camera">Camera</a>/<a href="http://docs.phonegap.com/en/edge/cordova_accelerometer_accelerometer.md.html#Accelerometer">Accelerometer</a>/<a href="http://docs.phonegap.com/en/edge/cordova_compass_compass.md.html#Compass">Compass</a>...</li>
+<li>Reuse many open-source plugins implements by third party (<a href="http://plugreg.com/">PlugReg</a>).</li>
+<li>Implement your own <a href="http://docs.phonegap.com/en/3.3.0/guide_hybrid_plugins_index.md.html#Plugin%20Development%20Guide">plugins</a> based on BC.js for others.</li>
+</ul>
+<h4 id="true-internet-of-things">True Internet of Things</h4>
+<ul>
+<li>Connect the Internet/Web with the objects in the real world via Bluetooth Javascript interface easily. </li>
+</ul>
+<h2 id="usage">Usage</h2>
+<ol>
+<li><p>To use in BCSphere official APP <br/>
+(1) Include bc.js and other profiles .js files in your own javascript file directly. <br/>
+(2) Access the API. <br/></p>
+</li>
+<li><p>To incorporate into your own APP<br/>
+(1) Integrate <a href="http://cordova.apache.org">Apache Cordova</a> / <a href="http://phonegap.com">PhoneGap</a> into your Android/iOS project.<br/>
+(2) Use this command to install bc.js as a plugin in your project: <br/>
+ <b>cordova plugin add https://github.com/bcsphere/bluetooth.git </b> <br/></p>
+</li>
+</ol>
+<h2 id="support-platforms">Support platforms</h2>
+<p>For Bluetooth GATT</p>
+<ul>
+<li>Android API 18+, All devices with Bluetooth 4.0 Low Energy HW</li>
+<li>Android API 17+, Sumsung devices with Bluetooth 4.0 Low Energy HW</li>
+<li>Android API 16+, HTC devices with Bluetooth Low Energy HW, <br/><b>note:</b> HTC use shared library to operate BLE device, you should add the 'com.htc.android.bluetooth.le.jar' in the build path manually to support HTC devices, the files is in /others/HTC for optional use.</li>
+<li>IOS 6.0.1+,  iPhone4S+/iTouch5+/iPad3+/iPad-mini+/iPadAir</li>
+</ul>
+<p>For Bluetooth 2.1 Classic</p>
+<ul>
+<li>Android API 9+ </li>
+</ul>
+<p><a href="https://github.com/bcsphere/bluetooth/wiki/Version-History-&amp;-Roadmap">Version History &amp; Roadmap</a></p></article>
+    </section>
+
+
+
+
+
+
+</div>
+
+<nav>
+    <h2><a href="index.html">Index</a></h2><h3>Classes</h3><ul><li><a href="BC.FindMeProfile.html">FindMeProfile</a></li><li><a href="BC.ImmediateAlertService.html">ImmediateAlertService</a></li><li><a href="BC.LinkLossService.html">LinkLossService</a></li><li><a href="BC.ProximityProfile.html">ProximityProfile</a></li><li><a href="BC.SerialPortProfile.html">SerialPortProfile</a></li><li><a href="BC.SerialPortService.html">SerialPortService</a></li><li><a href="BC.TxPowerService.html">TxPowerService</a></li><li><a href="Bluetooth.html">Bluetooth</a></li><li><a href="Characteristic.html">Characteristic</a></li><li><a href="DataValue.html">DataValue</a></li><li><a href="Descriptor.html">Descriptor</a></li><li><a href="Device.html">Device</a></li><li><a href="Plugin.html">Plugin</a></li><li><a href="Profile.html">Profile</a></li><li><a href="Service.html">Service</a></li></ul><h3>Events</h3><ul><li><a href="Bluetooth.html#event:bluetoothstatechange">bluetoothstatechange</a></li><li><a href="Bluetooth.html#event:newdevice">newdevice</a></li><li><a href="Characteristic.html#event:oncharacteristicread">oncharacteristicread</a></li><li><a href="Characteristic.html#event:oncharacteristicwrite">oncharacteristicwrite</a></li><li><a href="Characteristic.html#event:onsubscribestatechange">onsubscribestatechange</a></li><li><a href="Descriptor.html#event:ondescriptorread">ondescriptorread</a></li><li><a href="Descriptor.html#event:ondescriptorwrite">ondescriptorwrite</a></li><li><a href="Device.html#event:deviceconnected">deviceconnected</a></li><li><a href="Device.html#event:devicedisconnected">devicedisconnected</a></li><li><a href="global.html#event:bccoreready">bccoreready</a></li><li><a href="global.html#event:bcready">bcready</a></li></ul><h3>Namespaces</h3><ul><li><a href="BC.html">BC</a></li></ul><h3>Global</h3><ul><li><a href="global.html#DEBUG">DEBUG</a></li></ul>
+</nav>
+
+<br clear="both">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.3.0-alpha4</a> on Fri Jul 04 2014 20:31:35 GMT+0800 (中国标准时间)
+</footer>
+
+<script> prettyPrint(); </script>
+<script src="scripts/linenumber.js"> </script>
+</body>
+</html>
