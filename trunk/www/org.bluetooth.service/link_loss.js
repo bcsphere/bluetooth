@@ -20,18 +20,62 @@
 
 			characteristicUUID:'2a06',
 
+			/**
+			 * Stops an alert.
+			 * @memberof LinkLossService
+			 * @example 
+			 * 	function no_alert(device){
+			 *		device.discoverServices(function(){
+			 *			var service = device.getServiceByUUID("1803")[0];
+			 *			service.no_alert();
+			 *		});
+			 *  }
+			 */	
 			no_alert : function(){
 				this.alert('0');
 			},
 
+			/**
+			 * Starts an middle alert.
+			 * @memberof LinkLossService
+			 * @example 
+			 * 	function mild_alert(device){
+			 *		device.discoverServices(function(){
+			 *			var service = device.getServiceByUUID("1803")[0];
+			 *			service.mild_alert();
+			 *		});
+			 *  }
+			 */
 			mild_alert : function(){
 				this.alert('1');
 			},
-
+			
+			/**
+			 * Starts an high alert.
+			 * @memberof LinkLossService
+			 * @example 
+			 * 	function high_alert(device){
+			 *		device.discoverServices(function(){
+			 *			var service = device.getServiceByUUID("1803")[0];
+			 *			service.high_alert();
+			 *		});
+			 *  }
+			 */	
 			high_alert : function(){
 				this.alert('2');
 			},
-
+			
+			/**
+			 * Gets TX power value.
+			 * @memberof LinkLossService
+			 * @example 
+			 * 	function high_alert(device){
+			 *		device.discoverServices(function(){
+			 *			var service = device.getServiceByUUID("1803")[0];
+			 *			service.high_alert();
+			 *		});
+			 *  }
+			 */	
 			getValue : function(callback){
 				this.discoverCharacteristics(function(){
 					 this.getCharacteristicByUUID(this.characteristicUUID)[0].read(function(data){
