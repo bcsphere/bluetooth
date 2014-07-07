@@ -899,7 +899,9 @@
         case CBPeripheralManagerStatePoweredOn:
             break;
         default:
-            [self error:[self.urlAndCallback objectForKey:ADDSERVICE]];
+            if ([self.urlAndCallback objectForKey:ADDSERVICE]) {
+                [self error:[self.urlAndCallback objectForKey:ADDSERVICE]];
+            }
             break;
     }
 }
