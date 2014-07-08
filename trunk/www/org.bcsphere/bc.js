@@ -1234,7 +1234,11 @@
 						var sname = service.serviceName;
 						var suuid = service.serviceUUID;
 						var chars = service.characteristics;
-						device.services.push(new BC.Service({index:sindex,uuid:suuid,name:sname,device:device,chars:chars}));
+						if(BC.bluetooth.UUIDMap[suuid]){
+							device.services.push(new BC.bluetooth.UUIDMap[suuid]({index:sindex,uuid:suuid,name:sname,device:device,chars:chars}));
+						}else{
+							device.services.push(new BC.Service({index:sindex,uuid:suuid,name:sname,device:device,chars:chars}));
+						}
 					}
 				);
 				this.isPrepared = true;
