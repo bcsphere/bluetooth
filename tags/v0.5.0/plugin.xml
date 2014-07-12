@@ -37,9 +37,6 @@
 	<js-module src="www/org.bluetooth.service/blood_pressure.js" name="bluetooth.service.blood_pressure">
         <merges target="BC" />
     </js-module>
-	<js-module src="www/org.bluetooth.service/device_information.js" name="bluetooth.service.device_information">
-        <merges target="BC" />
-    </js-module>
 	<js-module src="www/org.bluetooth.service/health_thermometer.js" name="bluetooth.service.health_thermometer">
         <merges target="BC" />
     </js-module>
