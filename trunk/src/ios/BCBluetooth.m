@@ -282,7 +282,7 @@
 - (void)connect:(CDVInvokedUrlCommand*)command{
     if ([self existCommandArguments:command.arguments]){
         NSString *deviceAddress = [self parseStringFromJS:command.arguments keyFromJS:DEVICE_ADDRESS];
-        [self.urlAndCallback setValue:command.callbackId forKey:deviceAddress];
+        [self.urlAndCallback setValue:command.callbackId forKey:[NSString stringWithFormat:@"connect%@",deviceAddress]];
         if ([self isNormalString:deviceAddress]) {
             CBPeripheral *peripheral = [self getPeripheral:deviceAddress];
             if (peripheral) {
@@ -337,7 +337,7 @@
 - (void)disconnect:(CDVInvokedUrlCommand*)command{
     if ([self existCommandArguments:command.arguments]) {
         NSString *deviceAddress = [self parseStringFromJS:command.arguments keyFromJS:DEVICE_ADDRESS];
-        [self.urlAndCallback setValue:command.callbackId forKey:deviceAddress];
+        [self.urlAndCallback setValue:command.callbackId forKey:[NSString stringWithFormat:@"disConnect%@",deviceAddress]];
         if ([self isNormalString:deviceAddress]) {
             CBPeripheral *peripheral = [self getPeripheral:deviceAddress];
             if (peripheral) {
@@ -1036,7 +1036,7 @@
 - (void)centralManager:(CBCentralManager *)central didConnectPeripheral:(CBPeripheral *)peripheral
 {
     NSString *deviceAddress = [self getPeripheralUUID:peripheral];
-    [self connectRequest:deviceAddress callbackId:[self.urlAndCallback valueForKey:deviceAddress] isKeepCallback:FALSE];
+    [self connectRequest:deviceAddress callbackId:[self.urlAndCallback valueForKey:[NSString stringWithFormat:@"connect%@",deviceAddress]] isKeepCallback:FALSE];
 }
 
 - (void)centralManager:(CBCentralManager *)central didRetrieveConnectedPeripherals:(NSArray *)peripherals{
@@ -1051,18 +1051,19 @@
 - (void)centralManager:(CBCentralManager *)central didFailToConnectPeripheral:(CBPeripheral *)peripheral error:(NSError *)error
 {
     NSString *deviceAddress = [self getPeripheralUUID:peripheral];
-    [self error:[self.urlAndCallback valueForKey:deviceAddress]];
+    [self error:[self.urlAndCallback valueForKey:[NSString stringWithFormat:@"connect%@",deviceAddress]]];
 }
 
 - (void)centralManager:(CBCentralManager *)central didDisconnectPeripheral:(CBPeripheral *)aPeripheral error:(NSError *)error
 {
     NSString *deviceAddress = [self getPeripheralUUID:aPeripheral];
     if (!error) {
-        [self connectRequest:deviceAddress callbackId:[self.urlAndCallback valueForKey:deviceAddress] isKeepCallback:TRUE];
+        [self connectRequest:deviceAddress callbackId:[self.urlAndCallback valueForKey:[NSString stringWithFormat:@"disConnect%@",deviceAddress]] isKeepCallback:FALSE];
+        [self.urlAndCallback removeObjectForKey:[NSString stringWithFormat:@"disConnect%@",deviceAddress]];
         self.isAddAllData = FALSE;
     }else{
-        if ([self.urlAndCallback valueForKey:deviceAddress]) {
-            [self error:[self.urlAndCallback valueForKey:deviceAddress]];
+        if ([self.urlAndCallback valueForKey:[NSString stringWithFormat:@"disConnect%@",deviceAddress]]) {
+            [self error:[self.urlAndCallback valueForKey:[NSString stringWithFormat:@"disConnect%@",deviceAddress]]];
         }else{
             self.isAddAllData = FALSE;
             [self connectRequest:deviceAddress callbackId:[self.urlAndCallback valueForKey:EVENT_DISCONNECT] isKeepCallback:TRUE];
