@@ -567,6 +567,7 @@
                                         [self error:command.callbackId];
                                     }
                                 }else{
+				     [self.urlAndCallback setValue:FALSE forKey:ISON];
                                     [self.urlAndCallback setValue:command.callbackId forKey:READCHARACTERISTIC];
                                     peripheral.delegate = self;
                                     [peripheral readValueForCharacteristic:[service.characteristics objectAtIndex:[characteristicIndex intValue]]];
