@@ -1,4 +1,31 @@
-/*
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>JSDoc: Source: org.bcsphere/bc.js</title>
+    
+    <script src="scripts/prettify/prettify.js"> </script>
+    <script src="scripts/prettify/lang-css.js"> </script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+</head>
+
+<body>
+
+<div id="main">
+    
+    <h1 class="page-title">Source: org.bcsphere/bc.js</h1>
+    
+    
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>/*
 	Copyright 2013-2014, JUMA Technology
 
 	Licensed under the Apache License, Version 2.0 (the "License");
@@ -62,7 +89,7 @@
 		 */
 		
 		var _ = root._;                                          
-		if (!_ && (typeof require !== 'undefined')) _ = require('org.underscorejs.underscore');
+		if (!_ &amp;&amp; (typeof require !== 'undefined')) _ = require('org.underscorejs.underscore');
 		
 		var testFunc = function(message){
 			if(DEBUG){
@@ -112,7 +139,7 @@
 			// The constructor function for the new subclass is either defined by you
 			// (the "constructor" property in your `extend` definition), or defaulted
 			// by us to simply call the parent's constructor.
-			if (protoProps && _.has(protoProps, 'constructor')) {
+			if (protoProps &amp;&amp; _.has(protoProps, 'constructor')) {
 			  child = protoProps.constructor;
 			} else {
 			  child = function(){ return parent.apply(this, arguments); };
@@ -140,7 +167,7 @@
 		
 		function aa(iterable) {
 			if (!iterable) return [];
-			// Safari <2.0.4 crashes when accessing property of a node list with property accessor.
+			// Safari &lt;2.0.4 crashes when accessing property of a node list with property accessor.
 			// It nevertheless works fine with `in` operator, which is why we use it here
 			if ('toArray' in Object(iterable)) return iterable.toArray();
 			var length = iterable.length || 0, results = new Array(length);
@@ -150,7 +177,7 @@
 
 		//this function is used to bind "this" pointer in case of it changed by params pass.
 		function bind(){  
-			if (arguments.length < 2 && arguments[0] === undefined)      
+			if (arguments.length &lt; 2 &amp;&amp; arguments[0] === undefined)      
 				return this;   
 			var __method = this, args = aa(arguments), object = args.shift();   
 				return function(){return __method.apply(object, args.concat(aa(arguments)));} 
@@ -171,7 +198,7 @@
 		var Base64ToBuffer = BC.Tools.Base64ToBuffer = function(rawData){
 			var bytes = window.atob(rawData);
 			var arraybuffer = new Uint8Array(bytes.length);
-			for (var i = 0; i < bytes.length; i++) {
+			for (var i = 0; i &lt; bytes.length; i++) {
 				arraybuffer[i] = bytes.charCodeAt(i);
 			}
 			return arraybuffer.buffer;
@@ -183,12 +210,12 @@
 		  
 		var ConvertHexStringToInt = BC.Tools.ConvertHexStringToInt = function(hexStr){
 			var result = 0;
-			if(hexStr.length < 5){
+			if(hexStr.length &lt; 5){
 				if(hexStr.length % 2 !== 0){
 					hexStr = "0" + hexStr.toLowerCase();
 				}
 				var pos = "0123456789abcdef";
-				for(var i = 0; i < hexStr.length; i++){
+				for(var i = 0; i &lt; hexStr.length; i++){
 					result += pos.indexOf(hexStr.charAt(i)) * Math.pow(16,(hexStr.length - i - 1));
 				}
 			}
@@ -200,15 +227,15 @@
 			value = value.toLowerCase();
 			var data = new Uint8Array(value.length/2);
 			var pos = "0123456789abcdef";
-			for(var i = 0,j = 0; i < value.length; i += 2,j++){
-				data[j] = (pos.indexOf(value.charAt(i)) << 4) | (pos.indexOf(value.charAt(i + 1)));
+			for(var i = 0,j = 0; i &lt; value.length; i += 2,j++){
+				data[j] = (pos.indexOf(value.charAt(i)) &lt;&lt; 4) | (pos.indexOf(value.charAt(i + 1)));
 			}
 			return BC.Tools.ConvertToBase64(data);
 		}
 			
 		var ASCIIToBase64 = BC.Tools.ASCIIToBase64 = function(value){
 			var data = new Uint8Array(value.length);
-			for(var i = 0; i < value.length; i++){
+			for(var i = 0; i &lt; value.length; i++){
 				data[i] = value.charCodeAt(i);
 			}
 			return BC.Tools.ConvertToBase64(data);
@@ -217,7 +244,7 @@
 		var UnicodeToBase64 = BC.Tools.UnicodeToBase64 = function(value){
 			var data = new Uint8Array(value.length*2);
 			var str = "";
-			for(var i = 0,j = 0; i < value.length; i++, j += 2){
+			for(var i = 0,j = 0; i &lt; value.length; i++, j += 2){
 				data[j] = value.charCodeAt(i) / 256;
 				data[j+1] = value.charCodeAt(i) % 256;
 			}
@@ -267,7 +294,7 @@
 			removeEventListener:function(type){
 				var s = this,i,length;
 				length = s._eventList.length;
-				for(i=0; i < length; i++){
+				for(i=0; i &lt; length; i++){
 					if(type == s._eventList[i].type){
 						s._eventList.splice(i,1);
 						return;
@@ -282,7 +309,7 @@
 			dispatchEvent:function(type,target){
 				var s = this;
 				var i,length = s._eventList.length;
-				for(i=0; i < length; i++){
+				for(i=0; i &lt; length; i++){
 					if(type == s._eventList[i].type){
 						if(!BC.Tools.IsEmpty(target)){
 							s.target = target;
@@ -298,7 +325,7 @@
 			
 			hasEventListener:function(type){
 				var s = this,i,length = s._eventList.length;
-				for(i=0; i < length; i++){
+				for(i=0; i &lt; length; i++){
 					if(type == s._eventList[i].type)return true;
 				}
 				return false;
@@ -309,7 +336,7 @@
 		
 		//Portable Functions
 		var BluetoothFuncs = BC.BluetoothFuncs = function(type){
-			if(type == "cordova" && typeof cordova !== "undefined" ){
+			if(type == "cordova" &amp;&amp; typeof cordova !== "undefined" ){
 				this.initBluetooth = function(){
 					navigator.bluetooth.initialBluetooth();
 				};
@@ -484,7 +511,7 @@
 		});
 		
 		/**
-		 * Triggered when the device bluetooth state has been change.<b>Please Note:</b> this event should be listen after the 'bcready' event has been fired.
+		 * Triggered when the device bluetooth state has been change.&lt;b>Please Note:&lt;/b> this event should be listen after the 'bcready' event has been fired.
 		 * @example BC.bluetooth.addEventListener('bluetoothstatechange', onBluetoothStateChange);
 		 * function onBluetoothStateChange(){
 		 * 	if(BC.bluetooth.isopen){
@@ -511,10 +538,10 @@
 		
 		/**
 		 * Bluetooth class includes all useful bluetooth global interfaces. 
-		 * <p><b>Please note</b> that the application should not create Bluetooth object, BC manages the object model.
+		 * &lt;p>&lt;b>Please note&lt;/b> that the application should not create Bluetooth object, BC manages the object model.
 		 * @class
-		 * @property {Array<Device>} devices - The advertising devices, this is filled after 'BC.Blueooth.StartScan' called
-		 * @property {Array<Service>} services - The services add by 'AddService' interface
+		 * @property {Array&lt;Device>} devices - The advertising devices, this is filled after 'BC.Blueooth.StartScan' called
+		 * @property {Array&lt;Service>} services - The services add by 'AddService' interface
 		 * @property {boolean} isopen - Bluetooth is open or not
 		 */
 		var Bluetooth = BC.Bluetooth = BC.EventDispatcher.extend({
@@ -860,7 +887,7 @@
 				var length = this.value.byteLength;
 				var dv = new DataView(this.value);
 				var result= "";
-				for (var i=0; i<length; i++) {
+				for (var i=0; i&lt;length; i++) {
 					result+= String.fromCharCode(dv.getUint8(i)).toString(16);
 				}
 				return result;
@@ -880,8 +907,8 @@
 				var length = this.value.byteLength;
 				var dv = new DataView(this.value);
 				var result= "";
-				if(length >= 2 && length % 2 == 0){
-					for (var i=0; i<length;) {
+				if(length >= 2 &amp;&amp; length % 2 == 0){
+					for (var i=0; i&lt;length;) {
 						result+=String.fromCharCode(dv.getUint8(i++)*256+dv.getUint8(i++));
 					}
 				}
@@ -901,8 +928,8 @@
 				var length = this.value.byteLength;
 				var dv = new DataView(this.value);
 				var result= "";
-				for (var i=0; i<length; i++) {
-					if(dv.getUint8(i) < 16){
+				for (var i=0; i&lt;length; i++) {
+					if(dv.getUint8(i) &lt; 16){
 						result+= '0' + dv.getUint8(i).toString(16);
 					}else{
 						result+= dv.getUint8(i).toString(16);
@@ -928,7 +955,7 @@
 				 var totalLength = 0;
 				 var thisLength = 0;
 				 var thatLength = 0;
-				 if(this.value && dataValue.value){
+				 if(this.value &amp;&amp; dataValue.value){
 					thisLength = this.value.byteLength;
 					thatLength = dataValue.value.byteLength;
 					length = thisLength + thatLength;
@@ -942,11 +969,11 @@
 				 var ints = new Uint8Array(length);
 				 if(thisLength != 0){
 					var thisDataView = new DataView(this.value);
-					for (var i = 0; i < thisLength; i++) {
+					for (var i = 0; i &lt; thisLength; i++) {
 						ints[i] = thisDataView.getUint8(i);
 					}
 				 }
-				 for (var j = thisLength,r = 0; j < length; j++,r++) {
+				 for (var j = thisLength,r = 0; j &lt; length; j++,r++) {
 					ints[j] = dataView.getUint8(r);
 				 }
 				this.value = ints.buffer;
@@ -1049,7 +1076,7 @@
 		
 		/**
 		 * Device represents the remote BLE Peripheral device. 
-		 * <p><b>Please note</b> that the application should not create Device object, BC manages the object model.The plugin can inherit this class,and encapsulate the function based on this class
+		 * &lt;p>&lt;b>Please note&lt;/b> that the application should not create Device object, BC manages the object model.The plugin can inherit this class,and encapsulate the function based on this class
 		 * @example var BLELight = BC.BLELight = BC.Device.extend({
 		 *  deviceInitialize : function(){},
 		 *  open : function(successFunc,errorFunc){
@@ -1067,7 +1094,7 @@
 		 * @param {int} RSSI - The RSSI of the device
 		 * @property {string} deviceName - The name of this device
 		 * @property {string} deviceAddress - The Address of this device
-		 * @property {Array<Service>} services - The services of this device
+		 * @property {Array&lt;Service>} services - The services of this device
 		 * @property {boolean} isConnected - If this device is connected
 		 * @property {int} RSSI - The RSSI of the device
 		 * @property {boolean} isPrepared - If this device is prepared ('prepared' means this device object can be used to access the services' characteristics)
@@ -1151,7 +1178,7 @@
 			},
 			
 			/**
-			 * Discovers services in peripheral.</br>After calling this interface, all the characteristics and descriptors is accessible. 
+			 * Discovers services in peripheral.&lt;/br>After calling this interface, all the characteristics and descriptors is accessible. 
 			 * @memberof Device
 			 * @example //Gets a the Device instance.
 			 * var device = window.device = BC.bluetooth.devices["78:C5:E5:99:26:37"];
@@ -1234,11 +1261,7 @@
 						var sname = service.serviceName;
 						var suuid = service.serviceUUID;
 						var chars = service.characteristics;
-						if(BC.bluetooth.UUIDMap[suuid]){
-							device.services.push(new BC.bluetooth.UUIDMap[suuid]({index:sindex,uuid:suuid,name:sname,device:device,chars:chars}));
-						}else{
-							device.services.push(new BC.Service({index:sindex,uuid:suuid,name:sname,device:device,chars:chars}));
-						}
+						device.services.push(new BC.Service({index:sindex,uuid:suuid,name:sname,device:device,chars:chars}));
 					}
 				);
 				this.isPrepared = true;
@@ -1415,7 +1438,7 @@
 			 * alert(app.device.getServiceByUUID("0000fff0-0000-1000-8000-00805f9b34fb")[0].uuid);
 			 * @param {string} uuid - The uuid(128bit/16bit) of service
 			 * @instance
-			 * @returns {Array<Service>} An array of Service
+			 * @returns {Array&lt;Service>} An array of Service
 			 */
 			getServiceByUUID : function(uuid){
 				var uuid = uuid.toLowerCase();
@@ -1562,7 +1585,7 @@
 	  /**
 	   * BLE Service class.
 	   * @class
-	   * @property {Array<Characteristic>} characteristics - The characteristics of this service
+	   * @property {Array&lt;Characteristic>} characteristics - The characteristics of this service
 	   * @property {Device} device - The device to which this service belongs
 	   * @property {string} uuid - The uuid of this service
 	   * @property {string} name - The name of this service
@@ -1648,7 +1671,7 @@
 			 * @example app.device.services[3].getCharacteristicByUUID("FFF1")[0].write("Hex","1",function(){alert("success!");});
 			 * @param {string} uuid - The uuid(128bit/16bit) of characteristic
 			 * @instance
-			 * @returns {Array<Characteristic>} An array of Characteristic
+			 * @returns {Array&lt;Characteristic>} An array of Characteristic
 			 */
 			getCharacteristicByUUID : function(uuid){
 				var uuid = uuid.toLowerCase();
@@ -1700,7 +1723,7 @@
 		/**
 		 * BLE Characteristic class.
 		 * @class
-		 * @property {Array<Descriptor>} descriptors - The descriptors of this characteristic
+		 * @property {Array&lt;Descriptor>} descriptors - The descriptors of this characteristic
 		 * @property {Device} device - The device to which this characteristic belongs
 		 * @property {string} uuid - The uuid of this characteristic
 		 * @property {string} name - The name of this characteristic
@@ -1948,7 +1971,7 @@
 			 * @example app.device.services[3].characteristics[0].getDescriptorByUUID("2901")[0].read(function(data){alert(data.value.getASCIIString())});
 			 * @param {string} uuid - The uuid(128bit/16bit) of descriptor
 			 * @instance
-			 * @returns {Array<Descriptor>} An array of Descriptor
+			 * @returns {Array&lt;Descriptor>} An array of Descriptor
 			 */
 			getDescriptorByUUID : function(uuid){
 				var uuid = uuid.toLowerCase();
@@ -2158,3 +2181,26 @@
 		
 		module.exports = BC;
 
+</code></pre>
+        </article>
+    </section>
+
+
+
+
+</div>
+
+<nav>
+    <h2><a href="index.html">Index</a></h2><h3>Classes</h3><ul><li><a href="BC.FindMeProfile.html">FindMeProfile</a></li><li><a href="BC.ImmediateAlertService.html">ImmediateAlertService</a></li><li><a href="BC.LinkLossService.html">LinkLossService</a></li><li><a href="BC.ProximityProfile.html">ProximityProfile</a></li><li><a href="BC.SerialPortProfile.html">SerialPortProfile</a></li><li><a href="BC.SerialPortService.html">SerialPortService</a></li><li><a href="BC.TxPowerService.html">TxPowerService</a></li><li><a href="Bluetooth.html">Bluetooth</a></li><li><a href="Characteristic.html">Characteristic</a></li><li><a href="DataValue.html">DataValue</a></li><li><a href="Descriptor.html">Descriptor</a></li><li><a href="Device.html">Device</a></li><li><a href="Plugin.html">Plugin</a></li><li><a href="Profile.html">Profile</a></li><li><a href="Service.html">Service</a></li></ul><h3>Events</h3><ul><li><a href="Bluetooth.html#event:bluetoothstatechange">bluetoothstatechange</a></li><li><a href="Bluetooth.html#event:newdevice">newdevice</a></li><li><a href="Characteristic.html#event:oncharacteristicread">oncharacteristicread</a></li><li><a href="Characteristic.html#event:oncharacteristicwrite">oncharacteristicwrite</a></li><li><a href="Characteristic.html#event:onsubscribestatechange">onsubscribestatechange</a></li><li><a href="Descriptor.html#event:ondescriptorread">ondescriptorread</a></li><li><a href="Descriptor.html#event:ondescriptorwrite">ondescriptorwrite</a></li><li><a href="Device.html#event:deviceconnected">deviceconnected</a></li><li><a href="Device.html#event:devicedisconnected">devicedisconnected</a></li><li><a href="global.html#event:bccoreready">bccoreready</a></li><li><a href="global.html#event:bcready">bcready</a></li></ul><h3>Namespaces</h3><ul><li><a href="BC.html">BC</a></li></ul><h3>Global</h3><ul><li><a href="global.html#DEBUG">DEBUG</a></li></ul>
+</nav>
+
+<br clear="both">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.3.0-alpha4</a> on Fri Jul 04 2014 20:31:35 GMT+0800 (中国标准时间)
+</footer>
+
+<script> prettyPrint(); </script>
+<script src="scripts/linenumber.js"> </script>
+</body>
+</html>

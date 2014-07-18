@@ -6,9 +6,9 @@
         version="0.5.0">
 
     <name>Bluetooth</name>
-    <description>The "BCSphere/Bluetooth" is a professional Bluetooth plugin. It is the core implementation of Universal Bluetooth JavaScript API by a Bluetooth expert team. It supports both Bluetooth 4.0 GATT interface in iOS/Android and Bluetooth 2.1 Classical interface in Android.</description>
+    <description>Bluetooth LE Plugin</description>
     <license>Apache 2.0</license>
-    <keywords>bcsphere,bluetooth,ibeacon</keywords>
+    <keywords>bcsphere,bluetooth</keywords>
     <engines>
         <engine name="cordova" version=">=3.0.0" />
     </engines>
@@ -51,13 +51,7 @@
     </js-module>
 	<js-module src="www/org.bluetooth.service/tx_power.js" name="bluetooth.service.tx_power">
         <merges target="BC" />
-    </js-module>
-	<js-module src="www/org.bcsphere.ibeacon/ibeaconapi.js" name="bcsphere.ibeacon.ibeaconapi">
-        <merges target="navigator.ibeacon" />
     </js-module>	
-	<js-module src="www/org.bcsphere/ibeacon.js" name="bcsphere.ibeacon">
-        <merges target="BC" />
-    </js-module>		
 	
     <!-- android -->
     <platform name="android">
