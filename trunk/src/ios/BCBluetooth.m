@@ -1149,9 +1149,11 @@
             [callbackInfo setValue:deviceAddress forKey:DEVICE_ADDRESS];
             [callbackInfo setValue:serviceIndex forKey:SERVICE_INDEX];
             [callbackInfo setValue:characteristicIndex forKey:CHARACTERISTIC_INDEX];
-            CDVPluginResult* result = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK messageAsDictionary:callbackInfo];
-            [result setKeepCallbackAsBool:TRUE];
-            [self.commandDelegate sendPluginResult:result callbackId:[self.urlAndCallback valueForKey:[NSString stringWithFormat:@"%@%@%@",serviceIndex,characteristicIndex,SETNOTIFICATION]]];
+            if ([self.urlAndCallback valueForKey:[NSString stringWithFormat:@"%@%@%@",serviceIndex,characteristicIndex,SETNOTIFICATION]]) {
+                CDVPluginResult* result = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK messageAsDictionary:callbackInfo];
+                [result setKeepCallbackAsBool:TRUE];
+                [self.commandDelegate sendPluginResult:result callbackId:[self.urlAndCallback valueForKey:[NSString stringWithFormat:@"%@%@%@",serviceIndex,characteristicIndex,SETNOTIFICATION]]];
+            }
         }
         if ([self.urlAndCallback valueForKey:READCHARACTERISTIC]){
             NSMutableDictionary *callbackInfo = [[NSMutableDictionary alloc] init];
