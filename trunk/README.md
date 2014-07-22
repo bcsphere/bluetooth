@@ -19,6 +19,10 @@ Features
 * Support Bluetooth 4.0 GATT interface in IOS/Android.
 * Support Bluetooth 2.1 rfcomm interface in Android.
 
+#### Beacon / iBeacon 
+* Support Beacon/iBeacon capability in IOS/Android.
+* Support proximity with beacon
+
 #### Bluetooth Common Services Library 
 * Implement Bluetooth 4.0 Standard GATT services. (extending)
 * Integrate various customermized GATT services to access partners' Bluetooth Smart devices. (extending)
@@ -35,10 +39,6 @@ Features
 #### Universal Bluetooth Serial Port 
 * Cross-platform implementation of Bluetooth serial port, covering the IOS/Android platform difference when using the [serial port profile](https://https://github.com/bcsphere/bluetooth/blob/master/www/org.bluetooth.profile/serial_port.js).
 * Automatic Bluetooth 4.0/2.1 routing to establish appropriate connection, considering both phones and peripheral devices modes.
-
-#### Beacon / iBeacon 
-* Support Beacon/iBeacon capability in IOS/Android.
-* Support proximity with beacon
 
 #### Reuse rich Apache Cordova/PhoneGap Ecosystem
 * PhoneGap enables the implementation of many useful plugins such as  [Camera](http://docs.phonegap.com/en/edge/cordova_camera_camera.md.html#Camera)/[Accelerometer](http://docs.phonegap.com/en/edge/cordova_accelerometer_accelerometer.md.html#Accelerometer)/[Compass](http://docs.phonegap.com/en/edge/cordova_compass_compass.md.html#Compass)...
