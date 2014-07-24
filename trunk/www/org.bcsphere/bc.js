@@ -2123,7 +2123,7 @@
 					}
 					thedevice.advTimestamp = new Date().getTime();
 				}
-				
+				BC.bluetooth.dispatchEvent("newadvpacket",scanData);
 			});
 
 			document.addEventListener("bluetoothclose",function(){
@@ -2157,4 +2157,5 @@
 		}
 		
 		module.exports = BC;
+
 

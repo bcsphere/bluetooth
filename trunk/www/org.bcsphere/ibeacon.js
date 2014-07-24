@@ -153,64 +153,60 @@
 			region.major = major;
 			region.minor = minor;
 			BC.iBeaconManager.region = region;
-			BC.bluetooth.startScan(onGetDevicesSuccess);
+			BC.Bluetooth.StartScan();
+			BC.bluetooth.addEventListener("newadvpacket",function(event){
+				var scanData = event.target;
+				var advertisementData,deviceAddress,deviceName,isCon,RSSI,txPower;
+				if(scanData['advertisementData']){
+					advertisementData = scanData['advertisementData'];
+				}
+				if(scanData['deviceAddress']){
+					deviceAddress = scanData['deviceAddress'];
+				}
+				if(scanData['deviceName']){
+					deviceName = scanData['deviceName'];
+				}
+				if(scanData['isConnected']){
+					isCon = scanData['isConnected'];
+				}
+				if(scanData['RSSI']){
+					RSSI = parseInt(scanData['RSSI']);
+				}
+				var isConnected = false;
+				if(isCon === "true"){
+					isConnected = true;
+				}
+				
+				if(!isEmpty(advertisementData.manufacturerData) && isIBeacon(advertisementData.manufacturerData) !== 0){
+					var manufacturerData = advertisementData.manufacturerData;
+					var startPos = isIBeacon(manufacturerData);
+					var manufacturerDataHexStr = manufacturerData.getHexString();
+					var iBeaconID = manufacturerDataHexStr.substring(startPos + 4,startPos + 44);
+					var txPowerStr = manufacturerDataHexStr.substring(startPos + 44,startPos + 46);
+					var txPower = BC.Tools.ConvertHexStringToInt(txPowerStr);
+					if(txPower > 127){
+						txPower = - (256 - txPower);
+					}
+							
+					if(isNewIBeacon(iBeaconID)){
+						var newibeacon = new BC.IBeacon({deviceAddress:deviceAddress,deviceName:deviceName,advertisementData:advertisementData,isConnected:isConnected,RSSI:RSSI,iBeaconID:iBeaconID,txPower:txPower});
+						if(newibeacon.matchRegion(BC.iBeaconManager.region)){
+							BC.iBeaconManager.ibeacons[iBeaconID] = newibeacon;
+							BC.iBeaconManager.dispatchEvent("newibeacon",newibeacon);
+						}
+					}else{
+						//update the RSSI and recalculate the proximity
+						var theibeacon = BC.iBeaconManager.ibeacons[iBeaconID];
+						theibeacon.txPower = txPower;
+						theibeacon.RSSI = RSSI;
+						if(!isEmpty(BC.iBeaconManager.region)){
+							theibeacon.calculateAccuracy();
+						}
+					}
+				}
+			});
 		}
 	};
-	function onGetDevicesSuccess(data){
-		for(var i=0; i < data.length; i++){
-			var advertisementData,deviceAddress,deviceName,isCon,RSSI,txPower;
-			if(data[i]['advertisementData']){
-				advertisementData = data[i]['advertisementData'];
-				if(advertisementData.manufacturerData){
-					advertisementData.manufacturerData = new BC.DataValue(BC.Tools.Base64ToBuffer(advertisementData.manufacturerData));
-				}
-			}
-			if(data[i]['deviceAddress']){
-				deviceAddress = data[i]['deviceAddress'];
-			}
-			if(data[i]['deviceName']){
-				deviceName = data[i]['deviceName'];
-			}
-			if(data[i]['isConnected']){
-				isCon = data[i]['isConnected'];
-			}
-			if(data[i]['RSSI']){
-				RSSI = parseInt(data[i]['RSSI']);
-			}
-			var isConnected = false;
-			if(isCon === "true"){
-				isConnected = true;
-			}
-			
-			if(!isEmpty(advertisementData.manufacturerData) && isIBeacon(advertisementData.manufacturerData) !== 0){
-				var manufacturerData = advertisementData.manufacturerData;
-				var startPos = isIBeacon(manufacturerData);
-				var manufacturerDataHexStr = manufacturerData.getHexString();
-				var iBeaconID = manufacturerDataHexStr.substring(startPos + 4,startPos + 44);
-				var txPowerStr = manufacturerDataHexStr.substring(startPos + 44,startPos + 46);
-				var txPower = BC.Tools.ConvertHexStringToInt(txPowerStr);
-				if(txPower > 127){
-					txPower = - (256 - txPower);
-				}
-						
-				if(isNewIBeacon(iBeaconID)){
-					var newibeacon = new BC.IBeacon({deviceAddress:deviceAddress,deviceName:deviceName,advertisementData:advertisementData,isConnected:isConnected,RSSI:RSSI,iBeaconID:iBeaconID,txPower:txPower});
-					if(newibeacon.matchRegion(BC.iBeaconManager.region)){
-						BC.iBeaconManager.ibeacons[iBeaconID] = newibeacon;
-						BC.iBeaconManager.dispatchEvent("newibeacon",newibeacon);
-					}
-				}else{
-					//update the RSSI and recalculate the proximity
-					var theibeacon = BC.iBeaconManager.ibeacons[iBeaconID];
-					theibeacon.txPower = txPower;
-					theibeacon.RSSI = RSSI;
-					if(!isEmpty(BC.iBeaconManager.region)){
-						theibeacon.calculateAccuracy();
-					}
-				}
-			}
-		}
-	}
 	
 	/** 
 	 * Stops a scanning for iBeacon.
@@ -227,7 +223,7 @@
 			navigator.ibeacon.stopIBeaconScan(null,null,proximityUUID,major,minor);
 		}else{
 			BC.iBeaconManager.region = null;
-			BC.bluetooth.stopScan();
+			BC.Bluetooth.StopScan();
 		}
 	};
 	
@@ -318,3 +314,4 @@
 	
 	module.exports = BC;
 	
+
