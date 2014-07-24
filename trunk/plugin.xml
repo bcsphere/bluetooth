@@ -8,7 +8,7 @@
     <name>Bluetooth</name>
     <description>The "BCSphere/Bluetooth" is a professional Bluetooth plugin. It is the core implementation of Universal Bluetooth JavaScript API by a Bluetooth expert team. It supports both Bluetooth 4.0 GATT interface in iOS/Android and Bluetooth 2.1 Classical interface in Android.</description>
     <license>Apache 2.0</license>
-    <keywords>bcsphere,bluetooth</keywords>
+    <keywords>bcsphere,bluetooth,ibeacon</keywords>
     <engines>
         <engine name="cordova" version=">=3.0.0" />
     </engines>
