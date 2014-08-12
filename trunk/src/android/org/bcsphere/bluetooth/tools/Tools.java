@@ -718,8 +718,8 @@ public class Tools {
 				UUID[] uuids = new UUID[getObjectFromArray(ary).getJSONArray(
 						SERVICE_UUIDS).length()];
 				for (int i = 0; i < uuids.length; i++) {
-					uuids[i] = (UUID) getObjectFromArray(ary).getJSONArray(
-							SERVICE_UUIDS).get(i);
+					String uuid = (String) getObjectFromArray(ary).getJSONArray(SERVICE_UUIDS).get(i);
+					uuids[i] = java.util.UUID.fromString(uuid);
 				}
 				return uuids;
 			}
