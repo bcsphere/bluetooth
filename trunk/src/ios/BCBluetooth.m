@@ -236,7 +236,12 @@
         NSMutableArray *serviceUUIDs = [self parseArrayFromJS:command.arguments keyFromJS:SERVICE_UUIDS];
         if (serviceUUIDs) {
             if (serviceUUIDs.count > 0){
-                [self.myCentralManager scanForPeripheralsWithServices:serviceUUIDs options:0];
+                NSMutableArray *uuidArray = [NSMutableArray array];
+                for (id item in serviceUUIDs) {
+                    id obj = [CBUUID UUIDWithString:item];
+                    [uuidArray addObject:obj];
+                }
+                [self.myCentralManager scanForPeripheralsWithServices:uuidArray options:0];
             }else{
                 [myCentralManager scanForPeripheralsWithServices:nil options:0];
             }
