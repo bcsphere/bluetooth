@@ -567,7 +567,7 @@
                                         [self error:command.callbackId];
                                     }
                                 }else{
-                                    [self.urlAndCallback setValue:@"false" forKey:ISON];
+				     [self.urlAndCallback setValue:FALSE forKey:ISON];
                                     [self.urlAndCallback setValue:command.callbackId forKey:READCHARACTERISTIC];
                                     peripheral.delegate = self;
                                     [peripheral readValueForCharacteristic:[service.characteristics objectAtIndex:[characteristicIndex intValue]]];
@@ -1140,7 +1140,7 @@
         NSString *deviceAddress = [self getPeripheralUUID:peripheral];
         NSString *date = [NSString stringWithFormat:@"%@",[self getDate]];
         CBService *service = characteristic.service;
-        if ([[self.urlAndCallback valueForKey:ISON] boolValue]) {
+        if ([self.urlAndCallback valueForKey:ISON]) {
             NSMutableDictionary *callbackInfo = [[NSMutableDictionary alloc] init];
             NSString *serviceIndex = [NSString stringWithFormat:@"%d",[self getServiceIndex:peripheral service:service]];
             NSString *characteristicIndex = [NSString stringWithFormat:@"%d",[self getCharacterIndex:service character:characteristic]];
@@ -1162,7 +1162,6 @@
             CDVPluginResult* result;
             result = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK messageAsDictionary:callbackInfo];
             [self.commandDelegate sendPluginResult:result callbackId:[self.urlAndCallback valueForKey:READCHARACTERISTIC]];
-            [self.urlAndCallback setValue:@"true" forKey:ISON];
         }
     }else{
         if ([self.urlAndCallback valueForKey:READCHARACTERISTIC]) {
