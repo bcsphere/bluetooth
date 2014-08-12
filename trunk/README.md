@@ -19,6 +19,10 @@ Features
 * Support Bluetooth 4.0 GATT interface in IOS/Android.
 * Support Bluetooth 2.1 rfcomm interface in Android.
 
+#### Beacon / iBeacon 
+* Support Beacon/iBeacon capability in IOS/Android.
+* Support proximity with beacon
+
 #### Bluetooth Common Services Library 
 * Implement Bluetooth 4.0 Standard GATT services. (extending)
 * Integrate various customermized GATT services to access partners' Bluetooth Smart devices. (extending)
