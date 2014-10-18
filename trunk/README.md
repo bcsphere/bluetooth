@@ -72,6 +72,9 @@ For Bluetooth GATT
 For Bluetooth 2.1 Classic
   * Android API 9+ 
 
+Commercial Service
+-----------------------------------
+For Commercial Bluetooth APPs customization service, please contact team@bcsphere.org, or dan.tian@jumacc.com.
 
 
 [Version History & Roadmap](https://github.com/bcsphere/bluetooth/wiki/Version-History-&-Roadmap)
