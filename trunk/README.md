@@ -74,7 +74,8 @@ For Bluetooth 2.1 Classic
 
 Commercial Service
 -----------------------------------
-For Commercial Bluetooth APPs customization service, please contact team@bcsphere.org, or dan.tian@jumacc.com.
+- Standard quick solution is 10K$ for an APP/single platform, with project schedule down to 2 weeks.
+- For Bluetooth APPs customization service, please contact team@bcsphere.org, or dan.tian@jumacc.com. 
 
 
 [Version History & Roadmap](https://github.com/bcsphere/bluetooth/wiki/Version-History-&-Roadmap)
