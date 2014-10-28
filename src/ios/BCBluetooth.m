@@ -135,7 +135,6 @@
 #define IOS                                                     @"ios"
 #define BLUETOOTHSTATE                                          @"bluetooth_state"
 #define IS_IOS_VERSION_7_HIGHER     (([[[UIDevice currentDevice] systemVersion] floatValue] >=7.0)? (YES):(NO))
-
 #define GAP_MODUAL                  1
 #define GATT_MODUAL                 2
 #define DATA_MODUAL                 4
