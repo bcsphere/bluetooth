@@ -373,6 +373,13 @@ public class BCBluetooth extends CordovaPlugin {
 		return true;
 	}
 
+	public void onDestroy() {
+            if(myContext != null){
+		myContext.unregisterReceiver(receiver);
+            }
+            super.onDestroy();
+        }
+
 	public BroadcastReceiver receiver = new BroadcastReceiver() {
 
 		@Override
