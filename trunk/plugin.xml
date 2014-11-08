@@ -2,7 +2,7 @@
 
 <plugin xmlns="http://apache.org/cordova/ns/plugins/1.0"
         xmlns:android="http://schemas.android.com/apk/res/android"
-		id="org"
+        id="org"
         version="0.5.0">
 
     <name>Bluetooth</name>
@@ -13,7 +13,7 @@
         <engine name="cordova" version=">=3.0.0" />
     </engines>
 	
-	<js-module src="www/org.underscorejs.underscore/underscore.js" name="underscorejs.underscore">
+    <js-module src="www/org.underscorejs.underscore/underscore.js" name="underscorejs.underscore">
         <clobber target="_" />
     </js-module>
     <js-module src="www/org.bcsphere/bc.js" name="bcsphere.bcjs">
@@ -67,12 +67,12 @@
             </feature>
         </config-file>
 		
-		<config-file target="AndroidManifest.xml" parent="/manifest">
+        <config-file target="AndroidManifest.xml" parent="/manifest">
             <uses-permission android:name="android.permission.BLUETOOTH"/>
             <uses-permission android:name="android.permission.BLUETOOTH_ADMIN"/>
         </config-file>
 		
-		<config-file target="AndroidManifest.xml" parent="/manifest/application">
+        <config-file target="AndroidManifest.xml" parent="/manifest/application">
             <uses-library android:name="com.htc.android.bluetooth.le" android:required="false" />
         </config-file>
 
@@ -81,16 +81,13 @@
 		<source-file src="src/android/org/bcsphere/bluetooth/BluetoothG43plus.java" target-dir="src/org/bcsphere/bluetooth" />
 		<source-file src="src/android/org/bcsphere/bluetooth/BluetoothSam42.java" target-dir="src/org/bcsphere/bluetooth" />
 		<source-file src="src/android/org/bcsphere/bluetooth/BluetoothSerialService.java" target-dir="src/org/bcsphere/bluetooth" />
-		<!--source-file src="src/android/org/bcsphere/bluetooth/BluetoothHTC41.java" target-dir="src/org/bcsphere/bluetooth" / -->
 		<source-file src="src/android/org/bcsphere/bluetooth/tools/BluetoothDetection.java" target-dir="src/org/bcsphere/bluetooth/tools" />
 		<source-file src="src/android/org/bcsphere/bluetooth/tools/Tools.java" target-dir="src/org/bcsphere/bluetooth/tools" />
-		
 		<source-file src="libs/samsung_ble_sdk_200.jar" target-dir="libs" />
-		<!--source-file src="libs/com.htc.android.bluetooth.le.jar" target-dir="com.htc.android.bluetooth.le" / -->
     </platform>
    
 
-	<!-- ios -->
+    <!-- ios -->
     <platform name="ios">
         <config-file target="config.xml" parent="/*">
             <feature name="BCBluetooth">
@@ -98,9 +95,8 @@
             </feature>
         </config-file>
         <header-file src="src/ios/BCBluetooth.h" />
-	    <source-file src="src/ios/BCBluetooth.m" />
-        
-		<framework src="CoreBluetooth.framework" weak="true" />
+	<source-file src="src/ios/BCBluetooth.m" />
+        <framework src="CoreBluetooth.framework" weak="true" />
     </platform>
 
 </plugin>
