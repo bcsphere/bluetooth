@@ -83,7 +83,6 @@
 		<source-file src="src/android/org/bcsphere/bluetooth/BluetoothSerialService.java" target-dir="src/org/bcsphere/bluetooth" />
 		<source-file src="src/android/org/bcsphere/bluetooth/tools/BluetoothDetection.java" target-dir="src/org/bcsphere/bluetooth/tools" />
 		<source-file src="src/android/org/bcsphere/bluetooth/tools/Tools.java" target-dir="src/org/bcsphere/bluetooth/tools" />
-		<source-file src="libs/samsung_ble_sdk_200.jar" target-dir="libs" />
     </platform>
    
 
