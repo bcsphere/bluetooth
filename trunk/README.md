@@ -1,4 +1,4 @@
-BC.js (v0.5.0)
+BC.js (v0.5.1)
 ===================================
 BC.js is the core implementation of Bluetooth SDK for Android/iOS, in Bluetooth JavaScript API.<br/>
 It supports both Bluetooth 4.0 GATT/BLE interface in IOS/Android and Bluetooth 2.1 Classical Rfcomm/L2cap socket interface in Android.
