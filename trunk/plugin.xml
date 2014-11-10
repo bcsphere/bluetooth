@@ -1,9 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<plugin xmlns="http://apache.org/cordova/ns/plugins/1.0"
-        xmlns:android="http://schemas.android.com/apk/res/android"
-        id="org"
-        version="0.5.0">
+<plugin xmlns="http://apache.org/cordova/ns/plugins/1.0" xmlns:android="http://schemas.android.com/apk/res/android"
+        id="org.bcsphere.bluetooth" version="0.5.0">
 
     <name>Bluetooth</name>
     <description>The "BCSphere/Bluetooth" is a professional Bluetooth plugin. It is the core implementation of Universal Bluetooth JavaScript API by a Bluetooth expert team. It supports both Bluetooth 4.0 GATT interface in iOS/Android and Bluetooth 2.1 Classical interface in Android.</description>
