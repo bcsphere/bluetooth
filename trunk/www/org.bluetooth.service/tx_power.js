@@ -14,7 +14,7 @@
     limitations under the License.
 */
 		
-		var BC = require("org.bcsphere.bcjs");
+		var BC = require("org.bcsphere.bluetooth.bcjs");
 		/**
 		 * BC.TxPowerService is an implementation about tx power based on BLE
 		 * @memberof BC

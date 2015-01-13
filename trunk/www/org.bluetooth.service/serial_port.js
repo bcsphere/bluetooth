@@ -14,7 +14,7 @@
     limitations under the License.
 */
 
-		var BC = require("org.bcsphere.bcjs");
+		var BC = require("org.bcsphere.bluetooth.bcjs");
 		
 		/**
 		 * BC.SerialPortService is an implementation about serial port based on BLE

@@ -14,7 +14,7 @@
     limitations under the License.
 */
 			
-		var BC = require("org.bcsphere.bcjs");
+		var BC = require("org.bcsphere.bluetooth.bcjs");
 		
 		var BloodPressureService = BC.BloodPressureService = BC.Service.extend({
 

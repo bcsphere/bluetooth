@@ -14,7 +14,7 @@
     limitations under the License.
 */	
 		
-		var BC = require("org.bcsphere.bcjs");
+		var BC = require("org.bcsphere.bluetooth.bcjs");
 		
 		/**
 		 * BC.ImmediateAlertService is an implementation about immediate alert based on BLE

@@ -14,7 +14,7 @@
 	limitations under the License.
 */
 		
-		var BC = require("org.bluetooth.service.immediate_alert");
+		var BC = require("org.bcsphere.bluetooth.service.immediate_alert");
 		
 		var serviceUUID = "1802";
 		

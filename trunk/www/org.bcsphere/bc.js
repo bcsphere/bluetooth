@@ -62,7 +62,7 @@
 		 */
 		
 		var _ = root._;                                          
-		if (!_ && (typeof require !== 'undefined')) _ = require('org.underscorejs.underscore');
+		if (!_ && (typeof require !== 'undefined')) _ = require('org.bcsphere.bluetooth.underscorejs.underscore');
 		
 		var testFunc = function(message){
 			if(DEBUG){

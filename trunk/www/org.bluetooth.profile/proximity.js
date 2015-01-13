@@ -14,8 +14,8 @@
     limitations under the License.
 */
 		
-		var BC = require("org.bluetooth.service.link_loss");
-		var BC = require("org.bluetooth.service.tx_power");
+		var BC = require("org.bcsphere.bluetooth.service.link_loss");
+		var BC = require("org.bcsphere.bluetooth.service.tx_power");
 		var LinkLossUUID = "1803";
 		var TxPowerUUID = "1804";
 	
