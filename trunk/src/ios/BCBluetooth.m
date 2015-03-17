@@ -859,6 +859,20 @@
 /*--------------------------------------------------------------------------*/
 #pragma mark -
 #pragma mark CBPeripheralDelegate
+-(void) peripheral:(CBPeripheral *)peripheral didReadRSSI:(NSNumber *)RSSI error:(NSError *)error {
+    BCLOG_FUNC(GAP_MODUAL)
+    if (!error) {
+        NSMutableDictionary *callbackInfo = [[NSMutableDictionary alloc] init];
+        [callbackInfo setValue:[NSString stringWithFormat:@"%4.1f",[RSSI doubleValue]] forKey:PERIPHERAL_RSSI];
+        [callbackInfo setValue:[self getPeripheralUUID:peripheral] forKey:DEVICE_ADDRESS];
+        CDVPluginResult* result = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK messageAsDictionary:callbackInfo];
+        [self.commandDelegate sendPluginResult:result callbackId:[self.callbacks objectForKey:
+                                [NSString stringWithFormat:@"getRssi%@",[self getPeripheralUUID:peripheral]]]];
+    }else{
+        [self error:[self.callbacks objectForKey:[NSString stringWithFormat:@"getRssi%@",[self getPeripheralUUID:peripheral]]]];
+    }
+}
+
 - (void)peripheralDidUpdateRSSI:(CBPeripheral *)peripheral error:(NSError *)error{
     BCLOG_FUNC(GAP_MODUAL)
     if (!error) {
