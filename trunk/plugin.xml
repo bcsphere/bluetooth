@@ -20,7 +20,7 @@
 	<js-module src="www/org.bcsphere.bluetooth/bluetoothapi.js" name="bluetoothapi">
         <merges target="navigator.bluetooth" />
     </js-module>
-	<js-module src="www/org.bluetooth.profile/proximity.js" name="profile.proximity">
+    <!-- <js-module src="www/org.bluetooth.profile/proximity.js" name="profile.proximity">
         <merges target="BC" />
     </js-module>
 	<js-module src="www/org.bluetooth.profile/find_me.js" name="profile.find_me">
@@ -55,7 +55,7 @@
     </js-module>	
 	<js-module src="www/org.bcsphere/ibeacon.js" name="ibeacon">
         <merges target="BC" />
-    </js-module>		
+    </js-module>	-->	
 	
     <!-- android -->
     <platform name="android">
