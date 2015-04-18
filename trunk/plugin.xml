@@ -15,7 +15,7 @@
         <clobber target="_" />
     </js-module>
     <js-module src="www/org.bcsphere/bc.js" name="bcjs">
-        <clobber target="BC" />
+        <merges target="BC" />
     </js-module>
 	<js-module src="www/org.bcsphere.bluetooth/bluetoothapi.js" name="bluetoothapi">
         <merges target="navigator.bluetooth" />
