@@ -1,0 +1,61 @@
+<NotepadPlus>
+    <Project name="CordovaBluetooth">
+        <Folder name="src">
+            <Folder name="android">
+                <Folder name="org">
+                    <Folder name="bcsphere">
+                        <Folder name="bluetooth">
+                            <Folder name="tools">
+                                <File name="src\android\org\bcsphere\bluetooth\tools\BluetoothDetection.java" />
+                                <File name="src\android\org\bcsphere\bluetooth\tools\Tools.java" />
+                            </Folder>
+                            <File name="src\android\org\bcsphere\bluetooth\BCBluetooth.java" />
+                            <File name="src\android\org\bcsphere\bluetooth\BluetoothG43plus.java" />
+                            <File name="src\android\org\bcsphere\bluetooth\BluetoothSerialService.java" />
+                            <File name="src\android\org\bcsphere\bluetooth\IBluetooth.java" />
+                        </Folder>
+                    </Folder>
+                </Folder>
+            </Folder>
+            <Folder name="ios">
+                <File name="src\ios\BCBluetooth.h" />
+                <File name="src\ios\BCBluetooth.m" />
+                <File name="src\ios\BCIBeacon.h" />
+                <File name="src\ios\BCIBeacon.m" />
+            </Folder>
+        </Folder>
+        <Folder name="www">
+            <Folder name="org.bcsphere">
+                <File name="www\org.bcsphere\bc.js" />
+                <File name="www\org.bcsphere\ibeacon.js" />
+            </Folder>
+            <Folder name="org.bcsphere.bluetooth">
+                <File name="www\org.bcsphere.bluetooth\bluetoothapi.js" />
+            </Folder>
+            <Folder name="org.bcsphere.ibeacon">
+                <File name="www\org.bcsphere.ibeacon\ibeaconapi.js" />
+            </Folder>
+            <Folder name="org.bluetooth.profile">
+                <File name="www\org.bluetooth.profile\find_me.js" />
+                <File name="www\org.bluetooth.profile\proximity.js" />
+                <File name="www\org.bluetooth.profile\serial_port.js" />
+            </Folder>
+            <Folder name="org.bluetooth.service">
+                <File name="www\org.bluetooth.service\battery_service.js" />
+                <File name="www\org.bluetooth.service\blood_pressure.js" />
+                <File name="www\org.bluetooth.service\health_thermometer.js" />
+                <File name="www\org.bluetooth.service\immediate_alert.js" />
+                <File name="www\org.bluetooth.service\link_loss.js" />
+                <File name="www\org.bluetooth.service\serial_port.js" />
+                <File name="www\org.bluetooth.service\tx_power.js" />
+            </Folder>
+            <Folder name="org.underscorejs.underscore">
+                <File name="www\org.underscorejs.underscore\underscore.js" />
+            </Folder>
+        </Folder>
+        <File name="LICENSE" />
+        <File name="package.json" />
+        <File name="plugin.xml" />
+        <File name="README.md" />
+    </Project>
+</NotepadPlus>

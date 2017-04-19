@@ -1221,7 +1221,10 @@
 			
 			discoverServicesError : function(){
 				this.isDiscovering = false;
-				this.error();
+        if ((this.type !== 'Classical') && this.error)
+        {
+          this.error();
+        }
 			},
 			
 			processDeviceAllData : function(){
@@ -1758,6 +1761,7 @@
 					BC.bluetooth.readCharacteristic(this);
 				}
 			},
+
 			readSuccess : function(){
 				var data = {};
 				data.deviceAddress=this.device.deviceAddress;
@@ -1768,6 +1772,7 @@
 				//data.value = new BC.DataValue(arguments[1].value);
 				this.success(data);
 			},
+
 			readError : function(){
 				this.error("read data error");
 			},
@@ -1789,7 +1794,7 @@
 			 * @param {function} [errorCallback] - Error callback
 			 * @instance
 			 */
-			write : function(type,value,success,error){
+			write : function(type,value,success,error) {
 				this.success = success;
 				this.error = error;
 				if(type.toLowerCase() == "hex"){
@@ -1812,9 +1817,11 @@
 					error("This characteristic can't be written, please add 'write'/'writeWithoutResponse' in the property.");
 				}
 			},
+
 			writeSuccess : function(){
 				this.success(arguments);
 			},
+
 			writeError : function(){
 				this.error(arguments);
 			},
@@ -1834,23 +1841,27 @@
 			 * @instance
 			 */
 			subscribe : function(callback){
-				this.callback = callback;
+				this.subsCallback = callback;
 				if(this.property.contains("notify") || this.property.contains("indicate")){
 					BC.bluetooth.subscribe(this);
 				}
 			},
-			subscribeCallback : function(){
+
+			subscribeCallback : function() {
 				var obj = arguments[1];
 				var data = {};
+        
+        console.log('subscribeCallback()');
+        
 				data.value = new BC.DataValue(BC.Tools.Base64ToBuffer(obj.value));
 				//data.value = new BC.DataValue(obj.value);
 				data.serviceIndex = obj.serviceIndex;
 				data.characteristicIndex = obj.characteristicIndex;
 				data.date = obj.date;
 				data.deviceAddress = obj.deviceAddress;
-				this.callback(data);
+				this.subsCallback(data);
 			},
-			
+
 			/**
 			 * Unsubscribes the notification of this characteristic.
 			 * @memberof Characteristic
@@ -1866,9 +1877,11 @@
 					BC.bluetooth.unsubscribe(this);
 				}
 			},
+
 			unsubscribeSuccess : function(){
 				this.success();
 			},
+
 			unsubscribeError : function(){
 				this.error(arguments);
 			},
@@ -1884,7 +1897,9 @@
 			 * @param {function} [errorCallback] - Error callback
 			 * @instance
 			 */
-			notify : function(type,value,success,error){
+			notify : function(type,value,success,error) {
+        this.success = success;
+        this.error = error;
 				if(type.toLowerCase() == "hex"){
 					value = BC.Tools.HexToBase64(value);
 				}else if(type.toLowerCase() == "ascii"){
@@ -1903,13 +1918,15 @@
 					error("This characteristic notify data, please add 'notify' in the property.");
 				}
 			},
+
 			notifySuccess : function(){
 				this.success();
 			},
+
 			notifyError : function(){
 				this.error(arguments);
 			},
-			
+
 			/**
 			 * Discovers descriptors for the characteristic.
 			 * @memberof Characteristic
@@ -1923,7 +1940,7 @@
 				this.error = error;
 				BC.bluetooth.discoverDescriptors(this);
 			},
-			
+
 			discoverDescriptorsSuccess : function(data){
 				var dess = arguments[1];
 				var chara =  this;
@@ -1937,11 +1954,11 @@
 				});
 				this.success();
 			},
-			
+
 			discoverDescriptorsError : function(){
 				this.error();
 			},
-			
+
 			/**
 			 * Gets descriptors by UUID.
 			 * @memberof Characteristic
@@ -1962,7 +1979,7 @@
 				);
 				return result;
 			},
-			
+
 		});
 		
 		/**

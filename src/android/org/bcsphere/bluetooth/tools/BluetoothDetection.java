@@ -42,6 +42,7 @@ public class BluetoothDetection {
 			}else if (Tools.isSupportSpecificAPI("motorola")) {
 				editor.putString("API", "motorola").commit();
 			}else {
+        /* see what can be done in jiayu */
 				/*if (Tools.getSupportBasebandVersionBrand() != null) {
 					if (Tools.getSupportBasebandVersionBrand().equals("xiaomi")) {
 						

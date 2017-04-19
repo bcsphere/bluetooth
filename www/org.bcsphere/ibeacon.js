@@ -82,7 +82,7 @@
 	
 	function onBCCoreReady(){
 		var eventName = "org.bcsphere.ibeacon.ready";
-		var	iBeaconManager = BC.iBeaconManager = new BC.IBeaconManager("org.bcsphere.ibeacon",eventName);
+		var	iBeaconManager = BC.iBeaconManager = new BC.IBeaconManager("org.bcsphere.bluetooth.ibeacon",eventName);
 		BC.bluetooth.dispatchEvent(eventName);
 	}
 	

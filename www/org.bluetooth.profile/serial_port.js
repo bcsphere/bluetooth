@@ -22,7 +22,7 @@
 		var writecharUUID = "6E400003-B5A3-F393-E0A9-E50E24DCCA9E";
 		var MASTER = "Master";
 		var SLAVE = "Slave";
-		var role = "Master";
+		var role = MASTER;
 		var service = {};
 		
 		/**
@@ -36,16 +36,22 @@
 		 */
 		var SerialPortProfile = BC.SerialPortProfile = BC.Profile.extend({
 
-			processRcvDataCallback : function(data){
-				if(this.subscribeCallback == null){
-					if(this.buffer == null){
+			processRcvDataCallback : function(data) {
+				if (this.subscribeCallback == null) {
+					if (this.buffer == null) {
 						this.buffer = new BC.DataValue(null);
 					}
 					this.buffer.append(data.value);
-				}else{
+				} else {
 					this.subscribeCallback(data);
 				}
 			},
+      
+      processSubscriptionCallback : function(s) {       
+        if (this.subscriptionCallback != null) {
+          this.subscriptionCallback(s);
+        }
+      },
 			
 			/**
 			 * Connect to device (choose the connection by device.type)
@@ -71,7 +77,7 @@
 						serviceTosub.subscribe(this.processRcvDataCallback);
 					});
 					successFunc();
-				},errorFunc,uuid,secure);
+				}, errorFunc, uuid, secure);
 			},
 			
 			/**
@@ -90,7 +96,7 @@
 			 * @param {function} [errorCallback] - Error callback
 			 */				
 			read : function(device,successFunc,errorFunc){
-				if(API == "ios" && role == this.SLAVE){
+				if(API == "ios" && role == SLAVE){
 					if(!this.buffer){
 					   successFunc(null);
 					}
@@ -125,14 +131,14 @@
 			 * @param {function} successCallback - Success callback
 			 * @param {function} [errorCallback] - Error callback
 			 */
-			write : function(device,writeType,writeValue,successFunc,errorFunc){
-				if(API == "ios" && role == this.SLAVE){
+			write : function(device,writeType,writeValue,successFunc,errorFunc) {
+				if (API == "ios" && role == SLAVE) {
 					service.getCharacteristicByUUID(readcharUUID)[0].notify(writeType,writeValue,successFunc,errorFunc);
-				}else{
-					if(device.type == "Classical"){
+				} else {
+					if (device.type == "Classical") {
 						device.rfcommWrite(writeType,writeValue,successFunc,errorFunc);
-					}else if(device.type == "BLE"){
-						device.discoverServices(function(){
+					} else if (device.type == "BLE") {
+						device.discoverServices(function () {
 							var serviceToWrite = device.getServiceByUUID(serviceUUID)[0];
 							serviceToWrite.write(writeType,writeValue,successFunc,errorFunc);
 						});
@@ -149,15 +155,15 @@
 			 * @param {function} callback - this callback will be called when the data coming
 			 */			
 			subscribe : function(device,callback){
-				if(API == "ios" && role == this.SLAVE){
+				if(API == "ios" && role == SLAVE){
 					this.subscribeCallback = callback;
 				}else{
 					if(device.type == "Classical"){
-					   device.rfcommSubscribe(callback);
+            device.rfcommSubscribe(callback);
 					}else if(device.type == "BLE"){
-					   if(role == "Master"){
-							this.subscribeCallback = callback;
-					   }
+            if(role == MASTER){
+              this.subscribeCallback = callback;
+            }
 					}
 				}
 			},
@@ -170,13 +176,13 @@
 			 * @param {Device} device - the device object to connect
 			 */				
 			unsubscribe : function(device){
-				if(API == "ios" && role == this.SLAVE){
+				if(API == "ios" && role == SLAVE){
 					this.subscribeCallback = null;
 				}else{
 					if(device.type == "Classical"){
 						device.rfcommUnsubscribe();
 					}else if(device.type == "BLE"){
-						if(role == "Master"){
+						if(role == MASTER){
 						   this.subscribeCallback = null;
 						}
 					}
@@ -192,26 +198,40 @@
 			 * @param {string} [uuid] - the uuid of this connection, for the RFCOMM connection only
 			 * @param {boolean} [secure] - the RFCOMM connection is security or not
 			 */	
-			listen : function(name,uuid,secure){
+			listen : function(name,uuid,secure,callback){
+        var thiz;
+        
+        thiz = this;
+        
+        if (!callback) {
+          this.subscriptionCallback = null;
+        } else {
+          this.subscriptionCallback = callback;
+        }
+        
 				if(API !== "ios" && name && uuid && secure){
 					BC.Bluetooth.RFCOMMListen(name,uuid,secure);
-					role = this.SLAVE;
+					role = SLAVE;
 				}else{
 					var serviceToAdd = new BC.Service({uuid:serviceUUID});
 					
 					var readcharpermission = ["read"];
 					var readcharproperty = ["read","notify"];
 					var readcharacter = new BC.Characteristic({uuid:readcharUUID,value:"",type:"Hex",property:readcharproperty,permission:readcharpermission});
-					readcharacter.addEventListener("oncharacteristicread",function(s){});
+					readcharacter.addEventListener("oncharacteristicread", function (s) {});
+          readcharacter.addEventListener("onsubscribestatechange", function (s) {
+            thiz.processSubscriptionCallback(s)
+          });
 
 					var writecharpermission = ["write"];
-					var writecharproperty = ["write"];
+					var writecharproperty = ["write", "writeWithoutResponse"];
 					var writecharacter = new BC.Characteristic({uuid:writecharUUID,value:"01",type:"Hex",property:writecharproperty,permission:writecharpermission});
-					writecharacter.addEventListener("oncharacteristicwrite",function(s){
+					writecharacter.addEventListener("oncharacteristicwrite", function (s) {
 						var data = {};
+            console.log('oncharacteristicwrite');
 						data.value = s.writeValue;
 						data.date = new Date().getTime();
-						this.processRcvDataCallback(data);
+						thiz.processRcvDataCallback(data);
 					});
 
 					//Adds a characteristic to a service. 
@@ -219,9 +239,9 @@
 					serviceToAdd.addCharacteristic(writecharacter);
 					
 					//Adds a service to the smart phone.
-					BC.Bluetooth.AddService(serviceToAdd,function(){
+					BC.Bluetooth.AddService(serviceToAdd, function () {
 						service = serviceToAdd;
-						role = this.SLAVE;
+						role = SLAVE
 					},function(){
 						alert("Listening error.");
 					});
@@ -239,12 +259,12 @@
 			unlisten : function(name,uuid){
 				if(API !== "ios" && name && uuid){
 					BC.Bluetooth.RFCOMMUnListen(name,uuid);
-					role = this.MASTER;
+					role = MASTER;
 				}else{
 					if(this.service){
 						BC.Bluetooth.RemoveService(this.service,function(){
 							this.service = null;
-							role = this.MASTER;
+							role = MASTER;
 						},function(){
 							alert("unlisten error.");
 						});

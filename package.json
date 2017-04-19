@@ -1,18 +1,18 @@
 {
-    "version": "0.5.0",
-    "name": "org.bcsphere.bluetooth",
-    "cordova_name": "bcsphere.bluetooth",
-    "description": "Use the Bluetooth 4.0 plugin to connect your App to new Bluetooth Smart devices like heart rate monitors, thermometers, etc...",
-    "license": "Apache 2.0 License",
-    "keywords": [
-        "Bluetooth",
-        "Low Energy",
-        "Bluetooth Smart"
-    ],
-    "engines": [
-        {
-            "name": "cordova",
-            "version": ">=3.0.0"
-        }
-    ]
+  "version": "0.5.3",
+  "name": "org.bcsphere.bluetooth",
+  "cordova_name": "bcsphere.bluetooth",
+  "description": "Use the Bluetooth 4.0 plugin to connect your App to new Bluetooth Smart devices like heart rate monitors, thermometers, etc...",
+  "license": "Apache 2.0 License",
+  "keywords": [
+    "Bluetooth",
+    "Low Energy",
+    "Bluetooth Smart"
+  ],
+  "engines": [
+    {
+      "name": "cordova",
+      "version": ">=3.0.0"
+    }
+  ]
 }
